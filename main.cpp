@@ -1,23 +1,7 @@
 #include "./common/index.hpp"
+#include "./JVM/jvm.hpp"
 #include <iostream>
-#include <stack>
-#include "./FrameStack/frameStack.hpp"
-#include "./MethodArea/methodArea.hpp"
-#include "./Heap/heap.hpp"
 using namespace std;
-
-
-
-class JVM {
-  private:
-    FrameStack frameStack;
-    Heap heap;
-    MethodArea methodArea;
-    void * pc;
-  public:
-    void initialize(string classPath);
-    void run();
-};
 
 
 int main(int argc, char const *argv[])
