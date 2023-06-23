@@ -6,8 +6,17 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
+  // lógica de flags
+  if(argc < 2) {
+    cout << "Uso correto: ./jvm <class-path>" << endl;
+    return 1;
+  }
+
   JVM * jvm = new JVM();
+  cout << "Initializing JVM" << endl;
   jvm->initialize(argv[1]);
+  cout << "Running JVM" << endl;
   jvm->run();
+  cout << "Finishing JVM" << endl;
   return 0;
 }

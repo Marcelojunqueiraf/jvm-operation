@@ -1,13 +1,21 @@
 #include "frameStack.hpp"
 
-void FrameStack::pop(){ 
-  stack.pop();
+
+stack<Frame> FrameStack::data = stack<Frame>();
+
+void FrameStack::pop(){
+  this->data.pop();
 }
 
 void FrameStack::push(Frame frame) {
-  stack.push(frame);
+  this->data.push(frame);
 }
 
-Frame FrameStack::top() {
-  return stack.top();
+Frame * FrameStack::top() {
+  //return this->data.top();
+  return new Frame();
+}
+
+FrameStack::FrameStack() {
+  // construtor
 }
