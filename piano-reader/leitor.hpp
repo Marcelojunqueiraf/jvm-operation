@@ -8,7 +8,7 @@
  * @brief Arquivo com as funções utilizadas no leitor.
  * @details Declaração das funções de leitura.
  */
-#include "types.hpp"
+#include "../common/class-file.hpp"
 #include "utf8.hpp"
 #ifndef LEITORH
 #define LEITORH

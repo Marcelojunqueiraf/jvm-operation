@@ -4,16 +4,36 @@ using namespace std;
 
 /* Method Area */
 ////////////////
+map<string, string> MethodArea::path_to_name_and_path(char* char_arr){
+  for(int i = 0; i < sizeof(char_arr); i++){
+    string className; 
+    // Pegar o className a partir do path
+    this->name_and_path[className] = char_arr[i];
+  };
+
+
+}
 
 ClassFile * MethodArea::loadClass(string className) {
   // Workout path from className
   string path = "path";
+  this->name_and_path;
+  
+  
   return this->loadClassFromPath(path);
 }
 
 ClassFile * MethodArea::loadClassFromPath(string path) {
-  // Chamar leitor
-  ClassFile * classfile = new ClassFile();
+
+  // abre o descritor de arquivo class file
+  FILE *fd = fopen(path.c_str(), "rb");   
+
+  // malloc de uma estrutura class file
+  ClassFile *classfile = new ClassFile();
+
+  // lê os bytecodes baseados no path 
+  class_reader(fd, classfile);
+
   return classfile;
 }
 
@@ -23,28 +43,21 @@ void MethodArea::insert (MethodAreaItem * methodAreaItem) {
 
 MethodAreaItem * MethodArea::getMethodAreaItem (string className) {
   // check if class is already loaded
-  MethodAreaItem * target = NULL;
   for (auto methodAreaItem : this->data) {
     if (methodAreaItem->getClassName() == className) {
-      target = methodAreaItem;
+      return methodAreaItem;
     }
   }
-  if (target == NULL) {
-    ClassFile * classfile = this->loadClass(className);
     // E se der erro no load?
-    target = new MethodAreaItem(classfile);
-  }
-  this->insert(target);
-  // stack static blocks from target
-  
-  // load super from target
-
-  return target;
+    ClassFile * classfile = this->loadClass(className);
+    MethodAreaItem * newClass = new MethodAreaItem(classfile);
+    this->insert(newClass);
 }
 
 MethodAreaItem * MethodArea::getMethodAreaItemFromFile(string path) {
   ClassFile * classfile = this->loadClassFromPath(path);
   MethodAreaItem * methodAreaItem = new MethodAreaItem(classfile);
+  
   return methodAreaItem;
 }
 
@@ -62,6 +75,7 @@ string MethodAreaItem::getClassName() {
 Method_info * MethodAreaItem::getMainMethod() {
   // TODO: implementação
   Method_info * method_info = new Method_info();
+  method_info->attributes.
   return method_info;
 }
 

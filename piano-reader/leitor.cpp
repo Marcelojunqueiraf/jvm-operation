@@ -72,13 +72,13 @@ void read_attribute_code(FILE *fd, attribute_info *attr_info, cp_info *cp)
 {
     attr_info->attribute_info_union.code_attribute.max_stack = u2Read(fd);
     attr_info->attribute_info_union.code_attribute.max_locals = u2Read(fd);
-    attr_info->attribute_info_union.code_attribute.code_lenght = u4Read(fd);
+    attr_info->attribute_info_union.code_attribute.code_length = u4Read(fd);
 
     // alocar na memória o array de byte/up codes
-    attr_info->attribute_info_union.code_attribute.code = (u1 *)malloc(attr_info->attribute_info_union.code_attribute.code_lenght * sizeof(u1));
+    attr_info->attribute_info_union.code_attribute.code = (u1 *)malloc(attr_info->attribute_info_union.code_attribute.code_length * sizeof(u1));
 
-    // alocando os bytecodes no code[code_lenght]
-    for (int i = 0; i < attr_info->attribute_info_union.code_attribute.code_lenght; i++)
+    // alocando os bytecodes no code[code_length]
+    for (int i = 0; i < attr_info->attribute_info_union.code_attribute.code_length; i++)
     {
         attr_info->attribute_info_union.code_attribute.code[i] = u1Read(fd);
     };

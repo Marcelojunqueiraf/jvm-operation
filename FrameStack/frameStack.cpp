@@ -19,3 +19,7 @@ Frame * FrameStack::top() {
 FrameStack::FrameStack() {
   // construtor
 }
+
+int FrameStack::getStackSize() {
+  return this->data.size();
+}
