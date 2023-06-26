@@ -13,7 +13,7 @@ void FrameStack::push(Frame frame) {
 
 Frame * FrameStack::top() {
   //return this->data.top();
-  return new Frame();
+  return new Frame(NULL);
 }
 
 FrameStack::FrameStack() {

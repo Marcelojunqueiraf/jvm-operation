@@ -136,14 +136,14 @@ typedef struct attribute_info{
 // ---------------------------- METHODS ----------------------------- //
 
 /// @brief Struct para a definição do Method Info
-typedef struct method_info{
+typedef struct Method_info{
     u2 acess_flags; 
     u2 name_index;          //aqui nesse caso pode ser <init>, <clinit> ou um nome valido para o metodo
     u2 descriptor_index;            
     u2 attributes_count;
     attribute_info *attributes;  //aqui acessamos o atribute info utilizando o count para acessar uma estrutura de atribute info
 
-}method_info;
+}Method_info;
 
 // ---------------------------- FIELDS ----------------------------- //
 
@@ -239,7 +239,7 @@ typedef struct ClassFile
     u2 fields_count;
     field_info *fields;
     u2 methods_count;
-    method_info *methods;
+    Method_info *methods;
     u2 attributes_count;
     attribute_info *attributes;
 

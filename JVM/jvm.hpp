@@ -17,8 +17,6 @@ class JVM {
     Heap heap;
     MethodArea methodArea;
     void * pc;
-    ClassFile * loadClassFromFile(string path);
-    void loadClass();
   public:
     void initialize(string classPath);
     void run();

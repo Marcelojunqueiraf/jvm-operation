@@ -76,13 +76,13 @@ typedef struct {
  attribute_info * attributes;
 } field_info;
 
-typedef struct {
+typedef struct Method_info{
   u2 access_flags;
   u2 name_index;
   u2 descriptor_index;
   u2 attributes_count;
   attribute_info * attributes;
-} method_info;
+} Method_info;
 
 typedef struct {
   u4 magic_number;
@@ -98,7 +98,7 @@ typedef struct {
   u2 fields_count;
   field_info * fields;
   u2 methods_count;
-  method_info * methods;
+  Method_info * methods;
   u2 attributes_count;
   attribute_info * attributes;
 } ClassFile;

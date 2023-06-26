@@ -224,7 +224,7 @@ void read_methods(FILE *fd, ClassFile *cf)
 {
 
     // alocando dinamicamente os methdos com base no contador
-    cf->methods = (method_info *)malloc(cf->methods_count * sizeof(method_info));
+    cf->methods = (Method_info *)malloc(cf->methods_count * sizeof(Method_info));
 
     // iterar e ir lendo os methods...
     for (int i = 0; i < cf->methods_count; i++)
