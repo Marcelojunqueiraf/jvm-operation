@@ -228,7 +228,7 @@ void read_methods(FILE *fd, ClassFile *cf)
     for (int i = 0; i < cf->methods_count; i++)
     {
 
-        cf->methods[i].acess_flags = u2Read(fd);
+        cf->methods[i].access_flags = u2Read(fd);
 
         cf->methods[i].name_index = u2Read(fd);
 
@@ -259,7 +259,7 @@ void read_fields(FILE *fd, ClassFile *cf)
     for (int i = 0; i < cf->fields_count; i++)
     {
         // lendo flags
-        cf->fields[i].acess_flags = u2Read(fd);
+        cf->fields[i].access_flags = u2Read(fd);
 
         // lendo name_index
         cf->fields[i].name_index = u2Read(fd);

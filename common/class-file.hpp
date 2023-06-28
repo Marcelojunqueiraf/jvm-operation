@@ -135,7 +135,7 @@ typedef struct Attribute_info{
 
 /// @brief Struct para a definição do Method Info
 typedef struct Method_info{
-    u2 acess_flags; 
+    u2 access_flags; 
     u2 name_index;          //aqui nesse caso pode ser <init>, <clinit> ou um nome valido para o metodo
     u2 descriptor_index;            
     u2 attributes_count;
@@ -147,7 +147,7 @@ typedef struct Method_info{
 
 /// @brief Struct para a definição do Field Info
 typedef struct field_info{
-    u2 acess_flags; 
+    u2 access_flags; 
     u2 name_index;
     u2 descriptor_index;
     u2 attributes_count;
