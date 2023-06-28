@@ -59,6 +59,9 @@ MethodAreaItem * MethodArea::getMethodAreaItemFromFile(string path) {
 /* Method area Item*/
 ////////////////////
 MethodAreaItem::MethodAreaItem(ClassFile * classfile) {
+  // Inicializar staticFields
+  this->staticFields = map <string, JvmValue>();
+
   this->classfile = classfile;
 }
 
@@ -75,7 +78,6 @@ string MethodAreaItem::getClassName() {
 Method_info * MethodAreaItem::getMainMethod() {
   // TODO: implementação
   Method_info * method_info = new Method_info();
-  //method_info->attributes. 
   return method_info;
 }
 
