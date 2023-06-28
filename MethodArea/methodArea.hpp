@@ -14,6 +14,7 @@ using namespace std;
 class MethodAreaItem {
   private:
   ClassFile * classfile;
+  map <string, JvmValue> staticFields;
   public:
   MethodAreaItem(ClassFile * classfile);
   string getClassName();
