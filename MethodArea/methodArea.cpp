@@ -66,12 +66,7 @@ MethodAreaItem::MethodAreaItem(ClassFile * classfile) {
 }
 
 string MethodAreaItem::getClassName() {
-  // TODO: 
-
-  
-
-
-
+  // TODO: implementar
   return "className";
 }
 
@@ -88,6 +83,9 @@ Method_info * MethodAreaItem::getStaticBlock() {
 
 string MethodAreaItem::getSuper() {
   // TODO: implementar
-  return "className"; 
+  return "<java/lang/Object>"; 
 }
 
+cp_info * MethodAreaItem::getConstantPoolItem(u2 index) {
+  return &this->classfile->constant_pool[index];
+}

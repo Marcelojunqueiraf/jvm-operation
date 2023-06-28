@@ -5,6 +5,7 @@
 #include "../Heap/heap.hpp"
 #include <fstream>
 #include <iostream>
+#include <string>
 
 #ifndef JVM_H
 #define JVM_H

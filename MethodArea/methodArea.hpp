@@ -20,6 +20,7 @@ class MethodAreaItem {
   string getClassName();
   Method_info * getMainMethod();
   Method_info * getStaticBlock();
+  cp_info * getConstantPoolItem(u2 index); 
   string getSuper();
 };
 

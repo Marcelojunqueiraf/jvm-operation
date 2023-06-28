@@ -5,8 +5,11 @@ void JVM::initClass(MethodAreaItem * methodAreaItem) {
   if (methodAreaItem->getClassName() == JAVA_OBJ_CLASSNAME) return;
 
   this->frameStack.push(methodAreaItem->getStaticBlock());
+  /*
+  // TODO: remover comentário
   MethodAreaItem * superClass = this->methodArea.getMethodAreaItem(methodAreaItem->getSuper());
   this->initClass(superClass);
+  */
 }
 
 void JVM::initialize(string classPath) {
@@ -17,13 +20,16 @@ void JVM::initialize(string classPath) {
   this->initClass(firstClass);
 }
 
-code_attribute * getCode(Method_info * method_info) {
-  // TODO: Piano, implementar
-  // for (int i = 0; i < method_info->attributes_count; i++) {
-  //   if (method_info->attributes[i] == "Code") {
-  //     return method_info->attributes[i]->info.code;
-  //   }
-  // }
+code_attribute * getCode(Method_info * method_info, MethodAreaItem * methodAreaItem) {
+  for (int i = 0; i < method_info->attributes_count; i++) {
+    Attribute_info * attribute = &method_info->attributes[i];
+    u2 index = attribute->attribute_name_index;
+    cp_info * cp = methodAreaItem->getConstantPoolItem(index);
+    string name = Utf8_decoder(cp);
+    if (name == "Code"){
+      return &attribute->attribute_info_union.code_attribute;
+    }
+  }
   return NULL;
 }
 
@@ -32,14 +38,19 @@ void JVM::executeInstruction(u1 * instruction, Frame * frame){
 
 void JVM::executeFrame() {
   Frame * frame = this->frameStack.top();
-  code_attribute * codeAtt = getCode(frame->method_info);
+  cout << "top" << endl;
+  code_attribute * codeAtt = getCode(frame->method_info, frame->methodAreaItem);
+  cout << "code" << endl;
   // verifica se o método acabou
   if (frame->pc >= codeAtt->code_length) {
     this->frameStack.pop();
     return;
   }
+  cout << "verificou" << endl;
   u1 * instruction = codeAtt->code + frame->pc;
+  cout << "pegou instruction" << endl;
   executeInstruction(instruction, frame);
+  cout << "executou" << endl;
   frame->pc++;
 }
 

@@ -1,4 +1,5 @@
 #include "../common/index.hpp"
+#include "../MethodArea/methodArea.hpp"
 #include <stack>
 #include <vector>
 
@@ -11,6 +12,7 @@ struct Frame {
   stack<JvmValue> operandStack;
   vector<JvmValue> localVariables;
   Method_info * method_info;
+  MethodAreaItem * methodAreaItem;
   int pc;
   Frame(Method_info * method_info);
 };
