@@ -3,6 +3,11 @@
 
 stack<Frame> FrameStack::data = stack<Frame>();
 
+Frame::Frame(Method_info * method_info) {
+  this->method_info = method_info;
+  this->pc = 0;
+}
+
 void FrameStack::pop(){
   this->data.pop();
 }
@@ -23,3 +28,4 @@ FrameStack::FrameStack() {
 int FrameStack::getStackSize() {
   return this->data.size();
 }
+

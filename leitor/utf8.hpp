@@ -1,4 +1,4 @@
-#include "types.hpp"
+#include "../common/class-file.hpp"
 
 
 #ifndef UTF8H

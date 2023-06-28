@@ -1,4 +1,3 @@
-
 #include <stdint.h>
 #ifndef TYPESH
 #define TYPESH
@@ -18,28 +17,28 @@ typedef uint32_t u4;
 typedef uint64_t u8;
 
 // referenciando o attribute
-struct attribute_info;
+struct Attribute_info;
 
 
 
 // ---------------------------- LOCAL VARIABLE TABLE STRUCTURE ----------------------------- //
 
 /// @brief Struct para a definição da local variable table
-typedef struct local_variable_table{   
+typedef struct Local_variable_table{   
     u2 start_pc;
     u2 length;
     u2 name_index;
     u2 descriptor_index;
     u2 index;
-} local_variable_table;
+} Local_variable_table;
 
 // ---------------------------- LOCAL VARIABLE TABLE ATTRIBUTE ----------------------------- //
 
 /// @brief Struct para a definição da local variable table attribute
-typedef struct localVariableTable_attribute {
+typedef struct LocalVariableTable_attribute {
     u2 local_variable_table_length;
-    local_variable_table *local_variable_table;
-} localVariableTable_attribute;
+    Local_variable_table *local_variable_table;
+} LocalVariableTable_attribute;
 
 
 // ---------------------------- LINE NUMBER TABLE STRUCTURE ----------------------------- //
@@ -48,15 +47,15 @@ typedef struct localVariableTable_attribute {
 typedef struct line_number_table{
     u2 start_pc;
     u2 line_number;
-} line_number_table;
+} Line_number_table;
 
 // ---------------------------- LINE NUMBER TABLE ATTRIBUTE ----------------------------- //
 
 /// @brief Struct para a definição da line number table attribute
-typedef struct lineNumberTable_attribute{
+typedef struct LineNumberTable_attribute{
     u2 line_number_table_length;
-    line_number_table *line_number_table;
-} lineNumberTable_attribute;
+    Line_number_table *line_number_table;
+} LineNumberTable_attribute;
 
 
 // ---------------------------- INNER CLASS STRUCTURE ----------------------------- //
@@ -67,25 +66,25 @@ typedef struct inner_classes{
     u2 outer_class_info_index;
     u2 inner_name_index;
     u2 inner_class_access_flags;
-}inner_classes;
+} Inner_classes;
 
 // ---------------------------- INNER CLASS ATTRIBUTE ----------------------------- //
 
 /// @brief Struct para a definição das inner classes attribute
-typedef struct innerClasses_attribute {
+typedef struct InnerClasses_attribute {
     u2 number_of_classes;
-    inner_classes *inner_classes;
-} innerClasses_attribute;
+    Inner_classes *inner_classes;
+} InnerClasses_attribute;
 
 // ---------------------------- EXCEPTION TABLE STRUCTURE ----------------------------- //
 
 /// @brief Struct para a definição da exception table
-typedef struct exception_table{
+typedef struct Exception_table{
     u2 start_pc;
     u2 end_pc;
     u2 handler_pc;
     u2 catch_type;
-} exception_table;
+} Exception_table;
 
 // ---------------------------- EXCEPTION ATTRIBUTE ----------------------------- //
 
@@ -94,7 +93,7 @@ typedef struct exceptions_attribute {
     u2 number_of_exceptions;
     // cada valor é um constant pool index -> constant class info
     u2 *exception_index_table;
-}exceptions_attribute;
+} Exceptions_attribute;
 
 
 // ---------------------------- CODE ATTRIBUTE ----------------------------- //
@@ -107,30 +106,29 @@ typedef struct code_attribute{
     u2 code_length; //aqui temos a quantidade de bytes no code array
     u1 *code; //aqui temos um ponteiro para o code array que apresenta os opcodes 
     u2 exception_table_length;
-    exception_table *exception_table;  
+    Exception_table *exception_table;  
     u2 attribute_count;
-    struct attribute_info *attributes; //como está aqui embaixo, temos que referenciar como struct
-} code_attribute;
+    struct Attribute_info *attributes; //como está aqui embaixo, temos que referenciar como struct
+} Code_attribute;
 
 // ---------------------------- ATTRIBUTE ----------------------------- //
 
 /// @brief Struct para a definição do attribute info
-typedef struct attribute_info{
+typedef struct Attribute_info{
     u2 attribute_name_index; //nome em utf8
-    u4 attribute_lenght; //
+    u4 attribute_length; //
 
     // aqui temos as diferencas entre os atributos
     union attribute_info_union{
         u2 constantvalue_index; //aqui não precisamos de uma struct completa visto que temos apenas campo 
-        code_attribute code_attribute;
-        exceptions_attribute exceptions_attribute;
-        innerClasses_attribute innerClasses_attribute;
-        lineNumberTable_attribute lineNumberTable_attribute;
-        localVariableTable_attribute localVariableTable_attribute;
-
+        Code_attribute code_attribute;
+        Exceptions_attribute exceptions_attribute;
+        InnerClasses_attribute innerClasses_attribute;
+        LineNumberTable_attribute lineNumberTable_attribute;
+        LocalVariableTable_attribute localVariableTable_attribute;
     } attribute_info_union;
     
-} attribute_info;
+} Attribute_info;
 
 
 // ---------------------------- METHODS ----------------------------- //
@@ -141,7 +139,7 @@ typedef struct Method_info{
     u2 name_index;          //aqui nesse caso pode ser <init>, <clinit> ou um nome valido para o metodo
     u2 descriptor_index;            
     u2 attributes_count;
-    attribute_info *attributes;  //aqui acessamos o atribute info utilizando o count para acessar uma estrutura de atribute info
+    Attribute_info *attributes;  //aqui acessamos o atribute info utilizando o count para acessar uma estrutura de atribute info
 
 }Method_info;
 
@@ -153,7 +151,7 @@ typedef struct field_info{
     u2 name_index;
     u2 descriptor_index;
     u2 attributes_count;
-    attribute_info *attributes;  //aqui acessamos o atribute info utilizando o count
+    Attribute_info *attributes;  //aqui acessamos o atribute info utilizando o count
 }field_info;
 
 /// @brief Struct para a definição do cp_info
@@ -191,7 +189,7 @@ typedef struct cp_info{
             u2 length;          //indica o número de bytes no array bytes (embaixo) pode ser 1, 2 ou 3 bytes
             u1 *bytes;          //quando formos alocar os bytes levamos em conta o numero de bytes aqui é um array
 
-            // u1 *bytes = (u1 *) malloc(lenght * sizeof(u1));     //aqui criamos um espaço de memória do tamanho do problema. (u1 tem 1 bit)
+            // u1 *bytes = (u1 *) malloc(length * sizeof(u1));     //aqui criamos um espaço de memória do tamanho do problema. (u1 tem 1 bit)
         } Utf8;
         
         struct{
@@ -241,7 +239,7 @@ typedef struct ClassFile
     u2 methods_count;
     Method_info *methods;
     u2 attributes_count;
-    attribute_info *attributes;
+    Attribute_info *attributes;
 
 } ClassFile;
 

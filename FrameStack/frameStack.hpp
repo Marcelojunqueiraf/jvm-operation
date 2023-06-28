@@ -1,5 +1,6 @@
 #include "../common/index.hpp"
 #include <stack>
+#include <vector>
 
 #ifndef FRAME_STACK_H
 #define FRAME_STACK_H

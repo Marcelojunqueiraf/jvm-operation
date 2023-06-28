@@ -1,8 +1,9 @@
 TARGET = jvm
 FLAGS = -Wall -std=c++17 -lm
-EXTRA = FrameStack/frameStack.cpp JVM/jvm.cpp MethodArea/methodArea.cpp 
+LEITOR = ./leitor/leitor.cpp ./leitor/utf8.cpp 
+EXTRA = FrameStack/frameStack.cpp JVM/jvm.cpp MethodArea/methodArea.cpp
 all:
-	g++ $(FLAGS) $(EXTRA) main.cpp -o $(TARGET)
+	g++ $(FLAGS) $(EXTRA) $(LEITOR) main.cpp -o $(TARGET)
 
 clean:
 	rm -f $(TARGET)

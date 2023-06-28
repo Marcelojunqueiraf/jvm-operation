@@ -8,7 +8,7 @@ int main(int argc, char const *argv[])
 {
   // lógica de flags
   if(argc < 2) {
-    cout << "Uso correto: ./jvm <class-path>" << endl;
+    cout << "Correct use: ./jvm <class-path>" << endl;
     return 1;
   }
 

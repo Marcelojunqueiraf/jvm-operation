@@ -1,32 +1,26 @@
 #include "methodArea.hpp"
 
 using namespace std;
-
+#include <iostream>
 /* Method Area */
 ////////////////
-map<string, string> MethodArea::path_to_name_and_path(char* char_arr){
-  for(int i = 0; i < sizeof(char_arr); i++){
-    string className; 
-    // Pegar o className a partir do path
-    this->name_and_path[className] = char_arr[i];
-  };
 
-
-}
 
 ClassFile * MethodArea::loadClass(string className) {
   // Workout path from className
-  string path = "path";
-  this->name_and_path;
-  
-  
+  string path = "./" + className + ".class";
   return this->loadClassFromPath(path);
 }
 
 ClassFile * MethodArea::loadClassFromPath(string path) {
-
   // abre o descritor de arquivo class file
+
   FILE *fd = fopen(path.c_str(), "rb");   
+  if (fd == NULL) {
+    cout << "Erro ao abrir arquivo" << endl;
+    exit(1);
+  }
+
 
   // malloc de uma estrutura class file
   ClassFile *classfile = new ClassFile();
@@ -52,6 +46,7 @@ MethodAreaItem * MethodArea::getMethodAreaItem (string className) {
     ClassFile * classfile = this->loadClass(className);
     MethodAreaItem * newClass = new MethodAreaItem(classfile);
     this->insert(newClass);
+    return newClass;
 }
 
 MethodAreaItem * MethodArea::getMethodAreaItemFromFile(string path) {
@@ -68,14 +63,19 @@ MethodAreaItem::MethodAreaItem(ClassFile * classfile) {
 }
 
 string MethodAreaItem::getClassName() {
-  // TODO: implementação
+  // TODO: 
+
+  
+
+
+
   return "className";
 }
 
 Method_info * MethodAreaItem::getMainMethod() {
   // TODO: implementação
   Method_info * method_info = new Method_info();
-  method_info->attributes.
+  //method_info->attributes. 
   return method_info;
 }
 
@@ -83,3 +83,9 @@ Method_info * MethodAreaItem::getStaticBlock() {
   Method_info * method_info= new Method_info();
   return method_info;
 }
+
+string MethodAreaItem::getSuper() {
+  // TODO: implementar
+  return "className"; 
+}
+

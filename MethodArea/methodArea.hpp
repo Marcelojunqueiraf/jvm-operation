@@ -1,5 +1,5 @@
 #include "../common/index.hpp"
-#include "../piano-reader/index.hpp"
+#include "../leitor/index.hpp"
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -29,8 +29,6 @@ class MethodArea {
     ClassFile * loadClass(string className);
     ClassFile * loadClassFromPath(string className);
     void insert (MethodAreaItem * methodAreaItem);
-    map<string, string> name_and_path;
-    map<string, string> path_to_name_and_path(char * path_arr);
   public:
     MethodAreaItem * getMethodAreaItem (string className);
     MethodAreaItem * getMethodAreaItemFromFile(string path);
