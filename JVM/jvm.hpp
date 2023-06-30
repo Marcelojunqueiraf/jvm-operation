@@ -26,6 +26,4 @@ class JVM {
     void run();
 };
 
-const string JAVA_OBJ_CLASSNAME = "<java/lang/Object>";
-
 #endif

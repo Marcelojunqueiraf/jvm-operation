@@ -1,6 +1,9 @@
 #include <stdint.h>
+#include <string>
 #ifndef TYPESH
 #define TYPESH
+
+using namespace std;
 
 
 // definindo os tamanhos
@@ -19,6 +22,7 @@ typedef uint64_t u8;
 // referenciando o attribute
 struct Attribute_info;
 
+const string JAVA_OBJ_CLASSNAME = "java/lang/Object";
 
 
 // ---------------------------- LOCAL VARIABLE TABLE STRUCTURE ----------------------------- //

@@ -1,15 +1,13 @@
 #include "jvm.hpp"
 
 void JVM::initClass(MethodAreaItem * methodAreaItem) {
-  // Verificar se é a classe object do java
-  if (methodAreaItem->getClassName() == JAVA_OBJ_CLASSNAME) return;
 
   this->frameStack.push(methodAreaItem->getStaticBlock());
-  /*
-  // TODO: remover comentário
+
   MethodAreaItem * superClass = this->methodArea.getMethodAreaItem(methodAreaItem->getSuper());
+  if (superClass->getClassName() == JAVA_OBJ_CLASSNAME) return;
+
   this->initClass(superClass);
-  */
 }
 
 void JVM::initialize(string classPath) {
@@ -26,7 +24,7 @@ code_attribute * getCode(Method_info * method_info, MethodAreaItem * methodAreaI
     u2 index = attribute->attribute_name_index;
     cp_info * cp = methodAreaItem->getConstantPoolItem(index);
     string name = Utf8_decoder(cp);
-    if (name == "Code"){
+    if (name == "Code") {
       return &attribute->attribute_info_union.code_attribute;
     }
   }

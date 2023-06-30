@@ -7,20 +7,22 @@ using namespace std;
 
 
 ClassFile * MethodArea::loadClass(string className) {
-  // Workout path from className
+  if (className == JAVA_OBJ_CLASSNAME)
+    return this->loadClassFromPath("./tests/Object.class");
+
   string path = "./" + className + ".class";
   return this->loadClassFromPath(path);
 }
 
 ClassFile * MethodArea::loadClassFromPath(string path) {
-  // abre o descritor de arquivo class file
+  cout << "Lendo o arquivo: " << path << endl;
 
+  // abre o descritor de arquivo class file
   FILE *fd = fopen(path.c_str(), "rb");   
   if (fd == NULL) {
-    cout << "Erro ao abrir arquivo" << endl;
+    cout << "Erro ao abrir arquivo: " << path << endl;
     exit(1);
   }
-
 
   // malloc de uma estrutura class file
   ClassFile *classfile = new ClassFile();
@@ -42,11 +44,12 @@ MethodAreaItem * MethodArea::getMethodAreaItem (string className) {
       return methodAreaItem;
     }
   }
-    // E se der erro no load?
-    ClassFile * classfile = this->loadClass(className);
-    MethodAreaItem * newClass = new MethodAreaItem(classfile);
-    this->insert(newClass);
-    return newClass;
+
+  // E se der erro no load?
+  ClassFile * classfile = this->loadClass(className);
+  MethodAreaItem * newClass = new MethodAreaItem(classfile);
+  this->insert(newClass);
+  return newClass;
 }
 
 MethodAreaItem * MethodArea::getMethodAreaItemFromFile(string path) {
@@ -66,8 +69,11 @@ MethodAreaItem::MethodAreaItem(ClassFile * classfile) {
 }
 
 string MethodAreaItem::getClassName() {
-  // TODO: implementar
-  return "className";
+  return this->getUtf8(this->classfile->this_class);
+}
+
+string MethodAreaItem::getSuper() {
+  return this->getUtf8(this->classfile->super_class);
 }
 
 Method_info * MethodAreaItem::getMainMethod() {
@@ -81,11 +87,19 @@ Method_info * MethodAreaItem::getStaticBlock() {
   return method_info;
 }
 
-string MethodAreaItem::getSuper() {
-  // TODO: implementar
-  return "<java/lang/Object>"; 
-}
-
 cp_info * MethodAreaItem::getConstantPoolItem(u2 index) {
   return &this->classfile->constant_pool[index];
+}
+
+string MethodAreaItem::getUtf8(u2 index) {
+  u2 actualIndex = index;
+  cp_info * actual = this->getConstantPoolItem(actualIndex);
+  while (actual->tag != CONSTANT_Utf8_info) {
+    actualIndex = actual->constant_type_union.Class_info.name_index;
+    actual = this->getConstantPoolItem(actualIndex);
+  }
+
+  u2 len = actual->constant_type_union.Utf8.length;
+  char * bytes = (char *) actual->constant_type_union.Utf8.bytes;
+  return string(bytes, len);
 }
