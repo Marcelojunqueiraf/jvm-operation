@@ -99,7 +99,5 @@ string MethodAreaItem::getUtf8(u2 index) {
     actual = this->getConstantPoolItem(actualIndex);
   }
 
-  u2 len = actual->constant_type_union.Utf8.length;
-  char * bytes = (char *) actual->constant_type_union.Utf8.bytes;
-  return string(bytes, len);
+  return utf8ToString(actual);
 }
