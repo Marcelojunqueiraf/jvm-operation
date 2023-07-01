@@ -78,7 +78,8 @@ void read_attribute_code(FILE *fd, Attribute_info *attr_info, cp_info *cp)
     attr_info->attribute_info_union.code_attribute.code_length = u4Read(fd);
 
     // alocar na memória o array de byte/up codes
-    attr_info->attribute_info_union.code_attribute.code = (u1 *)malloc(attr_info->attribute_info_union.code_attribute.code_length * sizeof(u1));
+    size_t code_size = attr_info->attribute_info_union.code_attribute.code_length * sizeof(u1);
+    attr_info->attribute_info_union.code_attribute.code = (u1 *)malloc(code_size);
 
     // alocando os bytecodes no code[code_length]
     for (int i = 0; i < attr_info->attribute_info_union.code_attribute.code_length; i++)
@@ -90,16 +91,19 @@ void read_attribute_code(FILE *fd, Attribute_info *attr_info, cp_info *cp)
     attr_info->attribute_info_union.code_attribute.exception_table_length = u2Read(fd);
 
     // alocando espaço para as tabelas de excessão
-    attr_info->attribute_info_union.code_attribute.exception_table = (Exception_table *)malloc(attr_info->attribute_info_union.code_attribute.exception_table_length * sizeof(Exception_table));
+    size_t exception_table_size = attr_info->attribute_info_union.code_attribute.exception_table_length * sizeof(Exception_table);
+    attr_info->attribute_info_union.code_attribute.exception_table = (Exception_table *)malloc(exception_table_size);
 
     // preenchendo -> passar o endereço para array e o seu tamanho
     read_attribute_code_exception_table(fd, attr_info->attribute_info_union.code_attribute.exception_table, attr_info->attribute_info_union.code_attribute.exception_table_length);
 
     // realizar a leitura dos attributes da função
     attr_info->attribute_info_union.code_attribute.attribute_count = u2Read(fd);
+    cout << "attribute_count: " << attr_info->attribute_info_union.code_attribute.attribute_count << endl;
 
     // alocando espaço para os attributes
-    attr_info->attribute_info_union.code_attribute.attributes = (Attribute_info *) malloc(attr_info->attribute_info_union.code_attribute.attribute_count * sizeof(Attribute_info));
+    size_t attributes_size = attr_info->attribute_info_union.code_attribute.attribute_count * sizeof(Attribute_info);
+    attr_info->attribute_info_union.code_attribute.attributes = (Attribute_info *) malloc(attributes_size);
 
     read_attributes(fd, attr_info->attribute_info_union.code_attribute.attributes, attr_info->attribute_info_union.code_attribute.attribute_count, cp);
 }
@@ -138,7 +142,8 @@ void read_attribute_innerClasses(FILE *fd, Attribute_info *attr_info)
 void read_attribute_lineNumberTable(FILE *fd, Attribute_info *attr_info)
 {
     attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table_length = u2Read(fd);
-    attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table = (line_number_table *)malloc(attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table_length * sizeof(line_number_table));
+    size_t line_number_table_size = attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table_length * sizeof(line_number_table);
+    attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table = (line_number_table *)malloc(line_number_table_size);
     for (int i = 0; i < attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table_length; i++)
     {
         attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table[i].start_pc = u2Read(fd);
@@ -179,31 +184,32 @@ void read_attributes(FILE *fd, Attribute_info *attr_info, u2 attr_count, cp_info
         // u4 attribute_length = attr->attribute_length;
 
         // agora vamos trabalhar com a union
-        char *attribute_name = Utf8_decoder(&cp[attribute_name_index]);
+        string attribute_name = utf8ToString(&cp[attribute_name_index]);
+        cout << "attribute_name: " << attribute_name << " - len = " << attr->attribute_length << endl;
 
         // aqui o switch não é a solução, não há como utilizar switch com strings
-        if (!strcmp(attribute_name, "ConstantValue"))
+        if (attribute_name == "ConstantValue")
         {
             read_attribute_constant(fd, attr);
         }
-        else if (!strcmp(attribute_name, "Code"))
+        else if (attribute_name == "Code")
         {
             //Aposto que o erro é aqui
             read_attribute_code(fd, attr, cp); 
         }
-        else if (!strcmp(attribute_name, "Exceptions"))
+        else if (attribute_name == "Exceptions")
         {
             read_attribute_exceptions(fd, attr);
         }
-        else if (!strcmp(attribute_name, "InnerClasses"))
+        else if (attribute_name == "InnerClasses")
         {
             read_attribute_innerClasses(fd, attr);
         }
-        else if (!strcmp(attribute_name, "LineNumberTable"))
+        else if (attribute_name == "LineNumberTable")
         {
             read_attribute_lineNumberTable(fd, attr);
         }
-        else if (!strcmp(attribute_name, "LocalVariableTable"))
+        else if (attribute_name == "LocalVariableTable")
         {
             read_attribute_localVariableTable(fd, attr);
         } else

@@ -77,15 +77,28 @@ string MethodAreaItem::getSuper() {
 }
 
 Method_info * MethodAreaItem::getMainMethod() {
-  // TODO: implementação
-  Method_info * method_info = new Method_info();
-  return method_info;
+  auto method = this->getMethodByName("main");
+  if (method == NULL) {
+    cout << "Method not found: " << this->getClassName() << ".main" << endl;
+    exit(1);
+  }
+  return method;
 }
 
 Method_info * MethodAreaItem::getStaticBlock() {
-  Method_info * method_info= new Method_info();
-  return method_info;
+  return this->getMethodByName("<clinit>");
 }
+
+Method_info * MethodAreaItem::getMethodByName(string name) {
+  for (int i = 0; i < this->classfile->methods_count; i++) {
+    Method_info * actual = &this->classfile->methods[i];
+    string actualName = this->getUtf8(actual->name_index);
+    if (actualName == name) return actual;
+  }
+
+  return NULL;
+}
+
 
 cp_info * MethodAreaItem::getConstantPoolItem(u2 index) {
   return &this->classfile->constant_pool[index];

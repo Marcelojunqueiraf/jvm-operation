@@ -19,7 +19,7 @@ class JVM {
     MethodArea methodArea;
     void * pc;
     void initClass(MethodAreaItem * methodAreaItem);
-    void executeFrame();
+    void executeFrame(Frame * frame);
     void executeInstruction(u1 * instruction, Frame * frame);
   public:
     void initialize(string classPath);
