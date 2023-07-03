@@ -29,6 +29,7 @@ ClassFile * MethodArea::loadClassFromPath(string path) {
 
   // lê os bytecodes baseados no path 
   class_reader(fd, classfile);
+  fclose(fd);
 
   return classfile;
 }
