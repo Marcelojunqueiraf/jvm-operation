@@ -3,8 +3,9 @@
 
 stack<Frame> FrameStack::data = stack<Frame>();
 
-Frame::Frame(Method_info * method_info) {
+Frame::Frame(Method_info * method_info, MethodAreaItem * methodAreaItem) {
   this->method_info = method_info;
+  this->methodAreaItem = methodAreaItem;
   this->pc = 0;
 }
 

@@ -14,7 +14,7 @@ struct Frame {
   Method_info * method_info;
   MethodAreaItem * methodAreaItem;
   int pc;
-  Frame(Method_info * method_info);
+  Frame(Method_info * method_info, MethodAreaItem * methodAreaItem);
 };
 
 class FrameStack
