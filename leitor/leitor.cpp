@@ -471,14 +471,13 @@ void class_reader(FILE *fd, ClassFile *cf)
     // lendo os METHODS
     read_methods(fd, cf);
 
-    // // pegar o count de attributes
-    // cf->attributes_count = u2Read(fd);
+    // pegar o count de attributes
+    cf->attributes_count = u2Read(fd);
     
-    // // alocar os attributes do .class
-    // cf->attributes = (Attribute_info *) malloc(cf->attributes_count * sizeof(Attribute_info));
+    // alocar os attributes do .class
+    cf->attributes = (Attribute_info *) malloc(cf->attributes_count * sizeof(Attribute_info));
 
-    // // lendo os Attributes
-    
-    // read_attributes(fd, cf->attributes, cf->attributes_count, cf->constant_pool);
+    // lendo os Attributes
+    read_attributes(fd, cf->attributes, cf->attributes_count, cf->constant_pool);
 
 };
