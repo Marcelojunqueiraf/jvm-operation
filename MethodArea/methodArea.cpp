@@ -10,7 +10,7 @@ ClassFile * MethodArea::loadClass(string className) {
   if (className == JAVA_OBJ_CLASSNAME)
     return this->loadClassFromPath("./tests/Object.class");
 
-  string path = "./" + className + ".class";
+  string path = "./tests" + className + ".class";
   return this->loadClassFromPath(path);
 }
 
