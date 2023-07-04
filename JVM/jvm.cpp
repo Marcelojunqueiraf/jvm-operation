@@ -6,8 +6,8 @@ void JVM::initClass(MethodAreaItem * methodAreaItem) {
   Frame * frame = new Frame(staticBlock, methodAreaItem);
   if (staticBlock != NULL) this->frameStack.push(*frame);
 
+  if (methodAreaItem->getClassName() == JAVA_OBJ_CLASSNAME) return;
   MethodAreaItem * superClass = this->methodArea.getMethodAreaItem(methodAreaItem->getSuper());
-  if (superClass->getClassName() == JAVA_OBJ_CLASSNAME) return;
 
   this->initClass(superClass);
 }
@@ -41,13 +41,14 @@ void JVM::executeInstruction(u1 * instruction, Frame * frame){
 void JVM::executeFrame(Frame * frame) {
   string methodName = frame->methodAreaItem->getUtf8(frame->method_info->name_index);
   cout << "executeFrame #" <<  frame->method_info->name_index << ' ' << methodName << endl;
-  cout << "top" << endl;
   code_attribute * codeAtt = getCode(frame->method_info, frame->methodAreaItem);
   cout << "code len: " << codeAtt->code_length << endl;
 
-  for (u2 i = 0; i < codeAtt->code_length; i++) {
-    cout << codeAtt->code[i] << endl;
-  }
+  
+  // realizar a lógica do PC aqui 
+  while(frame->pc < codeAtt->code_length){
+    // this->executeInstruction();
+  };
 
   // verifica se o método acabou
   if (frame->pc >= codeAtt->code_length) return;
