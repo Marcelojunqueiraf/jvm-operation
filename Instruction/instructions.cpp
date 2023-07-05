@@ -208,7 +208,8 @@ void loadInstructions(InstructionsMap * instructionsMap) {
   (*instructionsMap)[0xff] = &impdep2;
 };
 
-// Auxiliares
+#pragma region aux
+
 void load(int index, Frame * frame) {
     frame->operandStack.push(frame->localVariables[index]);
 }
@@ -218,15 +219,17 @@ void store(int index, Frame * frame) {
     frame->operandStack.pop();
 }
 
+#pragma endregion
 
 
-
-// Operações
+#pragma region operations
 
 void nop (Frame * frame) {
   cout << "nop" << endl;
   frame->pc += 1;
 }
+
+#pragma region const
 
 void aconst_null (Frame * frame) {
   cout << "aconst_null" << endl;
@@ -303,6 +306,10 @@ void dconst_1 (Frame * frame) {
   frame->pc += 1;
 }
 
+#pragma endregion
+
+#pragma region push
+
 void bipush (Frame * frame) {
   cout << "bipush" << endl;
   frame->pc += 2;
@@ -312,6 +319,10 @@ void sipush (Frame * frame) {
   cout << "sipush" << endl;
   frame->pc += 3;
 }
+
+#pragma endregion
+
+#pragma region ldc
 
 void ldc (Frame * frame) {
   cout << "ldc" << endl;
@@ -327,6 +338,10 @@ void ldc2_w (Frame * frame) {
   cout << "ldc2_w" << endl;
   frame->pc += 3;
 }
+
+#pragma endregion
+
+#pragma region load
 
 void iload (Frame * frame) {
   cout << "iload" << endl;
@@ -512,6 +527,10 @@ void saload (Frame * frame) {
   frame->pc += 1;
 }
 
+#pragma endregion
+
+#pragma region store
+
 void istore (Frame * frame) {
   cout << "istore" << endl;
   frame->pc += 2;
@@ -677,6 +696,10 @@ void sastore (Frame * frame) {
   frame->pc += 1;
 }
 
+#pragma endregion
+
+#pragma region pop
+
 void pop (Frame * frame) {
   cout << "pop" << endl;
   frame->pc += 1;
@@ -686,6 +709,10 @@ void pop2 (Frame * frame) {
   cout << "pop2" << endl;
   frame->pc += 1;
 }
+
+#pragma endregion
+
+#pragma region dup
 
 void dup (Frame * frame) {
   cout << "dup" << endl;
@@ -717,10 +744,14 @@ void dup2_x2 (Frame * frame) {
   frame->pc += 1;
 }
 
+#pragma endregion
+
 void swap (Frame * frame) {
   cout << "swap" << endl;
   frame->pc += 1;
 }
+
+#pragma region add
 
 void iadd (Frame * frame) {
   cout << "iadd" << endl;
@@ -742,6 +773,10 @@ void dadd (Frame * frame) {
   frame->pc += 1;
 }
 
+#pragma endregion
+
+#pragma region sub
+
 void isub (Frame * frame) {
   cout << "isub" << endl;
   frame->pc += 1;
@@ -761,6 +796,10 @@ void dsub (Frame * frame) {
   cout << "dsub" << endl;
   frame->pc += 1;
 }
+
+#pragma endregion
+
+#pragma region mul
 
 void imul (Frame * frame) {
   cout << "imul" << endl;
@@ -782,6 +821,10 @@ void dmul (Frame * frame) {
   frame->pc += 1;
 }
 
+#pragma endregion
+
+#pragma region div
+
 void idiv (Frame * frame) {
   cout << "idiv" << endl;
   frame->pc += 1;
@@ -801,6 +844,10 @@ void ddiv (Frame * frame) {
   cout << "ddiv" << endl;
   frame->pc += 1;
 }
+
+#pragma endregion
+
+#pragma region rem
 
 void irem (Frame * frame) {
   cout << "irem" << endl;
@@ -822,6 +869,10 @@ void drem (Frame * frame) {
   frame->pc += 1;
 }
 
+#pragma endregion
+
+#pragma region neg
+
 void ineg (Frame * frame) {
   cout << "ineg" << endl;
   frame->pc += 1;
@@ -841,6 +892,10 @@ void dneg (Frame * frame) {
   cout << "dneg" << endl;
   frame->pc += 1;
 }
+
+#pragma endregion
+
+#pragma region shift
 
 void ishl (Frame * frame) {
   cout << "ishl" << endl;
@@ -872,6 +927,10 @@ void lushr (Frame * frame) {
   frame->pc += 1;
 }
 
+#pragma endregion
+
+#pragma region and
+
 void iand (Frame * frame) {
   cout << "iand" << endl;
   frame->pc += 1;
@@ -881,6 +940,10 @@ void land (Frame * frame) {
   cout << "land" << endl;
   frame->pc += 1;
 }
+
+#pragma endregion
+
+#pragma region or
 
 void ior (Frame * frame) {
   cout << "ior" << endl;
@@ -892,6 +955,10 @@ void lor (Frame * frame) {
   frame->pc += 1;
 }
 
+#pragma endregion
+
+#pragma region xor
+
 void ixor (Frame * frame) {
   cout << "ixor" << endl;
   frame->pc += 1;
@@ -902,10 +969,14 @@ void lxor (Frame * frame) {
   frame->pc += 1;
 }
 
+#pragma endregion
+
 void iinc (Frame * frame) {
   cout << "iinc" << endl;
   frame->pc += 3;
 }
+
+#pragma region conversions
 
 void i2l (Frame * frame) {
   cout << "i2l" << endl;
@@ -982,6 +1053,10 @@ void i2s (Frame * frame) {
   frame->pc += 1;
 }
 
+#pragma endregion
+
+#pragma region compares
+
 void lcmp (Frame * frame) {
   cout << "lcmp" << endl;
   frame->pc += 1;
@@ -1006,6 +1081,10 @@ void dcmpg (Frame * frame) {
   cout << "dcmpg" << endl;
   frame->pc += 1;
 }
+
+#pragma endregion
+
+#pragma region if
 
 void ifeq (Frame * frame) {
   cout << "ifeq" << endl;
@@ -1077,6 +1156,10 @@ void if_acmpne (Frame * frame) {
   frame->pc += 3;
 }
 
+#pragma endregion
+
+#pragma region jump
+
 void _goto (Frame * frame) {
   cout << "goto" << endl;
   frame->pc += 3;
@@ -1091,6 +1174,10 @@ void ret (Frame * frame) {
   cout << "ret" << endl;
   frame->pc += 2;
 }
+
+#pragma endregion
+
+#pragma region switch
 
 void tableswitch (Frame * frame) {
   cout << "tableswitch" << endl;
@@ -1111,6 +1198,10 @@ void lookupswitch (Frame * frame) {
   frame->pc += 4;
   frame->pc += 4;
 }
+
+#pragma endregion
+
+#pragma region return
 
 void ireturn (Frame * frame) {
   cout << "ireturn" << endl;
@@ -1142,6 +1233,10 @@ void _return (Frame * frame) {
   frame->pc += 1;
 }
 
+#pragma endregion
+
+#pragma region class_fields
+
 void getstatic (Frame * frame) {
   cout << "getstatic" << endl;
   frame->pc += 3;
@@ -1161,6 +1256,10 @@ void putfield (Frame * frame) {
   cout << "putfield" << endl;
   frame->pc += 3;
 }
+
+#pragma endregion
+
+#pragma region invoke
 
 void invokevirtual (Frame * frame) {
   cout << "invokevirtual" << endl;
@@ -1187,6 +1286,10 @@ void invokedynamic (Frame * frame) {
   frame->pc += 5;
 }
 
+#pragma endregion
+
+#pragma region new
+
 void _new (Frame * frame) {
   cout << "new" << endl;
   frame->pc += 3;
@@ -1201,6 +1304,10 @@ void anewarray (Frame * frame) {
   cout << "anewarray" << endl;
   frame->pc += 3;
 }
+
+#pragma endregion
+
+#pragma region common
 
 void arraylength (Frame * frame) {
   cout << "arraylength" << endl;
@@ -1222,6 +1329,8 @@ void instanceof (Frame * frame) {
   frame->pc += 3;
 }
 
+#pragma endregion
+
 void monitorenter (Frame * frame) {
   cout << "monitorenter" << endl;
   frame->pc += 1;
@@ -1233,7 +1342,7 @@ void monitorexit (Frame * frame) {
 }
 
 void wide (Frame * frame) {
-  printf("wide\n");
+  cout << "wide" << endl;
   notSupported();
 }
 
@@ -1241,6 +1350,8 @@ void multianewarray (Frame * frame) {
   cout << "multianewarray" << endl;
   frame->pc += 4;
 }
+
+#pragma region ifnull
 
 void ifnull (Frame * frame) {
   cout << "ifnull" << endl;
@@ -1252,6 +1363,10 @@ void ifnonnull (Frame * frame) {
   frame->pc += 3;
 }
 
+#pragma endregion
+
+#pragma region jump_w
+
 void goto_w (Frame * frame) {
   cout << "goto_w" << endl;
   frame->pc += 5;
@@ -1262,10 +1377,14 @@ void jsr_w (Frame * frame) {
   frame->pc += 5;
 }
 
+#pragma endregion
+
 void breakpoint (Frame * frame) {
   cout << "breakpoint" << endl;
   notSupported();
 }
+
+#pragma region impdep
 
 void impdep1 (Frame * frame) {
   cout << "impdep1" << endl;
@@ -1277,7 +1396,11 @@ void impdep2 (Frame * frame) {
   notSupported();
 }
 
+#pragma endregion
+
 void notSupported() {
-  printf("instrução não suportada\n");
+  cout << "Instrução não suportada" << endl;
   exit(1);
 }
+
+#pragma endregion
