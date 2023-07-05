@@ -22,7 +22,7 @@ class JVM {
     void initClass(MethodAreaItem * methodAreaItem);
     void executeFrame(Frame * frame);
     void executeInstruction(u1 * instruction, Frame * frame);
-    vector <void(*)(Frame *)> instructionsMap;
+    InstructionsMap instructionsMap;
   public:
     void initialize(string classPath);
     void run();

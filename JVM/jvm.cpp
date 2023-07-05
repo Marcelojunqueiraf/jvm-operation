@@ -12,7 +12,6 @@ void JVM::initClass(MethodAreaItem * methodAreaItem) {
 }
 
 void JVM::initialize(string classPath) {
-  cout << "initialize" << endl;
   MethodAreaItem * firstClass = this->methodArea.getMethodAreaItemFromFile(classPath);
 
   Method_info * mainMethod = firstClass->getMainMethod();
@@ -20,7 +19,6 @@ void JVM::initialize(string classPath) {
 
   this->frameStack.push(*frame);
   this->initClass(firstClass);
-  cout << "initialize end" << endl;
 }
 
 code_attribute * getCode(Method_info * method_info, MethodAreaItem * methodAreaItem) {

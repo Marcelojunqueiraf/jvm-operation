@@ -13,10 +13,10 @@ int main(int argc, char const *argv[])
   }
   //cout << "Creating JVM" << endl;
   JVM * jvm = new JVM();
-  cout << "Initializing JVM" << endl;
+  cout << "----- Initializing JVM -----" << endl;
   jvm->initialize(argv[1]);
-  cout << "Running JVM" << endl;
+  cout << "------- Running JVM --------" << endl;
   jvm->run();
-  cout << "Finishing JVM" << endl;
+  cout << "------ Finishing JVM -------" << endl;
   return 0;
 }
