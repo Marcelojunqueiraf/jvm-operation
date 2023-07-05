@@ -208,6 +208,21 @@ void loadInstructions(InstructionsMap * instructionsMap) {
   (*instructionsMap)[0xff] = &impdep2;
 };
 
+// Auxiliares
+void load(int index, Frame * frame) {
+    frame->operandStack.push(frame->localVariables[index]);
+}
+
+void store(int index, Frame * frame) {
+    frame->localVariables[index] = frame->operandStack.top();
+    frame->operandStack.pop();
+}
+
+
+
+
+// Operações
+
 void nop (Frame * frame) {
   cout << "nop" << endl;
   frame->pc += 1;
@@ -315,6 +330,8 @@ void ldc2_w (Frame * frame) {
 
 void iload (Frame * frame) {
   cout << "iload" << endl;
+  u1 immediate = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  load(immediate, frame);
   frame->pc += 2;
 }
 
@@ -325,41 +342,45 @@ void lload (Frame * frame) {
 
 void fload (Frame * frame) {
   cout << "fload" << endl;
+  u1 immediate = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  load(immediate, frame);
   frame->pc += 2;
 }
 
 void dload (Frame * frame) {
   cout << "dload" << endl;
+  // load de 2 bytes
   frame->pc += 2;
 }
 
 void aload (Frame * frame) {
   cout << "aload" << endl;
-
-  // FIXME:
-  // u1* instructions = frame->method_info->attributes->attribute_info_union.code_attribute.code;
-  // u1 index = instructions[frame->pc + 1];
-  // frame->operandStack.push(frame->localVariables[index]);
+  u1 immediate = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  load(immediate, frame);
   frame->pc += 2;
 }
 
 void iload_0 (Frame * frame) {
   cout << "iload_0" << endl;
+  load(0, frame);
   frame->pc += 1;
 }
 
 void iload_1 (Frame * frame) {
   cout << "iload_1" << endl;
+  load(1, frame);
   frame->pc += 1;
 }
 
 void iload_2 (Frame * frame) {
   cout << "iload_2" << endl;
+  load(2, frame);
   frame->pc += 1;
 }
 
 void iload_3 (Frame * frame) {
   cout << "iload_3" << endl;
+  load(3, frame);
   frame->pc += 1;
 }
 
@@ -385,21 +406,25 @@ void lload_3 (Frame * frame) {
 
 void fload_0 (Frame * frame) {
   cout << "fload_0" << endl;
+  load(0, frame);
   frame->pc += 1;
 }
 
 void fload_1 (Frame * frame) {
   cout << "fload_1" << endl;
+  load(1, frame);
   frame->pc += 1;
 }
 
 void fload_2 (Frame * frame) {
   cout << "fload_2" << endl;
+  load(2, frame);
   frame->pc += 1;
 }
 
 void fload_3 (Frame * frame) {
   cout << "fload_3" << endl;
+  load(3, frame);
   frame->pc += 1;
 }
 
@@ -425,21 +450,25 @@ void dload_3 (Frame * frame) {
 
 void aload_0 (Frame * frame) {
   cout << "aload_0" << endl;
+  load(0, frame);
   frame->pc += 1;
 }
 
 void aload_1 (Frame * frame) {
   cout << "aload_1" << endl;
+  load(1, frame);
   frame->pc += 1;
 }
 
 void aload_2 (Frame * frame) {
   cout << "aload_2" << endl;
+  load(2, frame);
   frame->pc += 1;
 }
 
 void aload_3 (Frame * frame) {
   cout << "aload_3" << endl;
+  load(3, frame);
   frame->pc += 1;
 }
 
