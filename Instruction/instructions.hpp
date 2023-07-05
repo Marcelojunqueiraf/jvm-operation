@@ -3,7 +3,10 @@
 #include "../FrameStack/frameStack.hpp"
 #include <iostream>
 
-// void loadInstructions(InstructionsMap *);
+typedef vector <void(*)(Frame *)> InstructionsMap;
+
+void loadInstructions(InstructionsMap *);
+
 void notSupported();
 
 void nop (Frame *);
