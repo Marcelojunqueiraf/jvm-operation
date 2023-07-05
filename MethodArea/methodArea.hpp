@@ -1,12 +1,12 @@
+#ifndef METHOD_AREA_H
+#define METHOD_AREA_H
+
 #include "../common/index.hpp"
 #include "../leitor/index.hpp"
 #include <string>
 #include <vector>
 #include <algorithm>
 #include <map>
-
-#ifndef METHOD_AREA_H
-#define METHOD_AREA_H
 
 using namespace std;
 

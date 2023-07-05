@@ -1,10 +1,10 @@
+#ifndef FRAME_STACK_H
+#define FRAME_STACK_H
+
 #include "../common/index.hpp"
 #include "../MethodArea/methodArea.hpp"
 #include <stack>
 #include <vector>
-
-#ifndef FRAME_STACK_H
-#define FRAME_STACK_H
 
 using namespace std;
 
