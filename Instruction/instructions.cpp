@@ -336,9 +336,10 @@ void dload (Frame * frame) {
 void aload (Frame * frame) {
   cout << "aload" << endl;
 
-  u1* instructions = frame->method_info->attributes->attribute_info_union.code_attribute.code;
-  u1 index = instructions[frame->pc + 1];
-  frame->operandStack.push(frame->localVariables[index]);
+  // FIXME:
+  // u1* instructions = frame->method_info->attributes->attribute_info_union.code_attribute.code;
+  // u1 index = instructions[frame->pc + 1];
+  // frame->operandStack.push(frame->localVariables[index]);
   frame->pc += 2;
 }
 
