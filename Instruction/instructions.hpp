@@ -4,6 +4,7 @@
 #include <iostream>
 
 // void loadInstructions(InstructionsMap *);
+void notSupported();
 
 void nop (Frame *);
 void aconst_null (Frame *);
