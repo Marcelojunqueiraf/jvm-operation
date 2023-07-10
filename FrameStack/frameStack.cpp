@@ -5,10 +5,12 @@ stack<Frame> FrameStack::data = stack<Frame>();
 
 //construtor 
 Frame::Frame(Method_info * method_info, MethodAreaItem * methodAreaItem) {
-  vector<JvmValue> localVariables;
+  vector<JvmValue> localVariables(255);
   this->localVariables = localVariables;
+
   stack<JvmValue> operandStack;
   this->operandStack = operandStack;
+  
   this->method_info = method_info;
   this->methodAreaItem = methodAreaItem;
   this->pc = 0;

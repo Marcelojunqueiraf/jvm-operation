@@ -233,8 +233,8 @@ void store(int index, Frame * frame) {
     jvmValue.type = INT;
     jvmValue.data = 4;
 
-    frame->localVariables.push_back(jvmValue);
-    cout << "o topo da pilha é " << frame->localVariables[index].data << endl;
+    frame->localVariables[index] = jvmValue;
+    // cout << "o topo da pilha é " << frame->localVariables[index].data << endl;
     frame->operandStack.pop();
 }
 
@@ -424,6 +424,7 @@ void iload_0 (Frame * frame) {
 void iload_1 (Frame * frame) {
   cout << "iload_1" << endl;
   load(1, frame);
+  cout << "topo da pilha é " << frame->operandStack.top().data << endl;
   frame->pc += 1;
 }
 
@@ -611,6 +612,7 @@ void istore_1 (Frame * frame) {
   store(1, frame);
 
   frame->pc += 1;
+  cout << "vetor de variaveis de indice = 1 " << frame->localVariables[1].data << endl;  
 }
 
 void istore_2 (Frame * frame) {
@@ -1297,9 +1299,10 @@ void tableswitch (Frame * frame) {
 
   //logica do table switch levando em conta o index na pilha de operandos
   JvmValue index = frame->operandStack.top();
+  cout << "table index = " << index.data << endl;
+  cout << "high bytes = " <<high_bytes << endl;
 
-
-  // iterar entre tamanho de high_bytes 
+  //iterar entre tamanho de high_bytes 
   for (int i = 0; i < high_bytes; i++){
       
       int byte1 = code_arr[aux_pc];
@@ -1315,10 +1318,9 @@ void tableswitch (Frame * frame) {
       int32_t bytes =  byte1 << 24 | byte2 << 16 | byte3 << 8 | byte4;
       
       int32_t jump_bytes = frame->pc + bytes;
-  
-      cout << "O Valor tirado da pilha é" << index.data << endl;
 
       if(index.data == i + 1){
+          cout << "table index == " << i+1 << " pulando para o endereço " << frame->pc + bytes <<endl;
           frame->pc += bytes;
           break;
       }
