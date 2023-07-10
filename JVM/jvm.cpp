@@ -40,13 +40,14 @@ void JVM::executeInstruction(u1 * opcode, Frame * frame){
 
 void JVM::executeFrame(Frame * frame) {
   string methodName = frame->methodAreaItem->getUtf8(frame->method_info->name_index);
-  cout << "executeFrame #" <<  frame->method_info->name_index << ' ' << methodName << endl;
+  cout << "executeFrame #" <<  frame->method_info->name_index << ' ' << methodName << " from " << frame->methodAreaItem->getClassName() << ".class" <<endl;
   code_attribute * codeAtt = getCode(frame->method_info, frame->methodAreaItem);
   cout << "code len: " << codeAtt->code_length << endl;
 
   
   // realizar a lógica do PC aqui 
   while(frame->pc < codeAtt->code_length){
+    cout << "Executing instruction at pc: " << frame->pc << endl;
     u1 * opcode = codeAtt->code + frame->pc;
     this->executeInstruction(opcode, frame);
   };

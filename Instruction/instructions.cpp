@@ -210,6 +210,19 @@ void loadInstructions(InstructionsMap * instructionsMap) {
 
 #pragma region aux
 
+void iconst(u4 value, Frame * frame) {
+  JvmValue * jvmValue;
+
+  jvmValue->type = INT;
+  jvmValue->data = value;
+  
+  frame->operandStack.push(*jvmValue);
+  
+  JvmValue jvmValueToPrint = frame->operandStack.top();
+  cout << "item no topo pilha " << jvmValueToPrint.data << endl;
+}
+
+
 void load(int index, Frame * frame) {
     frame->operandStack.push(frame->localVariables[index]);
 }
@@ -238,36 +251,57 @@ void aconst_null (Frame * frame) {
 
 void iconst_m1 (Frame * frame) {
   cout << "iconst_m1" << endl;
+  
+  iconst(-1, frame);
+
   frame->pc += 1;
 }
 
 void iconst_0 (Frame * frame) {
   cout << "iconst_0" << endl;
+
+  iconst(0, frame);
+  
   frame->pc += 1;
 }
 
 void iconst_1 (Frame * frame) {
   cout << "iconst_1" << endl;
+
+  iconst(1, frame);
+
   frame->pc += 1;
 }
 
 void iconst_2 (Frame * frame) {
   cout << "iconst_2" << endl;
+  
+  iconst(2, frame);
+  
   frame->pc += 1;
 }
 
 void iconst_3 (Frame * frame) {
   cout << "iconst_3" << endl;
+
+  iconst(3, frame);
+  
   frame->pc += 1;
 }
 
 void iconst_4 (Frame * frame) {
   cout << "iconst_4" << endl;
+  
+  iconst(4, frame);
+  
   frame->pc += 1;
 }
 
 void iconst_5 (Frame * frame) {
   cout << "iconst_5" << endl;
+  
+  iconst(5, frame);
+  
   frame->pc += 1;
 }
 
@@ -533,6 +567,7 @@ void saload (Frame * frame) {
 
 void istore (Frame * frame) {
   cout << "istore" << endl;
+  store(frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1], frame); 
   frame->pc += 2;
 }
 
@@ -558,21 +593,33 @@ void astore (Frame * frame) {
 
 void istore_0 (Frame * frame) {
   cout << "istore_0" << endl;
+
+  store(0, frame);
+
   frame->pc += 1;
 }
 
 void istore_1 (Frame * frame) {
   cout << "istore_1" << endl;
+
+  store(1, frame);
+
   frame->pc += 1;
 }
 
 void istore_2 (Frame * frame) {
   cout << "istore_2" << endl;
+  
+  store(2, frame);
+  
   frame->pc += 1;
 }
 
 void istore_3 (Frame * frame) {
   cout << "istore_3" << endl;
+  
+  store(3, frame);
+  
   frame->pc += 1;
 }
 
@@ -1179,14 +1226,100 @@ void ret (Frame * frame) {
 
 #pragma region switch
 
+//implementado pelo Piano 
 void tableswitch (Frame * frame) {
   cout << "tableswitch" << endl;
-  // FIXME: consertar os pulos
-  frame->pc += 4;
-  frame->pc += 4;
-  frame->pc += 4;
-  frame->pc += 4;
-  frame->pc += 4;
+
+
+  code_attribute * codeAtt = getCode(frame->method_info, frame->methodAreaItem);
+  
+  u1* code_arr = codeAtt->code;
+
+  int aux_pc = frame->pc; 
+
+  //acho que nao precisa, uma vez que a start position é o proprio pc
+  int start_position = aux_pc;
+
+  //pulando padding
+  int fator; 
+  if(aux_pc < 4){
+      fator = 4 - aux_pc;
+  }
+  else if(aux_pc > 4){
+      fator = aux_pc % 4;
+  }
+  else if(aux_pc == 4){
+      fator = 1;
+  };
+  for(int i=0; i < fator;i++){
+      ++(aux_pc);
+  }
+
+  int start_index = ((3 - (aux_pc % 4)) + aux_pc);
+
+  // carregando bytes
+  int defaultbyte1 = code_arr[aux_pc];
+  ++(aux_pc); 
+  int defaultbyte2 = code_arr[aux_pc];
+  ++(aux_pc); 
+  int defaultbyte3 = code_arr[aux_pc];
+  ++(aux_pc); 
+  int defaultbyte4 = code_arr[aux_pc];
+  ++(aux_pc); 
+
+  int lowbyte1 = code_arr[aux_pc];
+  ++(aux_pc); 
+  int lowbyte2 = code_arr[aux_pc];
+  ++(aux_pc); 
+  int lowbyte3 = code_arr[aux_pc];
+  ++(aux_pc); 
+  int lowbyte4 = code_arr[aux_pc];
+  ++(aux_pc); 
+
+  int highbyte1 = code_arr[aux_pc];
+  ++(aux_pc); 
+  int highbyte2 = code_arr[aux_pc];
+  ++(aux_pc); 
+  int highbyte3 = code_arr[aux_pc];
+  ++(aux_pc); 
+  int highbyte4 = code_arr[aux_pc];
+  ++(aux_pc); 
+
+  int32_t default_bytes =  defaultbyte1 << 24 | defaultbyte2 << 16 | defaultbyte3 << 8 | defaultbyte4; 
+  int32_t low_bytes =  lowbyte1 << 24 | lowbyte2 << 16 | lowbyte3 << 8 | lowbyte4; 
+  int32_t high_bytes =  highbyte1 << 24 | highbyte2 << 16 | highbyte3 << 8 | highbyte4;
+
+  //logica do table switch levando em conta o index na pilha de operandos
+  JvmValue index = frame->operandStack.top();
+
+
+  // iterar entre tamanho de high_bytes 
+  for (int i = 0; i < high_bytes; i++){
+      
+      int byte1 = code_arr[aux_pc];
+      ++(aux_pc); 
+      int byte2 = code_arr[aux_pc];
+      ++(aux_pc ); 
+      int byte3 = code_arr[aux_pc];
+      ++(aux_pc); 
+      int byte4 = code_arr[aux_pc];
+      ++(aux_pc); 
+      
+
+      int32_t bytes =  byte1 << 24 | byte2 << 16 | byte3 << 8 | byte4;
+      
+      int32_t jump_bytes = frame->pc + bytes;
+  
+      cout << "O Valor tirado da pilha é" << index.data << endl;
+
+      if(index.data == i + 1){
+          frame->pc += bytes;
+          break;
+      }
+      
+      printf("\t\t%d: %d (+%d)\n", i + 1, jump_bytes, bytes);
+  };
+
 }
 
 void lookupswitch (Frame * frame) {
@@ -1267,6 +1400,9 @@ void invokevirtual (Frame * frame) {
 }
 
 void invokespecial (Frame * frame) {
+  
+
+
   cout << "invokespecial" << endl;
   frame->pc += 3;
 }

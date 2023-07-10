@@ -13,6 +13,8 @@
 
 using namespace std;
 
+code_attribute * getCode(Method_info * method_info, MethodAreaItem * methodAreaItem);
+
 class JVM {
   private:
     FrameStack frameStack;
