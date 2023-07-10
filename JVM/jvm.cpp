@@ -36,6 +36,7 @@ code_attribute * getCode(Method_info * method_info, MethodAreaItem * methodAreaI
 void JVM::executeInstruction(u1 * opcode, Frame * frame){
   // cout << "instruction: " << hex << (int)*opcode << dec << endl;
   this->instructionsMap[*opcode](frame);
+  cout << "parou de executar a instrução" << endl;
 }
 
 void JVM::executeFrame(Frame * frame) {

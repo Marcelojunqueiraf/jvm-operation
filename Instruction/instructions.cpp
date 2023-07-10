@@ -211,15 +211,14 @@ void loadInstructions(InstructionsMap * instructionsMap) {
 #pragma region aux
 
 void iconst(u4 value, Frame * frame) {
-  JvmValue * jvmValue;
-
-  jvmValue->type = INT;
-  jvmValue->data = value;
   
-  frame->operandStack.push(*jvmValue);
+  JvmValue jvmValue;
+  jvmValue.type = INT;
+  jvmValue.data = value;
+  frame->operandStack.push(jvmValue);
   
   JvmValue jvmValueToPrint = frame->operandStack.top();
-  cout << "item no topo pilha " << jvmValueToPrint.data << endl;
+  // cout << "item no topo pilha " << jvmValueToPrint.data << endl;
 }
 
 
@@ -228,7 +227,14 @@ void load(int index, Frame * frame) {
 }
 
 void store(int index, Frame * frame) {
-    frame->localVariables[index] = frame->operandStack.top();
+    // cout << "vendo o topo da pilha que é " << frame->operandStack.top().data << endl;
+    
+    JvmValue jvmValue;
+    jvmValue.type = INT;
+    jvmValue.data = 4;
+
+    frame->localVariables.push_back(jvmValue);
+    cout << "o topo da pilha é " << frame->localVariables[index].data << endl;
     frame->operandStack.pop();
 }
 
@@ -294,7 +300,7 @@ void iconst_4 (Frame * frame) {
   
   iconst(4, frame);
   
-  frame->pc += 1;
+  frame->pc += 1; 
 }
 
 void iconst_5 (Frame * frame) {
@@ -1231,9 +1237,9 @@ void tableswitch (Frame * frame) {
   cout << "tableswitch" << endl;
 
 
-  code_attribute * codeAtt = getCode(frame->method_info, frame->methodAreaItem);
+  code_attribute codeAtt = frame->method_info->attributes->attribute_info_union.code_attribute;
   
-  u1* code_arr = codeAtt->code;
+  u1* code_arr = codeAtt.code;
 
   int aux_pc = frame->pc; 
 
