@@ -387,10 +387,38 @@ void sipush (Frame * frame) {
 
 void ldc (Frame * frame) {
   cout << "ldc" << endl;
+  u1 id = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
+  cout << "tipo da constante: " << c->tag << endl;
+
+  JvmValue value;
+  switch (c->tag) {
+    case 3:
+      cout << "int" << endl;
+      value.type = INT;
+      value.data = c->constant_type_union.Integer.bytes;
+      break;
+    case 4:
+      cout << "float" << endl;
+      value.type = FLOAT;
+      value.data = c->constant_type_union.Float.bytes;
+      break;
+    case 8:
+      cout << "string" << endl;
+      value.type = STRING;
+      value.data = c->constant_type_union.String.string_index;
+      break;
+    default:
+      cout << "tipo não reconhecido" << endl;
+      break;
+  }
+  frame->operandStack.push(value);
+  cout << "valor empilhado: " << frame->operandStack.top().data << endl;
   frame->pc += 2;
 }
 
 void ldc_w (Frame * frame) {
+  // esse é wide e só é usado para indice de constant pool grande
   cout << "ldc_w" << endl;
   frame->pc += 3;
 }
