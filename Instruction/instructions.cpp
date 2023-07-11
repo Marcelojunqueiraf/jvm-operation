@@ -238,6 +238,14 @@ void store(int index, Frame * frame) {
     frame->operandStack.pop();
 }
 
+int getCategory(PrimitiveType type) {
+  if (type == LONG || type == DOUBLE) {
+    return 2;
+  } else {
+    return 1;
+  }
+}
+
 #pragma endregion
 
 
@@ -352,11 +360,24 @@ void dconst_1 (Frame * frame) {
 
 void bipush (Frame * frame) {
   cout << "bipush" << endl;
+  u1 bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  JvmValue value;
+  value.type = INT;
+  value.data = (int) bytes;
+  frame->operandStack.push(value);
+  cout << "valor empilhado: " << frame->operandStack.top().data << endl;
   frame->pc += 2;
 }
 
 void sipush (Frame * frame) {
   cout << "sipush" << endl;
+  u1 bytes1 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  u1 bytes2 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
+  JvmValue value;
+  value.type = INT;
+  value.data = (int) (bytes1 << 8) | bytes2;
+  frame->operandStack.push(value);
+  cout << "valor empilhado: " << frame->operandStack.top().data << endl;
   frame->pc += 3;
 }
 
@@ -757,11 +778,26 @@ void sastore (Frame * frame) {
 
 void pop (Frame * frame) {
   cout << "pop" << endl;
+  JvmValue value = frame->operandStack.top();
+  if (getCategory(value.type) == 1) {
+    frame->operandStack.pop();
+  } else {
+    cout << "pop não ocorreu" << endl;
+  }
   frame->pc += 1;
 }
 
 void pop2 (Frame * frame) {
   cout << "pop2" << endl;
+  JvmValue value1 = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue value2 = frame->operandStack.top();
+  if ( (getCategory(value1.type) == 1 && getCategory(value2.type) == 1) || (getCategory(value1.type) == 2 && getCategory(value2.type) == 2) ) {
+    frame->operandStack.pop();
+  } else {
+    frame->operandStack.push(value1);
+    cout << "pop2 não ocorreu" << endl;
+  }
   frame->pc += 1;
 }
 
