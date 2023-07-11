@@ -217,7 +217,7 @@ void iconst(u4 value, Frame * frame) {
   jvmValue.data = value;
   frame->operandStack.push(jvmValue);
   
-  JvmValue jvmValueToPrint = frame->operandStack.top();
+  //JvmValue jvmValueToPrint = frame->operandStack.top();
   // cout << "item no topo pilha " << jvmValueToPrint.data << endl;
 }
 
@@ -1284,7 +1284,19 @@ void if_acmpne (Frame * frame) {
 
 void _goto (Frame * frame) {
   cout << "goto" << endl;
-  frame->pc += 3;
+  
+  u1 start_pc = frame->pc;
+  
+  frame->pc++;
+  u1 first_brach_byte = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
+  frame->pc++;
+  u1 second_brach_byte = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
+
+  u4 branchoffset = (first_brach_byte << 8) | second_brach_byte;
+
+  // cout << "branchoffset " <<  branchoffset << endl;
+  cout << "jumping to pc " << start_pc + branchoffset << endl;
+  frame->pc += branchoffset;
 }
 
 void jsr (Frame * frame) {
@@ -1313,7 +1325,7 @@ void tableswitch (Frame * frame) {
   int aux_pc = frame->pc; 
 
   //acho que nao precisa, uma vez que a start position é o proprio pc
-  int start_position = aux_pc;
+  // int start_position = aux_pc;
 
   //pulando padding
   int fator; 
@@ -1330,7 +1342,7 @@ void tableswitch (Frame * frame) {
       ++(aux_pc);
   }
 
-  int start_index = ((3 - (aux_pc % 4)) + aux_pc);
+  // int start_index = ((3 - (aux_pc % 4)) + aux_pc);
 
   // carregando bytes
   int defaultbyte1 = code_arr[aux_pc];
@@ -1360,8 +1372,8 @@ void tableswitch (Frame * frame) {
   int highbyte4 = code_arr[aux_pc];
   ++(aux_pc); 
 
-  int32_t default_bytes =  defaultbyte1 << 24 | defaultbyte2 << 16 | defaultbyte3 << 8 | defaultbyte4; 
-  int32_t low_bytes =  lowbyte1 << 24 | lowbyte2 << 16 | lowbyte3 << 8 | lowbyte4; 
+  // int32_t default_bytes =  defaultbyte1 << 24 | defaultbyte2 << 16 | defaultbyte3 << 8 | defaultbyte4; 
+  // int32_t low_bytes =  lowbyte1 << 24 | lowbyte2 << 16 | lowbyte3 << 8 | lowbyte4; 
   int32_t high_bytes =  highbyte1 << 24 | highbyte2 << 16 | highbyte3 << 8 | highbyte4;
 
   //logica do table switch levando em conta o index na pilha de operandos
@@ -1386,7 +1398,7 @@ void tableswitch (Frame * frame) {
       
       int32_t jump_bytes = frame->pc + bytes;
 
-      if(index.data == i + 1){
+      if(index.data == (u4) i + 1){
           cout << "table index == " << i+1 << " pulando para o endereço " << frame->pc + bytes <<endl;
           frame->pc += bytes;
           break;
@@ -1447,7 +1459,44 @@ void _return (Frame * frame) {
 
 void getstatic (Frame * frame) {
   cout << "getstatic" << endl;
-  frame->pc += 3;
+
+  frame->pc++;
+  u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
+  frame->pc++;
+  u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
+
+  u2 index = (first_bytes << 8) | second_bytes;  
+
+  //pegar o dentro do fieldref o class name
+
+  cout << index <<endl ;
+  cp_info * field_ref = frame->methodAreaItem->getConstantPoolItem(index);
+  cout << field_ref->constant_type_union.Fieldref_info.class_index <<endl ;
+  
+  u1 class_index = field_ref->constant_type_union.Fieldref_info.class_index;
+
+
+  //se o class name for <java/lang/System> pular o frame e continuar a vida
+  if(!frame->methodAreaItem->getUtf8(class_index).compare("java/lang/System")){
+    cout << "é um getstatic para o System.class " << endl;
+    
+    // cout << "pulando o pc de " << frame->pc << " para " << frame->pc + 6 <<  endl;
+
+    //pegar o ldc
+    frame->pc++;
+    frame->pc++;
+    u1 string_index  = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
+    
+    string string_to_print = frame->methodAreaItem->getUtf8(string_index);
+    cout << "Print -> "<<  string_to_print << endl;
+
+    frame->pc += 4;
+  }
+
+  // se for uma chamada a uma classe já implementada
+  else{
+    frame->pc++;
+  }
 }
 
 void putstatic (Frame * frame) {
