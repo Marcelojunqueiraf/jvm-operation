@@ -364,7 +364,7 @@ void bipush (Frame * frame) {
 
   JvmValue value;
   value.type = INT;
-  value.data = (int) bytesSigned;
+  value.data = bytesSigned;
   frame->operandStack.push(value);
   cout << "valor empilhado: " << frame->operandStack.top().data << endl;
   frame->pc += 2;
