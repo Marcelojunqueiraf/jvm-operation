@@ -360,9 +360,11 @@ void dconst_1 (Frame * frame) {
 void bipush (Frame * frame) {
   cout << "bipush" << endl;
   u1 bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  int8_t bytesSigned = bytes;
+
   JvmValue value;
   value.type = INT;
-  value.data = (int) bytes;
+  value.data = (int) bytesSigned;
   frame->operandStack.push(value);
   cout << "valor empilhado: " << frame->operandStack.top().data << endl;
   frame->pc += 2;
