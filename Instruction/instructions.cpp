@@ -372,9 +372,13 @@ void sipush (Frame * frame) {
   cout << "sipush" << endl;
   u1 bytes1 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   u1 bytes2 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
+
+  u2 bytes = (bytes1 << 8) | bytes2;
+  int16_t bytesSigned = (int16_t) bytes;
+
   JvmValue value;
   value.type = INT;
-  value.data = (int) (bytes1 << 8) | bytes2;
+  value.data = bytesSigned;
   frame->operandStack.push(value);
   cout << "valor empilhado: " << frame->operandStack.top().data << endl;
   frame->pc += 3;
