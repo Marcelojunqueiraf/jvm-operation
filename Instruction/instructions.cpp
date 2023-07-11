@@ -229,9 +229,8 @@ void load(int index, Frame * frame) {
 void store(int index, Frame * frame) {
     // cout << "vendo o topo da pilha que é " << frame->operandStack.top().data << endl;
     
-    JvmValue jvmValue;
+    JvmValue jvmValue = frame->operandStack.top();;
     jvmValue.type = INT;
-    jvmValue.data = 4;
 
     frame->localVariables[index] = jvmValue;
     // cout << "o topo da pilha é " << frame->localVariables[index].data << endl;
