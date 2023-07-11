@@ -1444,6 +1444,22 @@ void _return (Frame * frame) {
 
 void getstatic (Frame * frame) {
   cout << "getstatic" << endl;
+  u1 upper = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  u1 lower = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
+  u2 id = (upper << 8) | lower;
+
+  cp_info * cp_info_item = frame->methodAreaItem->getConstantPoolItem(id);
+  string className = frame->methodAreaItem->getUtf8(cp_info_item->constant_type_union.Fieldref_info.class_index);
+  // tratar nome da classe
+  if( className == "java/lang/System" ) {
+    frame->pc += 3;
+    // TODO: not quite done
+    return;
+  }
+  cp_info * name_type = frame->methodAreaItem->getConstantPoolItem(cp_info_item->constant_type_union.Fieldref_info.name_and_type_index);
+  string name = frame->methodAreaItem->getUtf8(name_type->constant_type_union.NameAndType.name_index);
+  string descriptor = frame->methodAreaItem->getUtf8(name_type->constant_type_union.NameAndType.descriptor_index);
+  
   frame->pc += 3;
 }
 
