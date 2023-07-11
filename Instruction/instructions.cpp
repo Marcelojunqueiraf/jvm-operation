@@ -229,9 +229,8 @@ void load(int index, Frame * frame) {
 void store(int index, Frame * frame) {
     // cout << "vendo o topo da pilha que é " << frame->operandStack.top().data << endl;
     
-    JvmValue jvmValue;
+    JvmValue jvmValue = frame->operandStack.top();;
     jvmValue.type = INT;
-    jvmValue.data = 4;
 
     frame->localVariables[index] = jvmValue;
     // cout << "o topo da pilha é " << frame->localVariables[index].data << endl;
@@ -387,37 +386,38 @@ void sipush (Frame * frame) {
 
 void ldc (Frame * frame) {
   cout << "ldc" << endl;
+  u1 id = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
+  cout << "tipo da constante: " << c->tag << endl;
 
-  //push a constant #index from a constant pool (String, int, float, Class, java.lang.invoke.MethodType, java.lang.invoke.MethodHandle, or a dynamically-computed constant) onto the stack (wide index is constructed as indexbyte1 << 8 | indexbyte2)
-
-  frame->pc++;
-
-  //pegar o indice
-  u1 index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc]; 
-
-  u1 tag = frame->methodAreaItem->getConstantPoolItem(index)->tag;
-  
-  
-  if(tag == CONSTANT_String_info){
-
+  JvmValue value;
+  switch (c->tag) {
+    case 3:
+      cout << "int" << endl;
+      value.type = INT;
+      value.data = c->constant_type_union.Integer.bytes;
+      break;
+    case 4:
+      cout << "float" << endl;
+      value.type = FLOAT;
+      value.data = c->constant_type_union.Float.bytes;
+      break;
+    case 8:
+      cout << "string" << endl;
+      value.type = STRING;
+      value.data = c->constant_type_union.String.string_index;
+      break;
+    default:
+      cout << "tipo não reconhecido" << endl;
+      break;
   }
-  else if(tag == CONSTANT_Integer_info){
-  
-  }
-  else if(tag == CONSTANT_Float_info){
-  
-  }
-  else if(tag == CONSTANT_Class_info){
-  
-  }
-  else{
-      
-  };
-
-  frame->pc ++;
+  frame->operandStack.push(value);
+  cout << "valor empilhado: " << frame->operandStack.top().data << endl;
+  frame->pc += 2;
 }
 
 void ldc_w (Frame * frame) {
+  // esse é wide e só é usado para indice de constant pool grande
   cout << "ldc_w" << endl;
   frame->pc += 3;
 }

@@ -11,6 +11,7 @@ typedef enum {
     FLOAT,
     DOUBLE,
     BOOL,
+    STRING,
     RETURNADDRESS
   } PrimitiveType;
 
