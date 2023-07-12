@@ -1013,12 +1013,12 @@ void iadd (Frame * frame) {
   JvmValue second = frame->operandStack.top();
   frame->operandStack.pop();
 
-  int32_t sum = ((int32_t)first.data + (int32_t)second.data);
+  int32_t sum = u4ToInt(first.data) + u4ToInt(second.data);
 
   cout << "Soma: " << sum << endl;
 
   JvmValue result;
-  result.data = (u4) sum;
+  result.data = intToU4(sum);
   result.type = INT;
 
   frame->operandStack.push(result);
