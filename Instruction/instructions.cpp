@@ -1478,10 +1478,8 @@ void _return (Frame * frame) {
 void getstatic (Frame * frame) {
   cout << "getstatic" << endl;
 
-  frame->pc++;
-  u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
-  frame->pc++;
-  u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
+  u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
 
   u2 index = (first_bytes << 8) | second_bytes;  
 
@@ -1498,19 +1496,18 @@ void getstatic (Frame * frame) {
   if(frame->methodAreaItem->getUtf8(class_index) == "java/lang/System"){
     cout << "é um getstatic para o System.class " << endl;
     
-    //pegar o ldc
-    frame->pc++;
-    frame->pc++;
-    u1 string_index  = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
+    // //pegar o ldc
+    // frame->pc++;
+    // frame->pc++;
+    // u1 string_index  = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
     
-    string string_to_print = frame->methodAreaItem->getUtf8(string_index);
-    cout << "Print -> "<<  string_to_print << endl;
+    // string string_to_print = frame->methodAreaItem->getUtf8(string_index);
+    // cout << "Print -> "<<  string_to_print << endl;
 
-    frame->pc += 4;
-    return;
+    // frame->pc += 4;
   }
   // TODO: getstatic de classes que não sejam o System
-  
+
   frame->pc += 3;
 }
 
@@ -1534,8 +1531,40 @@ void putfield (Frame * frame) {
 #pragma region invoke
 
 void invokevirtual (Frame * frame) {
-
   cout << "invokevirtual" << endl;
+
+  u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+
+  u2 index = (first_bytes << 8) | second_bytes;  
+
+  cp_info * method_ref = frame->methodAreaItem->getConstantPoolItem(index);
+  string className = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.class_index);
+
+  if(className == "java/io/PrintStream") {
+    JvmValue value = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    switch (value.type) {
+      case INT:
+        cout << (int32_t) value.data << endl;
+        break;
+      case FLOAT:
+        // TODO: printar float
+        cout << "u4: " << value.data << endl;
+        break;
+      case STRING:
+      {
+        string output = frame->methodAreaItem->getUtf8(value.data);
+        cout << output << endl;
+        break;
+      }
+      default:
+        cout << "Tipo não suportado" << endl;
+        break;
+    }
+  }
+
   frame->pc += 3;
 }
 
