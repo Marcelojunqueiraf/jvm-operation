@@ -377,8 +377,12 @@ void dconst(u4 value, Frame * frame){
 }
 
 void load(int index, Frame * frame) {
-    // só functiona para itens q ocupam 1 slot
     frame->operandStack.push(frame->localVariables[index]);
+}
+
+void loadWide(int index, Frame * frame) {
+    frame->operandStack.push(frame->localVariables[index]);
+    frame->operandStack.push(frame->localVariables[index + 1]);
 }
 
 void store(int index, Frame * frame, JvmValue jvmValue) {
@@ -715,18 +719,8 @@ void iload (Frame * frame) {
 
 void lload (Frame * frame) {
   DCOUT << "lload" << endl;
-
-  // u1 high_long_value 
-  // u1 high_long_value 
-  
-
-  //high primeiro na pilha 
-  
-
-
-  //low depois
-  
-
+  u1 index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  loadWide(index, frame);
   frame->pc += 2;
 }
 
@@ -739,7 +733,8 @@ void fload (Frame * frame) {
 
 void dload (Frame * frame) {
   DCOUT << "dload" << endl;
-  // load de 2 bytes
+  u1 immediate = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  loadWide(immediate, frame);
   frame->pc += 2;
 }
 
@@ -777,21 +772,25 @@ void iload_3 (Frame * frame) {
 
 void lload_0 (Frame * frame) {
   DCOUT << "lload_0" << endl;
+  loadWide(0, frame);
   frame->pc += 1;
 }
 
 void lload_1 (Frame * frame) {
   DCOUT << "lload_1" << endl;
+  loadWide(1, frame);
   frame->pc += 1;
 }
 
 void lload_2 (Frame * frame) {
   DCOUT << "lload_2" << endl;
+  loadWide(2, frame);
   frame->pc += 1;
 }
 
 void lload_3 (Frame * frame) {
   DCOUT << "lload_3" << endl;
+  loadWide(3, frame);
   frame->pc += 1;
 }
 
@@ -821,21 +820,25 @@ void fload_3 (Frame * frame) {
 
 void dload_0 (Frame * frame) {
   DCOUT << "dload_0" << endl;
+  loadWide(0, frame);
   frame->pc += 1;
 }
 
 void dload_1 (Frame * frame) {
   DCOUT << "dload_1" << endl;
+  loadWide(1, frame);
   frame->pc += 1;
 }
 
 void dload_2 (Frame * frame) {
   DCOUT << "dload_2" << endl;
+  loadWide(2, frame);
   frame->pc += 1;
 }
 
 void dload_3 (Frame * frame) {
   DCOUT << "dload_3" << endl;
+  loadWide(3, frame);
   frame->pc += 1;
 }
 
@@ -909,10 +912,11 @@ void saload (Frame * frame) {
 
 void istore (Frame * frame) {
   DCOUT << "istore" << endl;
-
+  
   u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
-
+  
   storeFromStack(local_vector_index, frame);
+
   frame->pc += 2;
 }
 
