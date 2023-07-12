@@ -381,11 +381,8 @@ void load(int index, Frame * frame) {
     frame->operandStack.push(frame->localVariables[index]);
 }
 
-void store(int index, Frame * frame) {
+void store(int index, Frame * frame, JvmValue jvmValue) {
     // cout << "vendo o topo da pilha que é " << frame->operandStack.top().data << endl;
-    
-    JvmValue jvmValue = frame->operandStack.top();;
-    jvmValue.type = INT;
     // Só funciona pra int
 
     frame->localVariables[index] = jvmValue;
@@ -618,7 +615,7 @@ void ldc_w (Frame * frame) {
   u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
 
-  u4 id = (high_bytes << 8) | low_bytes;
+  u2 id = (high_bytes << 8) | low_bytes;
 
   cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
   cout << "tipo da constante: " << c->tag << endl;
@@ -656,7 +653,7 @@ void ldc2_w (Frame * frame) {
   u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
 
-  u4 id = (high_bytes << 8) | low_bytes;
+  u2 id = (high_bytes << 8) | low_bytes;
 
   cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
   cout << "tipo da constante: " << c->tag << endl;
@@ -705,6 +702,15 @@ void iload (Frame * frame) {
 void lload (Frame * frame) {
   cout << "lload" << endl;
 
+  // u1 high_long_value 
+  // u1 high_long_value 
+  
+
+  //high primeiro na pilha 
+  
+
+
+  //low depois
   
 
   frame->pc += 2;
@@ -889,17 +895,42 @@ void saload (Frame * frame) {
 
 void istore (Frame * frame) {
   cout << "istore" << endl;
-  store(frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1], frame); 
+
+  u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+
+  JvmValue jvmValue = frame->operandStack.top();;
+  jvmValue.type = INT;
+
+  store(local_vector_index, frame, jvmValue); 
   frame->pc += 2;
 }
 
 void lstore (Frame * frame) {
   cout << "lstore" << endl;
+
+  u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+
+  //concatenar os bytes e enviar para o index
+  JvmValue jvm_value_low_bytes = frame->operandStack.top(); 
+  frame->operandStack.pop();
+  JvmValue jvm_value_high_bytes = frame->operandStack.top(); 
+  frame->operandStack.pop(); 
+
+  // aqui temos dois de u4 -> então vamos ter um de U8 em concatenados
+  
+  store(local_vector_index, frame, jvm_value_high_bytes);
+  store(local_vector_index + 1, frame, jvm_value_low_bytes);
+
   frame->pc += 2;
 }
 
 void fstore (Frame * frame) {
   cout << "fstore" << endl;
+
+
+
+
+
   frame->pc += 2;
 }
 
