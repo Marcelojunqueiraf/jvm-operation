@@ -297,11 +297,11 @@ u4 floatToU4(float value) {
   return result;
 }
 
-pair<u4,u4> doubleToU8(int64_t value) {
+pair<u4,u4> doubleToU8(double value) {
 
   int sinal = (value < 0) ? 1 : 0;
   int expoente = 0;
-  int64_t mantissa = 0;
+  double mantissa = 0;
 
   if (value == 0) {
     return {0, 0};
@@ -333,18 +333,20 @@ pair<u4,u4> doubleToU8(int64_t value) {
 
   u8 result = ((u8) sinal << 63) | ((u8) expoente << 52) | ((u8) (mantissa * pow(2, 52)));
 
-  u4 low = result & 0xffffffff;
-  u4 high = result >> 32;
-  return {low, high};
+  return {result & 0xffffffff, result >> 32};
 }
 
 #pragma endregion
 
 void iconst(u4 value, Frame * frame) {
+  
   JvmValue jvmValue;
   jvmValue.type = INT;
   jvmValue.data = value;
   frame->operandStack.push(jvmValue);
+  
+  //JvmValue jvmValueToPrint = frame->operandStack.top();
+  // cout << "item no topo pilha " << jvmValueToPrint.data << endl;
 }
 
 void lconst(u4 value, Frame * frame){
@@ -379,16 +381,25 @@ void load(int index, Frame * frame) {
     frame->operandStack.push(frame->localVariables[index]);
 }
 
-void store(int index, Frame * frame) {
-    // DCOUT << "vendo o topo da pilha que é " << frame->operandStack.top().data << endl;
-    
-    JvmValue jvmValue = frame->operandStack.top();;
-    jvmValue.type = INT;
-    // Só funciona pra int
-
+void store(int index, Frame * frame, JvmValue jvmValue) {
     frame->localVariables[index] = jvmValue;
-    // DCOUT << "o topo da pilha é " << frame->localVariables[index].data << endl;
-    frame->operandStack.pop();
+}
+
+void storeFromStack(int index, Frame * frame) {
+  JvmValue jvmValue = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  store(index, frame, jvmValue); 
+}
+
+void storeFromStackWide(int index, Frame * frame) {
+  JvmValue jvm_value_low_bytes = frame->operandStack.top(); 
+  frame->operandStack.pop();
+  JvmValue jvm_value_high_bytes = frame->operandStack.top(); 
+  frame->operandStack.pop(); 
+
+  store(index, frame, jvm_value_high_bytes);
+  store(index + 1, frame, jvm_value_low_bytes);
 }
 
 int getCategory(PrimitiveType type) {
@@ -405,19 +416,19 @@ int getCategory(PrimitiveType type) {
 #pragma region operations
 
 void nop (Frame * frame) {
-  DCOUT << "nop" << endl;
+  cout << "nop" << endl;
   frame->pc += 1;
 }
 
 #pragma region const
 
 void aconst_null (Frame * frame) {
-  DCOUT << "aconst_null" << endl;
+  cout << "aconst_null" << endl;
   frame->pc += 1;
 }
 
 void iconst_m1 (Frame * frame) {
-  DCOUT << "iconst_m1" << endl;
+  cout << "iconst_m1" << endl;
   
   iconst(-1, frame);
 
@@ -425,7 +436,7 @@ void iconst_m1 (Frame * frame) {
 }
 
 void iconst_0 (Frame * frame) {
-  DCOUT << "iconst_0" << endl;
+  cout << "iconst_0" << endl;
 
   iconst(0, frame);
   
@@ -433,7 +444,7 @@ void iconst_0 (Frame * frame) {
 }
 
 void iconst_1 (Frame * frame) {
-  DCOUT << "iconst_1" << endl;
+  cout << "iconst_1" << endl;
 
   iconst(1, frame);
 
@@ -441,7 +452,7 @@ void iconst_1 (Frame * frame) {
 }
 
 void iconst_2 (Frame * frame) {
-  DCOUT << "iconst_2" << endl;
+  cout << "iconst_2" << endl;
   
   iconst(2, frame);
   
@@ -449,7 +460,7 @@ void iconst_2 (Frame * frame) {
 }
 
 void iconst_3 (Frame * frame) {
-  DCOUT << "iconst_3" << endl;
+  cout << "iconst_3" << endl;
 
   iconst(3, frame);
   
@@ -457,7 +468,7 @@ void iconst_3 (Frame * frame) {
 }
 
 void iconst_4 (Frame * frame) {
-  DCOUT << "iconst_4" << endl;
+  cout << "iconst_4" << endl;
   
   iconst(4, frame);
   
@@ -465,7 +476,7 @@ void iconst_4 (Frame * frame) {
 }
 
 void iconst_5 (Frame * frame) {
-  DCOUT << "iconst_5" << endl;
+  cout << "iconst_5" << endl;
   
   iconst(5, frame);
   
@@ -473,7 +484,7 @@ void iconst_5 (Frame * frame) {
 }
 
 void lconst_0 (Frame * frame) {
-  DCOUT << "lconst_0" << endl;
+  cout << "lconst_0" << endl;
 
   //dar push primeiro no high
   lconst(0, frame);
@@ -485,7 +496,7 @@ void lconst_0 (Frame * frame) {
 }
 
 void lconst_1 (Frame * frame) {
-  DCOUT << "lconst_1" << endl;
+  cout << "lconst_1" << endl;
 
   //dar push primeiro no high
   lconst(1, frame);
@@ -497,7 +508,7 @@ void lconst_1 (Frame * frame) {
 }
 
 void fconst_0 (Frame * frame) {
-  DCOUT << "fconst_0" << endl;
+  cout << "fconst_0" << endl;
 
   fconst(0, frame);
 
@@ -505,7 +516,7 @@ void fconst_0 (Frame * frame) {
 }
 
 void fconst_1 (Frame * frame) {
-  DCOUT << "fconst_1" << endl;
+  cout << "fconst_1" << endl;
 
   fconst(1, frame);
 
@@ -513,7 +524,7 @@ void fconst_1 (Frame * frame) {
 }
 
 void fconst_2 (Frame * frame) {
-  DCOUT << "fconst_2" << endl;
+  cout << "fconst_2" << endl;
   
   fconst(2, frame);
   
@@ -521,7 +532,7 @@ void fconst_2 (Frame * frame) {
 }
 
 void dconst_0 (Frame * frame) {
-  DCOUT << "dconst_0" << endl;
+  cout << "dconst_0" << endl;
 
   dconst(0, frame);
   
@@ -531,7 +542,7 @@ void dconst_0 (Frame * frame) {
 }
 
 void dconst_1 (Frame * frame) {
-  DCOUT << "dconst_1" << endl;
+  cout << "dconst_1" << endl;
   
   dconst(1, frame);
 
@@ -545,7 +556,7 @@ void dconst_1 (Frame * frame) {
 #pragma region push
 
 void bipush (Frame * frame) {
-  DCOUT << "bipush" << endl;
+  cout << "bipush" << endl;
   u1 bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   int8_t bytesSigned = bytes;
 
@@ -553,12 +564,12 @@ void bipush (Frame * frame) {
   value.type = INT;
   value.data = bytesSigned;
   frame->operandStack.push(value);
-  DCOUT << "valor empilhado: " << frame->operandStack.top().data << endl;
+  cout << "valor empilhado: " << frame->operandStack.top().data << endl;
   frame->pc += 2;
 }
 
 void sipush (Frame * frame) {
-  DCOUT << "sipush" << endl;
+  cout << "sipush" << endl;
   u1 bytes1 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   u1 bytes2 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
 
@@ -569,7 +580,7 @@ void sipush (Frame * frame) {
   value.type = INT;
   value.data = bytesSigned;
   frame->operandStack.push(value);
-  DCOUT << "valor empilhado: " << frame->operandStack.top().data << endl;
+  cout << "valor empilhado: " << frame->operandStack.top().data << endl;
   frame->pc += 3;
 }
 
@@ -578,113 +589,113 @@ void sipush (Frame * frame) {
 #pragma region ldc
 
 void ldc (Frame * frame) {
-  DCOUT << "ldc" << endl;
+  cout << "ldc" << endl;
   u1 id = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
-  DCOUT << "tipo da constante: " << c->tag << endl;
+  cout << "tipo da constante: " << c->tag << endl;
 
   JvmValue value;
   switch (c->tag) {
     case 3:
-      DCOUT << "int" << endl;
+      cout << "int" << endl;
       value.type = INT;
       value.data = c->constant_type_union.Integer.bytes;
       break;
     case 4:
-      DCOUT << "float" << endl;
+      cout << "float" << endl;
       value.type = FLOAT;
       value.data = c->constant_type_union.Float.bytes;
       break;
     case 8:
-      DCOUT << "string" << endl;
+      cout << "string" << endl;
       value.type = STRING;
       value.data = c->constant_type_union.String.string_index;
       break;
     default:
-      DCOUT << "tipo não reconhecido" << endl;
+      cout << "tipo não reconhecido" << endl;
       break;
   }
   frame->operandStack.push(value);
-  DCOUT << "valor empilhado: " << frame->operandStack.top().data << endl;
+  cout << "valor empilhado: " << frame->operandStack.top().data << endl;
   frame->pc += 2;
 }
 
 void ldc_w (Frame * frame) {
   // esse é wide e só é usado para indice de constant pool grande
-  DCOUT << "ldc_w" << endl;
+  cout << "ldc_w" << endl;
 
   u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
 
-  u4 id = (high_bytes << 8) | low_bytes;
+  u2 id = (high_bytes << 8) | low_bytes;
 
   cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
-  DCOUT << "tipo da constante: " << c->tag << endl;
+  cout << "tipo da constante: " << c->tag << endl;
 
   JvmValue value;
   switch (c->tag) {
     case 3:
-      DCOUT << "int" << endl;
+      cout << "int" << endl;
       value.type = INT;
       value.data = c->constant_type_union.Integer.bytes;
       break;
     case 4:
-      DCOUT << "float" << endl;
+      cout << "float" << endl;
       value.type = FLOAT;
       value.data = c->constant_type_union.Float.bytes;
       break;
     case 8:
-      DCOUT << "string" << endl;
+      cout << "string" << endl;
       value.type = STRING;
       value.data = c->constant_type_union.String.string_index;
       break;
     default:
-      DCOUT << "tipo não reconhecido" << endl;
+      cout << "tipo não reconhecido" << endl;
       break;
   }
   frame->operandStack.push(value);
-  DCOUT << "valor empilhado: " << frame->operandStack.top().data << endl;
+  cout << "valor empilhado: " << frame->operandStack.top().data << endl;
 
   frame->pc += 3;
 }
 
 void ldc2_w (Frame * frame) {
-  DCOUT << "ldc2_w" << endl;
+  cout << "ldc2_w" << endl;
 
   u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
 
-  u4 id = (high_bytes << 8) | low_bytes;
+  u2 id = (high_bytes << 8) | low_bytes;
 
   cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
-  DCOUT << "tipo da constante: " << c->tag << endl;
+  cout << "tipo da constante: " << c->tag << endl;
 
   JvmValue high_value;
   JvmValue low_value;
 
   switch (c->tag) {
     case 6:
-      DCOUT << "double" << endl;
+      cout << "double" << endl;
       high_value.type = DOUBLE;
       low_value.type = DOUBLE;
       high_value.data = c->constant_type_union.Double.high_bytes;
       low_value.data = c->constant_type_union.Double.low_bytes;
       break;
     case 5:
-      DCOUT << "long" << endl;
+      cout << "long" << endl;
       high_value.type = LONG;
       low_value.type = LONG;
       high_value.data = c->constant_type_union.Long.high_bytes;
       low_value.data = c->constant_type_union.Long.low_bytes;
       break;
     default:
-      DCOUT << "tipo não reconhecido" << endl;
+      cout << "tipo não reconhecido" << endl;
       break;
   }
 
   frame->operandStack.push(high_value);
   frame->operandStack.push(low_value);
-  DCOUT << "valor empilhado: " << frame->operandStack.top().data << endl;
+  cout << "valor empilhado: " << frame->operandStack.top().data << endl;
 
   frame->pc += 3;
 }
@@ -694,190 +705,199 @@ void ldc2_w (Frame * frame) {
 #pragma region load
 
 void iload (Frame * frame) {
-  DCOUT << "iload" << endl;
+  cout << "iload" << endl;
   u1 immediate = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   load(immediate, frame);
   frame->pc += 2;
 }
 
 void lload (Frame * frame) {
-  DCOUT << "lload" << endl;
+  cout << "lload" << endl;
 
+  // u1 high_long_value 
+  // u1 high_long_value 
+  
+
+  //high primeiro na pilha 
+  
+
+
+  //low depois
   
 
   frame->pc += 2;
 }
 
 void fload (Frame * frame) {
-  DCOUT << "fload" << endl;
+  cout << "fload" << endl;
   u1 immediate = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   load(immediate, frame);
   frame->pc += 2;
 }
 
 void dload (Frame * frame) {
-  DCOUT << "dload" << endl;
+  cout << "dload" << endl;
   // load de 2 bytes
   frame->pc += 2;
 }
 
 void aload (Frame * frame) {
-  DCOUT << "aload" << endl;
+  cout << "aload" << endl;
   u1 immediate = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   load(immediate, frame);
   frame->pc += 2;
 }
 
 void iload_0 (Frame * frame) {
-  DCOUT << "iload_0" << endl;
+  cout << "iload_0" << endl;
   load(0, frame);
   frame->pc += 1;
 }
 
 void iload_1 (Frame * frame) {
-  DCOUT << "iload_1" << endl;
+  cout << "iload_1" << endl;
   load(1, frame);
-  DCOUT << "topo da pilha é " << frame->operandStack.top().data << endl;
+  cout << "topo da pilha é " << frame->operandStack.top().data << endl;
   frame->pc += 1;
 }
 
 void iload_2 (Frame * frame) {
-  DCOUT << "iload_2" << endl;
+  cout << "iload_2" << endl;
   load(2, frame);
   frame->pc += 1;
 }
 
 void iload_3 (Frame * frame) {
-  DCOUT << "iload_3" << endl;
+  cout << "iload_3" << endl;
   load(3, frame);
   frame->pc += 1;
 }
 
 void lload_0 (Frame * frame) {
-  DCOUT << "lload_0" << endl;
+  cout << "lload_0" << endl;
   frame->pc += 1;
 }
 
 void lload_1 (Frame * frame) {
-  DCOUT << "lload_1" << endl;
+  cout << "lload_1" << endl;
   frame->pc += 1;
 }
 
 void lload_2 (Frame * frame) {
-  DCOUT << "lload_2" << endl;
+  cout << "lload_2" << endl;
   frame->pc += 1;
 }
 
 void lload_3 (Frame * frame) {
-  DCOUT << "lload_3" << endl;
+  cout << "lload_3" << endl;
   frame->pc += 1;
 }
 
 void fload_0 (Frame * frame) {
-  DCOUT << "fload_0" << endl;
+  cout << "fload_0" << endl;
   load(0, frame);
   frame->pc += 1;
 }
 
 void fload_1 (Frame * frame) {
-  DCOUT << "fload_1" << endl;
+  cout << "fload_1" << endl;
   load(1, frame);
   frame->pc += 1;
 }
 
 void fload_2 (Frame * frame) {
-  DCOUT << "fload_2" << endl;
+  cout << "fload_2" << endl;
   load(2, frame);
   frame->pc += 1;
 }
 
 void fload_3 (Frame * frame) {
-  DCOUT << "fload_3" << endl;
+  cout << "fload_3" << endl;
   load(3, frame);
   frame->pc += 1;
 }
 
 void dload_0 (Frame * frame) {
-  DCOUT << "dload_0" << endl;
+  cout << "dload_0" << endl;
   frame->pc += 1;
 }
 
 void dload_1 (Frame * frame) {
-  DCOUT << "dload_1" << endl;
+  cout << "dload_1" << endl;
   frame->pc += 1;
 }
 
 void dload_2 (Frame * frame) {
-  DCOUT << "dload_2" << endl;
+  cout << "dload_2" << endl;
   frame->pc += 1;
 }
 
 void dload_3 (Frame * frame) {
-  DCOUT << "dload_3" << endl;
+  cout << "dload_3" << endl;
   frame->pc += 1;
 }
 
 void aload_0 (Frame * frame) {
-  DCOUT << "aload_0" << endl;
+  cout << "aload_0" << endl;
   load(0, frame);
   frame->pc += 1;
 }
 
 void aload_1 (Frame * frame) {
-  DCOUT << "aload_1" << endl;
+  cout << "aload_1" << endl;
   load(1, frame);
   frame->pc += 1;
 }
 
 void aload_2 (Frame * frame) {
-  DCOUT << "aload_2" << endl;
+  cout << "aload_2" << endl;
   load(2, frame);
   frame->pc += 1;
 }
 
 void aload_3 (Frame * frame) {
-  DCOUT << "aload_3" << endl;
+  cout << "aload_3" << endl;
   load(3, frame);
   frame->pc += 1;
 }
 
 void iaload (Frame * frame) {
-  DCOUT << "iaload" << endl;
+  cout << "iaload" << endl;
   frame->pc += 1;
 }
 
 void laload (Frame * frame) {
-  DCOUT << "laload" << endl;
+  cout << "laload" << endl;
   frame->pc += 1;
 }
 
 void faload (Frame * frame) {
-  DCOUT << "faload" << endl;
+  cout << "faload" << endl;
   frame->pc += 1;
 }
 
 void daload (Frame * frame) {
-  DCOUT << "daload" << endl;
+  cout << "daload" << endl;
   frame->pc += 1;
 }
 
 void aaload (Frame * frame) {
-  DCOUT << "aaload" << endl;
+  cout << "aaload" << endl;
   frame->pc += 1;
 }
 
 void baload (Frame * frame) {
-  DCOUT << "baload" << endl;
+  cout << "baload" << endl;
   frame->pc += 1;
 }
 
 void caload (Frame * frame) {
-  DCOUT << "caload" << endl;
+  cout << "caload" << endl;
   frame->pc += 1;
 }
 
 void saload (Frame * frame) {
-  DCOUT << "saload" << endl;
+  cout << "saload" << endl;
   frame->pc += 1;
 }
 
@@ -886,181 +906,223 @@ void saload (Frame * frame) {
 #pragma region store
 
 void istore (Frame * frame) {
-  DCOUT << "istore" << endl;
-  store(frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1], frame); 
+  cout << "istore" << endl;
+
+  u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+
+  storeFromStack(local_vector_index, frame);
   frame->pc += 2;
 }
 
 void lstore (Frame * frame) {
-  DCOUT << "lstore" << endl;
+  cout << "lstore" << endl;
+
+  u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+
+  storeFromStackWide(local_vector_index, frame);
+
   frame->pc += 2;
 }
 
 void fstore (Frame * frame) {
-  DCOUT << "fstore" << endl;
+  cout << "fstore" << endl;
   frame->pc += 2;
 }
 
 void dstore (Frame * frame) {
-  DCOUT << "dstore" << endl;
+  cout << "dstore" << endl;
   frame->pc += 2;
 }
 
 void astore (Frame * frame) {
-  DCOUT << "astore" << endl;
+  cout << "astore" << endl;
   frame->pc += 2;
 }
 
 void istore_0 (Frame * frame) {
-  DCOUT << "istore_0" << endl;
+  cout << "istore_0" << endl;
 
-  store(0, frame);
+  storeFromStack(0, frame);
 
   frame->pc += 1;
 }
 
 void istore_1 (Frame * frame) {
-  DCOUT << "istore_1" << endl;
+  cout << "istore_1" << endl;
 
-  store(1, frame);
+  storeFromStack(1, frame);
 
   frame->pc += 1;
-  DCOUT << "vetor de variaveis de indice = 1 " << frame->localVariables[1].data << endl;  
+  cout << "vetor de variaveis de indice = 1 " << frame->localVariables[1].data << endl;  
 }
 
 void istore_2 (Frame * frame) {
-  DCOUT << "istore_2" << endl;
+  cout << "istore_2" << endl;
   
-  store(2, frame);
+  storeFromStack(2, frame);
   
   frame->pc += 1;
 }
 
 void istore_3 (Frame * frame) {
-  DCOUT << "istore_3" << endl;
-  
-  store(3, frame);
-  
+  cout << "istore_3" << endl;
+  storeFromStack(3, frame);
   frame->pc += 1;
 }
 
 void lstore_0 (Frame * frame) {
-  DCOUT << "lstore_0" << endl;
+  cout << "lstore_0" << endl;
+
+  storeFromStackWide(0, frame);
+
   frame->pc += 1;
 }
 
 void lstore_1 (Frame * frame) {
-  DCOUT << "lstore_1" << endl;
+  cout << "lstore_1" << endl;
+
+  storeFromStackWide(1, frame);
+
   frame->pc += 1;
 }
 
 void lstore_2 (Frame * frame) {
-  DCOUT << "lstore_2" << endl;
+  cout << "lstore_2" << endl;
+
+  storeFromStackWide(2, frame);
+
   frame->pc += 1;
 }
 
 void lstore_3 (Frame * frame) {
-  DCOUT << "lstore_3" << endl;
+  cout << "lstore_3" << endl;
+
+  storeFromStackWide(3, frame);
+
   frame->pc += 1;
 }
 
 void fstore_0 (Frame * frame) {
-  DCOUT << "fstore_0" << endl;
+  cout << "fstore_0" << endl;
+
+  storeFromStack(0, frame);
+
   frame->pc += 1;
 }
 
 void fstore_1 (Frame * frame) {
-  DCOUT << "fstore_1" << endl;
+  cout << "fstore_1" << endl;
+
+  storeFromStack(1, frame);
+
   frame->pc += 1;
 }
 
 void fstore_2 (Frame * frame) {
-  DCOUT << "fstore_2" << endl;
+  cout << "fstore_2" << endl;
+
+  storeFromStack(2, frame);
+
   frame->pc += 1;
 }
 
 void fstore_3 (Frame * frame) {
-  DCOUT << "fstore_3" << endl;
+  cout << "fstore_3" << endl;
+
+  storeFromStack(3, frame);
+
   frame->pc += 1;
 }
 
 void dstore_0 (Frame * frame) {
-  DCOUT << "dstore_0" << endl;
+  cout << "dstore_0" << endl;
+
+  storeFromStackWide(0, frame);
+
   frame->pc += 1;
 }
 
 void dstore_1 (Frame * frame) {
-  DCOUT << "dstore_1" << endl;
+  cout << "dstore_1" << endl;
+
+  storeFromStackWide(1, frame);
+
   frame->pc += 1;
 }
 
 void dstore_2 (Frame * frame) {
-  DCOUT << "dstore_2" << endl;
+  cout << "dstore_2" << endl;
+
+  storeFromStackWide(2, frame);
+
   frame->pc += 1;
 }
 
 void dstore_3 (Frame * frame) {
-  DCOUT << "dstore_3" << endl;
+  cout << "dstore_3" << endl;
+
+  storeFromStackWide(3, frame);
+
   frame->pc += 1;
 }
 
 void astore_0 (Frame * frame) {
-  DCOUT << "astore_0" << endl;
+  cout << "astore_0" << endl;
   frame->pc += 1;
 }
 
 void astore_1 (Frame * frame) {
-  DCOUT << "astore_1" << endl;
+  cout << "astore_1" << endl;
   frame->pc += 1;
 }
 
 void astore_2 (Frame * frame) {
-  DCOUT << "astore_2" << endl;
+  cout << "astore_2" << endl;
   frame->pc += 1;
 }
 
 void astore_3 (Frame * frame) {
-  DCOUT << "astore_3" << endl;
+  cout << "astore_3" << endl;
   frame->pc += 1;
 }
 
 void iastore (Frame * frame) {
-  DCOUT << "iastore" << endl;
+  cout << "iastore" << endl;
   frame->pc += 1;
 }
 
 void lastore (Frame * frame) {
-  DCOUT << "lastore" << endl;
+  cout << "lastore" << endl;
   frame->pc += 1;
 }
 
 void fastore (Frame * frame) {
-  DCOUT << "fastore" << endl;
+  cout << "fastore" << endl;
   frame->pc += 1;
 }
 
 void dastore (Frame * frame) {
-  DCOUT << "dastore" << endl;
+  cout << "dastore" << endl;
   frame->pc += 1;
 }
 
 void aastore (Frame * frame) {
-  DCOUT << "aastore" << endl;
+  cout << "aastore" << endl;
   frame->pc += 1;
 }
 
 void bastore (Frame * frame) {
-  DCOUT << "bastore" << endl;
+  cout << "bastore" << endl;
   frame->pc += 1;
 }
 
 void castore (Frame * frame) {
-  DCOUT << "castore" << endl;
+  cout << "castore" << endl;
   frame->pc += 1;
 }
 
 void sastore (Frame * frame) {
-  DCOUT << "sastore" << endl;
+  cout << "sastore" << endl;
   frame->pc += 1;
 }
 
@@ -1069,18 +1131,18 @@ void sastore (Frame * frame) {
 #pragma region pop
 
 void pop (Frame * frame) {
-  DCOUT << "pop" << endl;
+  cout << "pop" << endl;
   JvmValue value = frame->operandStack.top();
   if (getCategory(value.type) == 1) {
     frame->operandStack.pop();
   } else {
-    DCOUT << "pop não ocorreu" << endl;
+    cout << "pop não ocorreu" << endl;
   }
   frame->pc += 1;
 }
 
 void pop2 (Frame * frame) {
-  DCOUT << "pop2" << endl;
+  cout << "pop2" << endl;
   JvmValue value1 = frame->operandStack.top();
   frame->operandStack.pop();
   JvmValue value2 = frame->operandStack.top();
@@ -1088,7 +1150,7 @@ void pop2 (Frame * frame) {
     frame->operandStack.pop();
   } else {
     frame->operandStack.push(value1);
-    DCOUT << "pop2 não ocorreu" << endl;
+    cout << "pop2 não ocorreu" << endl;
   }
   frame->pc += 1;
 }
@@ -1098,39 +1160,39 @@ void pop2 (Frame * frame) {
 #pragma region dup
 
 void dup (Frame * frame) {
-  DCOUT << "dup" << endl;
+  cout << "dup" << endl;
   frame->pc += 1;
 }
 
 void dup_x1 (Frame * frame) {
-  DCOUT << "dup_x1" << endl;
+  cout << "dup_x1" << endl;
   frame->pc += 1;
 }
 
 void dup_x2 (Frame * frame) {
-  DCOUT << "dup_x2" << endl;
+  cout << "dup_x2" << endl;
   frame->pc += 1;
 }
 
 void dup2 (Frame * frame) {
-  DCOUT << "dup2" << endl;
+  cout << "dup2" << endl;
   frame->pc += 1;
 }
 
 void dup2_x1 (Frame * frame) {
-  DCOUT << "dup2_x1" << endl;
+  cout << "dup2_x1" << endl;
   frame->pc += 1;
 }
 
 void dup2_x2 (Frame * frame) {
-  DCOUT << "dup2_x2" << endl;
+  cout << "dup2_x2" << endl;
   frame->pc += 1;
 }
 
 #pragma endregion
 
 void swap (Frame * frame) {
-  DCOUT << "swap" << endl;
+  cout << "swap" << endl;
   frame->pc += 1;
 }
 
@@ -1381,22 +1443,22 @@ void ddiv (Frame * frame) {
 #pragma region rem
 
 void irem (Frame * frame) {
-  DCOUT << "irem" << endl;
+  cout << "irem" << endl;
   frame->pc += 1;
 }
 
 void lrem (Frame * frame) {
-  DCOUT << "lrem" << endl;
+  cout << "lrem" << endl;
   frame->pc += 1;
 }
 
 void frem (Frame * frame) {
-  DCOUT << "frem" << endl;
+  cout << "frem" << endl;
   frame->pc += 1;
 }
 
 void drem (Frame * frame) {
-  DCOUT << "drem" << endl;
+  cout << "drem" << endl;
   frame->pc += 1;
 }
 
@@ -1405,22 +1467,22 @@ void drem (Frame * frame) {
 #pragma region neg
 
 void ineg (Frame * frame) {
-  DCOUT << "ineg" << endl;
+  cout << "ineg" << endl;
   frame->pc += 1;
 }
 
 void lneg (Frame * frame) {
-  DCOUT << "lneg" << endl;
+  cout << "lneg" << endl;
   frame->pc += 1;
 }
 
 void fneg (Frame * frame) {
-  DCOUT << "fneg" << endl;
+  cout << "fneg" << endl;
   frame->pc += 1;
 }
 
 void dneg (Frame * frame) {
-  DCOUT << "dneg" << endl;
+  cout << "dneg" << endl;
   frame->pc += 1;
 }
 
@@ -1429,32 +1491,32 @@ void dneg (Frame * frame) {
 #pragma region shift
 
 void ishl (Frame * frame) {
-  DCOUT << "ishl" << endl;
+  cout << "ishl" << endl;
   frame->pc += 1;
 }
 
 void lshl (Frame * frame) {
-  DCOUT << "lshl" << endl;
+  cout << "lshl" << endl;
   frame->pc += 1;
 }
 
 void ishr (Frame * frame) {
-  DCOUT << "ishr" << endl;
+  cout << "ishr" << endl;
   frame->pc += 1;
 }
 
 void lshr (Frame * frame) {
-  DCOUT << "lshr" << endl;
+  cout << "lshr" << endl;
   frame->pc += 1;
 }
 
 void iushr (Frame * frame) {
-  DCOUT << "iushr" << endl;
+  cout << "iushr" << endl;
   frame->pc += 1;
 }
 
 void lushr (Frame * frame) {
-  DCOUT << "lushr" << endl;
+  cout << "lushr" << endl;
   frame->pc += 1;
 }
 
@@ -1509,84 +1571,84 @@ void lxor (Frame * frame) {
 #pragma endregion
 
 void iinc (Frame * frame) {
-  DCOUT << "iinc" << endl;
+  cout << "iinc" << endl;
   frame->pc += 3;
 }
 
 #pragma region conversions
 
 void i2l (Frame * frame) {
-  DCOUT << "i2l" << endl;
+  cout << "i2l" << endl;
   frame->pc += 1;
 }
 
 void i2f (Frame * frame) {
-  DCOUT << "i2f" << endl;
+  cout << "i2f" << endl;
   frame->pc += 1;
 }
 
 void i2d (Frame * frame) {
-  DCOUT << "i2d" << endl;
+  cout << "i2d" << endl;
   frame->pc += 1;
 }
 
 void l2i (Frame * frame) {
-  DCOUT << "l2i" << endl;
+  cout << "l2i" << endl;
   frame->pc += 1;
 }
 
 void l2f (Frame * frame) {
-  DCOUT << "l2f" << endl;
+  cout << "l2f" << endl;
   frame->pc += 1;
 }
 
 void l2d (Frame * frame) {
-  DCOUT << "l2d" << endl;
+  cout << "l2d" << endl;
   frame->pc += 1;
 }
 
 void f2i (Frame * frame) {
-  DCOUT << "f2i" << endl;
+  cout << "f2i" << endl;
   frame->pc += 1;
 }
 
 void f2l (Frame * frame) {
-  DCOUT << "f2l" << endl;
+  cout << "f2l" << endl;
   frame->pc += 1;
 }
 
 void f2d (Frame * frame) {
-  DCOUT << "f2d" << endl;
+  cout << "f2d" << endl;
   frame->pc += 1;
 }
 
 void d2i (Frame * frame) {
-  DCOUT << "d2i" << endl;
+  cout << "d2i" << endl;
   frame->pc += 1;
 }
 
 void d2l (Frame * frame) {
-  DCOUT << "d2l" << endl;
+  cout << "d2l" << endl;
   frame->pc += 1;
 }
 
 void d2f (Frame * frame) {
-  DCOUT << "d2f" << endl;
+  cout << "d2f" << endl;
   frame->pc += 1;
 }
 
 void i2b (Frame * frame) {
-  DCOUT << "i2b" << endl;
+  cout << "i2b" << endl;
   frame->pc += 1;
 }
 
 void i2c (Frame * frame) {
-  DCOUT << "i2c" << endl;
+  cout << "i2c" << endl;
   frame->pc += 1;
 }
 
 void i2s (Frame * frame) {
-  DCOUT << "i2s" << endl;
+  cout << "i2s" << endl;
   frame->pc += 1;
 }
 
@@ -1595,27 +1657,27 @@ void i2s (Frame * frame) {
 #pragma region compares
 
 void lcmp (Frame * frame) {
-  DCOUT << "lcmp" << endl;
+  cout << "lcmp" << endl;
   frame->pc += 1;
 }
 
 void fcmpl (Frame * frame) {
-  DCOUT << "fcmpl" << endl;
+  cout << "fcmpl" << endl;
   frame->pc += 1;
 }
 
 void fcmpg (Frame * frame) {
-  DCOUT << "fcmpg" << endl;
+  cout << "fcmpg" << endl;
   frame->pc += 1;
 }
 
 void dcmpl (Frame * frame) {
-  DCOUT << "dcmpl" << endl;
+  cout << "dcmpl" << endl;
   frame->pc += 1;
 }
 
 void dcmpg (Frame * frame) {
-  DCOUT << "dcmpg" << endl;
+  cout << "dcmpg" << endl;
   frame->pc += 1;
 }
 
@@ -1624,72 +1686,72 @@ void dcmpg (Frame * frame) {
 #pragma region if
 
 void ifeq (Frame * frame) {
-  DCOUT << "ifeq" << endl;
+  cout << "ifeq" << endl;
   frame->pc += 3;
 }
 
 void ifne (Frame * frame) {
-  DCOUT << "ifne" << endl;
+  cout << "ifne" << endl;
   frame->pc += 3;
 }
 
 void iflt (Frame * frame) {
-  DCOUT << "iflt" << endl;
+  cout << "iflt" << endl;
   frame->pc += 3;
 }
 
 void ifge (Frame * frame) {
-  DCOUT << "ifge" << endl;
+  cout << "ifge" << endl;
   frame->pc += 3;
 }
 
 void ifgt (Frame * frame) {
-  DCOUT << "ifgt" << endl;
+  cout << "ifgt" << endl;
   frame->pc += 3;
 }
 
 void ifle (Frame * frame) {
-  DCOUT << "ifle" << endl;
+  cout << "ifle" << endl;
   frame->pc += 3;
 }
 
 void if_icmpeq (Frame * frame) {
-  DCOUT << "if_icmpeq" << endl;
+  cout << "if_icmpeq" << endl;
   frame->pc += 3;
 }
 
 void if_icmpne (Frame * frame) {
-  DCOUT << "if_icmpne" << endl;
+  cout << "if_icmpne" << endl;
   frame->pc += 3;
 }
 
 void if_icmplt (Frame * frame) {
-  DCOUT << "if_icmplt" << endl;
+  cout << "if_icmplt" << endl;
   frame->pc += 3;
 }
 
 void if_icmpge (Frame * frame) {
-  DCOUT << "if_icmpge" << endl;
+  cout << "if_icmpge" << endl;
   frame->pc += 3;
 }
 
 void if_icmpgt (Frame * frame) {
-  DCOUT << "if_icmpgt" << endl;
+  cout << "if_icmpgt" << endl;
   frame->pc += 3;
 }
 
 void if_icmple (Frame * frame) {
-  DCOUT << "if_icmple" << endl;
+  cout << "if_icmple" << endl;
   frame->pc += 3;
 }
 
 void if_acmpeq (Frame * frame) {
-  DCOUT << "if_acmpeq" << endl;
+  cout << "if_acmpeq" << endl;
   frame->pc += 3;
 }
 
 void if_acmpne (Frame * frame) {
-  DCOUT << "if_acmpne" << endl;
+  cout << "if_acmpne" << endl;
   frame->pc += 3;
 }
 
@@ -1698,7 +1760,7 @@ void if_acmpne (Frame * frame) {
 #pragma region jump
 
 void _goto (Frame * frame) {
-  DCOUT << "goto" << endl;
+  cout << "goto" << endl;
   
   u1 start_pc = frame->pc;
   
@@ -1709,18 +1771,18 @@ void _goto (Frame * frame) {
 
   u4 branchoffset = (first_brach_byte << 8) | second_brach_byte;
 
-  // DCOUT << "branchoffset " <<  branchoffset << endl;
-  DCOUT << "jumping to pc " << start_pc + branchoffset << endl;
+  // cout << "branchoffset " <<  branchoffset << endl;
+  cout << "jumping to pc " << start_pc + branchoffset << endl;
   frame->pc += branchoffset;
 }
 
 void jsr (Frame * frame) {
-  DCOUT << "jsr" << endl;
+  cout << "jsr" << endl;
   frame->pc += 3;
 }
 
 void ret (Frame * frame) {
-  DCOUT << "ret" << endl;
+  cout << "ret" << endl;
   frame->pc += 2;
 }
 
@@ -1730,7 +1792,7 @@ void ret (Frame * frame) {
 
 //implementado pelo Piano 
 void tableswitch (Frame * frame) {
-  DCOUT << "tableswitch" << endl;
+  cout << "tableswitch" << endl;
 
 
   code_attribute codeAtt = frame->method_info->attributes->attribute_info_union.code_attribute;
@@ -1793,8 +1855,8 @@ void tableswitch (Frame * frame) {
 
   //logica do table switch levando em conta o index na pilha de operandos
   JvmValue index = frame->operandStack.top();
-  DCOUT << "table index = " << index.data << endl;
-  DCOUT << "high bytes = " <<high_bytes << endl;
+  cout << "table index = " << index.data << endl;
+  cout << "high bytes = " <<high_bytes << endl;
 
   //iterar entre tamanho de high_bytes 
   for (int i = 0; i < high_bytes; i++){
@@ -1814,7 +1876,7 @@ void tableswitch (Frame * frame) {
       int32_t jump_bytes = frame->pc + bytes;
 
       if(index.data == (u4) i + 1){
-          DCOUT << "table index == " << i+1 << " pulando para o endereço " << frame->pc + bytes <<endl;
+          cout << "table index == " << i+1 << " pulando para o endereço " << frame->pc + bytes <<endl;
           frame->pc += bytes;
           break;
       }
@@ -1825,7 +1887,7 @@ void tableswitch (Frame * frame) {
 }
 
 void lookupswitch (Frame * frame) {
-  DCOUT << "lookupswitch" << endl;
+  cout << "lookupswitch" << endl;
   // FIXME: consertar os pulos
   frame->pc += 4;
   frame->pc += 4;
@@ -1839,32 +1901,32 @@ void lookupswitch (Frame * frame) {
 #pragma region return
 
 void ireturn (Frame * frame) {
-  DCOUT << "ireturn" << endl;
+  cout << "ireturn" << endl;
   frame->pc += 1;
 }
 
 void lreturn (Frame * frame) {
-  DCOUT << "lreturn" << endl;
+  cout << "lreturn" << endl;
   frame->pc += 1;
 }
 
 void freturn (Frame * frame) {
-  DCOUT << "freturn" << endl;
+  cout << "freturn" << endl;
   frame->pc += 1;
 }
 
 void dreturn (Frame * frame) {
-  DCOUT << "dreturn" << endl;
+  cout << "dreturn" << endl;
   frame->pc += 1;
 }
 
 void areturn (Frame * frame) {
-  DCOUT << "areturn" << endl;
+  cout << "areturn" << endl;
   frame->pc += 1;
 }
 
 void _return (Frame * frame) {
-  DCOUT << "return" << endl;
+  cout << "return" << endl;
   frame->pc += 1;
 }
 
@@ -1873,7 +1935,7 @@ void _return (Frame * frame) {
 #pragma region class_fields
 
 void getstatic (Frame * frame) {
-  DCOUT << "getstatic" << endl;
+  cout << "getstatic" << endl;
 
   u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
   u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
@@ -1882,16 +1944,16 @@ void getstatic (Frame * frame) {
 
   //pegar o dentro do fieldref o class name
 
-  DCOUT << index <<endl ;
+  cout << index <<endl ;
   cp_info * field_ref = frame->methodAreaItem->getConstantPoolItem(index);
-  DCOUT << field_ref->constant_type_union.Fieldref_info.class_index <<endl ;
+  cout << field_ref->constant_type_union.Fieldref_info.class_index <<endl ;
   
   u1 class_index = field_ref->constant_type_union.Fieldref_info.class_index;
 
 
   //se o class name for <java/lang/System> pular o frame e continuar a vida
   if(frame->methodAreaItem->getUtf8(class_index) == "java/lang/System"){
-    DCOUT << "é um getstatic para o System.class " << endl;
+    cout << "é um getstatic para o System.class " << endl;
     // nao fazer nada
   }
   else {
@@ -1904,17 +1966,17 @@ void getstatic (Frame * frame) {
 }
 
 void putstatic (Frame * frame) {
-  DCOUT << "putstatic" << endl;
+  cout << "putstatic" << endl;
   frame->pc += 3;
 }
 
 void getfield (Frame * frame) {
-  DCOUT << "getfield" << endl;
+  cout << "getfield" << endl;
   frame->pc += 3;
 }
 
 void putfield (Frame * frame) {
-  DCOUT << "putfield" << endl;
+  cout << "putfield" << endl;
   frame->pc += 3;
 }
 
@@ -1923,7 +1985,7 @@ void putfield (Frame * frame) {
 #pragma region invoke
 
 void invokevirtual (Frame * frame) {
-  DCOUT << "invokevirtual" << endl;
+  cout << "invokevirtual" << endl;
 
   u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
   u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
@@ -1939,7 +2001,7 @@ void invokevirtual (Frame * frame) {
 
     switch (value.type) {
       case INT:
-        cout << u4ToInt(value.data) << endl;
+        cout << (int32_t) value.data << endl;
         break;
       case FLOAT:
         cout << u4ToFloat(value.data) << endl;
@@ -1951,7 +2013,7 @@ void invokevirtual (Frame * frame) {
         break;
       }
       default:
-        cout << "Tipo não suportado para o print" << endl;
+        cout << "Tipo não suportado" << endl;
         break;
     }
   }
@@ -1963,22 +2025,22 @@ void invokespecial (Frame * frame) {
   
 
 
-  DCOUT << "invokespecial" << endl;
+  cout << "invokespecial" << endl;
   frame->pc += 3;
 }
 
 void invokestatic (Frame * frame) {
-  DCOUT << "invokestatic" << endl;
+  cout << "invokestatic" << endl;
   frame->pc += 3;
 }
 
 void invokeinterface (Frame * frame) {
-  DCOUT << "invokeinterface" << endl;
+  cout << "invokeinterface" << endl;
   frame->pc += 5;
 }
 
 void invokedynamic (Frame * frame) {
-  DCOUT << "invokedynamic" << endl;
+  cout << "invokedynamic" << endl;
   frame->pc += 5;
 }
 
@@ -1987,17 +2049,17 @@ void invokedynamic (Frame * frame) {
 #pragma region new
 
 void _new (Frame * frame) {
-  DCOUT << "new" << endl;
+  cout << "new" << endl;
   frame->pc += 3;
 }
 
 void newarray (Frame * frame) {
-  DCOUT << "newarray" << endl;
+  cout << "newarray" << endl;
   frame->pc += 2;
 }
 
 void anewarray (Frame * frame) {
-  DCOUT << "anewarray" << endl;
+  cout << "anewarray" << endl;
   frame->pc += 3;
 }
 
@@ -2006,56 +2068,56 @@ void anewarray (Frame * frame) {
 #pragma region common
 
 void arraylength (Frame * frame) {
-  DCOUT << "arraylength" << endl;
+  cout << "arraylength" << endl;
   frame->pc += 1;
 }
 
 void athrow (Frame * frame) {
-  DCOUT << "athrow" << endl;
+  cout << "athrow" << endl;
   frame->pc += 1;
 }
 
 void checkcast (Frame * frame) {
-  DCOUT << "checkcast" << endl;
+  cout << "checkcast" << endl;
   frame->pc += 3;
 }
 
 void instanceof (Frame * frame) {
-  DCOUT << "instanceof" << endl;
+  cout << "instanceof" << endl;
   frame->pc += 3;
 }
 
 #pragma endregion
 
 void monitorenter (Frame * frame) {
-  DCOUT << "monitorenter" << endl;
+  cout << "monitorenter" << endl;
   frame->pc += 1;
 }
 
 void monitorexit (Frame * frame) {
-  DCOUT << "monitorexit" << endl;
+  cout << "monitorexit" << endl;
   frame->pc += 1;
 }
 
 void wide (Frame * frame) {
-  DCOUT << "wide" << endl;
+  cout << "wide" << endl;
   notSupported();
 }
 
 void multianewarray (Frame * frame) {
-  DCOUT << "multianewarray" << endl;
+  cout << "multianewarray" << endl;
   frame->pc += 4;
 }
 
 #pragma region ifnull
 
 void ifnull (Frame * frame) {
-  DCOUT << "ifnull" << endl;
+  cout << "ifnull" << endl;
   frame->pc += 3;
 }
 
 void ifnonnull (Frame * frame) {
-  DCOUT << "ifnonnull" << endl;
+  cout << "ifnonnull" << endl;
   frame->pc += 3;
 }
 
@@ -2064,38 +2126,38 @@ void ifnonnull (Frame * frame) {
 #pragma region jump_w
 
 void goto_w (Frame * frame) {
-  DCOUT << "goto_w" << endl;
+  cout << "goto_w" << endl;
   frame->pc += 5;
 }
 
 void jsr_w (Frame * frame) {
-  DCOUT << "jsr_w" << endl;
+  cout << "jsr_w" << endl;
   frame->pc += 5;
 }
 
 #pragma endregion
 
 void breakpoint (Frame * frame) {
-  DCOUT << "breakpoint" << endl;
+  cout << "breakpoint" << endl;
   notSupported();
 }
 
 #pragma region impdep
 
 void impdep1 (Frame * frame) {
-  DCOUT << "impdep1" << endl;
+  cout << "impdep1" << endl;
   notSupported();
 }
 
 void impdep2 (Frame * frame) {
-  DCOUT << "impdep2" << endl;
+  cout << "impdep2" << endl;
   notSupported();
 }
 
 #pragma endregion
 
 void notSupported() {
-  DCOUT << "Instrução não suportada" << endl;
+  cout << "Instrução não suportada" << endl;
   exit(1);
 }
 
