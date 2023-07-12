@@ -4,6 +4,7 @@
 #include <math.h>
 #include <iostream>
 #include <iomanip> // std::setprecision
+#include <cstring>
 
 typedef vector <void(*)(Frame *)> InstructionsMap;
 
