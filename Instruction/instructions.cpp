@@ -1159,6 +1159,34 @@ void iadd (Frame * frame) {
 
 void ladd (Frame * frame) {
   cout << "ladd" << endl;
+  JvmValue firstLower = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue firstUpper = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue secondLower = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue secondUpper = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  int64_t first = u4ToLong(firstUpper.data, firstLower.data);
+  int64_t second = u4ToLong(secondUpper.data, secondLower.data);
+
+  int64_t sum = first + second;
+
+  cout << "Soma: " << sum << endl;
+
+  pair <u4, u4> result = longToU8(sum);
+  
+  JvmValue resultLower;
+  resultLower.data = result.first;
+  resultLower.type = LONG;
+
+  JvmValue resultUpper;
+  resultUpper.data = result.second;
+  resultUpper.type = LONG;
+
+  frame->operandStack.push(resultUpper);
+
   frame->pc += 1;
 }
 
