@@ -391,7 +391,7 @@ void storeFromStack(int index, Frame * frame) {
   JvmValue jvmValue = frame->operandStack.top();
   frame->operandStack.pop();
 
-  store(index, frame, jvmValue); 
+  store(index, frame, jvmValue);
 }
 
 void storeFromStackWide(int index, Frame * frame) {
@@ -2137,24 +2137,51 @@ void lookupswitch (Frame * frame) {
 
 #pragma region return
 
+void returnValue(Frame * frame) {
+  JvmValue value = frame->operandStack.top();
+  frame->operandStack.pop();
+  if(frame->previousFrame != NULL)
+    frame->previousFrame->operandStack.push(value);
+}
+
+void returnValueWide(Frame * frame) {
+  JvmValue upperValue = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue lowerValue = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  if(frame->previousFrame != NULL) {
+    frame->previousFrame->operandStack.push(lowerValue);
+    frame->previousFrame->operandStack.push(upperValue);
+  }
+}
+
+void goToEndOFrame(Frame * frame) {
+  frame->pc = frame->method_info->attributes->attribute_info_union.code_attribute.code_length;
+}
+
 void ireturn (Frame * frame) {
   DCOUT << "ireturn" << endl;
-  frame->pc += 1;
+  returnValue(frame);
+  goToEndOFrame(frame);
 }
 
 void lreturn (Frame * frame) {
   DCOUT << "lreturn" << endl;
-  frame->pc += 1;
+  returnValueWide(frame);
+  goToEndOFrame(frame);
 }
 
 void freturn (Frame * frame) {
   DCOUT << "freturn" << endl;
-  frame->pc += 1;
+  returnValue(frame);
+  goToEndOFrame(frame);
 }
 
 void dreturn (Frame * frame) {
   DCOUT << "dreturn" << endl;
-  frame->pc += 1;
+  returnValueWide(frame);
+  goToEndOFrame(frame);
 }
 
 void areturn (Frame * frame) {
@@ -2164,7 +2191,7 @@ void areturn (Frame * frame) {
 
 void _return (Frame * frame) {
   DCOUT << "return" << endl;
-  frame->pc += 1;
+  goToEndOFrame(frame);
 }
 
 #pragma endregion
