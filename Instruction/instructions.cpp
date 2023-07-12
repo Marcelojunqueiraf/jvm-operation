@@ -223,6 +223,7 @@ void iconst(u4 value, Frame * frame) {
 
 
 void load(int index, Frame * frame) {
+    // só functiona para itens q ocupam 1 slot
     frame->operandStack.push(frame->localVariables[index]);
 }
 
@@ -231,6 +232,7 @@ void store(int index, Frame * frame) {
     
     JvmValue jvmValue = frame->operandStack.top();;
     jvmValue.type = INT;
+    // Só funciona pra int
 
     frame->localVariables[index] = jvmValue;
     // cout << "o topo da pilha é " << frame->localVariables[index].data << endl;
@@ -878,6 +880,20 @@ void swap (Frame * frame) {
 #pragma region add
 
 void iadd (Frame * frame) {
+  JvmValue first = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue second = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  int32_t sum = ((int32_t)first.data + (int32_t)second.data);
+
+  cout << "Soma: " << sum << endl;
+
+  JvmValue result;
+  result.data = (u4) sum;
+  result.type = INT;
+
+  frame->operandStack.push(result);
   cout << "iadd" << endl;
   frame->pc += 1;
 }
@@ -1479,11 +1495,9 @@ void getstatic (Frame * frame) {
 
 
   //se o class name for <java/lang/System> pular o frame e continuar a vida
-  if(!frame->methodAreaItem->getUtf8(class_index).compare("java/lang/System")){
+  if(frame->methodAreaItem->getUtf8(class_index) == "java/lang/System"){
     cout << "é um getstatic para o System.class " << endl;
     
-    // cout << "pulando o pc de " << frame->pc << " para " << frame->pc + 6 <<  endl;
-
     //pegar o ldc
     frame->pc++;
     frame->pc++;
@@ -1493,12 +1507,11 @@ void getstatic (Frame * frame) {
     cout << "Print -> "<<  string_to_print << endl;
 
     frame->pc += 4;
+    return;
   }
-
-  // se for uma chamada a uma classe já implementada
-  else{
-    frame->pc++;
-  }
+  // TODO: getstatic de classes que não sejam o System
+  
+  frame->pc += 3;
 }
 
 void putstatic (Frame * frame) {
@@ -1521,6 +1534,7 @@ void putfield (Frame * frame) {
 #pragma region invoke
 
 void invokevirtual (Frame * frame) {
+
   cout << "invokevirtual" << endl;
   frame->pc += 3;
 }
