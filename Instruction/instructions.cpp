@@ -1495,19 +1495,14 @@ void getstatic (Frame * frame) {
   //se o class name for <java/lang/System> pular o frame e continuar a vida
   if(frame->methodAreaItem->getUtf8(class_index) == "java/lang/System"){
     cout << "é um getstatic para o System.class " << endl;
-    
-    // //pegar o ldc
-    // frame->pc++;
-    // frame->pc++;
-    // u1 string_index  = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
-    
-    // string string_to_print = frame->methodAreaItem->getUtf8(string_index);
-    // cout << "Print -> "<<  string_to_print << endl;
-
-    // frame->pc += 4;
+    // nao fazer nada
   }
-  // TODO: getstatic de classes que não sejam o System
-
+  else {
+    // outras classes
+    // Precisa procurar o nome da classe no pool de constantes, se não tiver, loadar a classe
+    // precisa procurar o field estático na classe carregada
+    // precisa colocar o field na pilha de operandos
+  }
   frame->pc += 3;
 }
 
