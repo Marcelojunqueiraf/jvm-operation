@@ -1134,100 +1134,130 @@ void swap (Frame * frame) {
   frame->pc += 1;
 }
 
-#pragma region add
+enum Operation {
+  ADD,
+  SUB,
+  MUL,
+  DIV
+};
 
-void iadd (Frame * frame) {
+template<typename T>
+T calculate(T first, T second, Operation op) {
+    T result = 0;
+
+    switch (op) {
+        case ADD:
+            result = first + second;
+            break;
+        case SUB:
+            result = first - second;
+            break;
+        case MUL:
+            result = first * second;
+            break;
+        case DIV:
+            result = first / second;
+            break;
+    }
+
+    return result;
+}
+
+void operate(Frame * frame, Operation op, PrimitiveType type) {
   JvmValue first = frame->operandStack.top();
   frame->operandStack.pop();
   JvmValue second = frame->operandStack.top();
   frame->operandStack.pop();
 
-  int32_t sum = u4ToInt(first.data) + u4ToInt(second.data);
+  u4 result = 0;
+  switch (type) {
+    case INT:
+    {
+      int32_t calc = calculate<int32_t>(u4ToInt(first.data), u4ToInt(second.data), op);
+      DCOUT << "int result: " << calc << endl;
+      result = intToU4(calc);
+      break;
+    }
+    case FLOAT:
+    {
+      float calc = calculate<float>(u4ToFloat(first.data), u4ToFloat(second.data), op);
+      DCOUT << "float result: " << calc << endl;
+      result = floatToU4(calc);
+      break;
+    }
+  }
 
-  DCOUT << "Soma: " << sum << endl;
+  JvmValue resultValue;
+  resultValue.data = result;
+  resultValue.type = type;
 
-  JvmValue result;
-  result.data = intToU4(sum);
-  result.type = INT;
+  frame->operandStack.push(resultValue);
+}
 
-  frame->operandStack.push(result);
+void operateW(Frame * frame, Operation op, PrimitiveType type) {
+  JvmValue firstLower = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue firstUpper = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue secondLower = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue secondUpper = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  pair<u4, u4> result = {0,0};
+  switch (type) {
+    case LONG:
+    {
+      int64_t calc = calculate<int64_t>(u4ToLong(firstLower.data, firstUpper.data), u4ToLong(secondLower.data, secondUpper.data), op);
+      DCOUT << "long result:" << calc << endl;
+      result = longToU8(calc);
+      break;
+    }
+    case DOUBLE:
+    {
+      double calc = calculate<double>(u4ToDouble(firstLower.data, firstUpper.data), u4ToDouble(secondLower.data, secondUpper.data), op);
+      DCOUT << "double result:" << calc << endl;
+      result = doubleToU8(calc);
+      break;
+    }
+  }
+
+  JvmValue resultLower;
+  resultLower.data = result.first;
+  resultLower.type = type;
+
+  JvmValue resultUpper;
+  resultUpper.data = result.second;
+  resultUpper.type = type;
+
+  frame->operandStack.push(resultUpper);
+  frame->operandStack.push(resultLower);
+}
+
+
+#pragma region add
+
+void iadd (Frame * frame) {
   DCOUT << "iadd" << endl;
+  operate(frame, ADD, INT);
   frame->pc += 1;
 }
 
 void ladd (Frame * frame) {
   DCOUT << "ladd" << endl;
-  JvmValue firstLower = frame->operandStack.top();
-  frame->operandStack.pop();
-  JvmValue firstUpper = frame->operandStack.top();
-  frame->operandStack.pop();
-  JvmValue secondLower = frame->operandStack.top();
-  frame->operandStack.pop();
-  JvmValue secondUpper = frame->operandStack.top();
-  frame->operandStack.pop();
-
-  int64_t first = u4ToLong(firstUpper.data, firstLower.data);
-  int64_t second = u4ToLong(secondUpper.data, secondLower.data);
-
-  int64_t sum = first + second;
-
-  DCOUT << "Soma: " << sum << endl;
-
-  pair <u4, u4> result = longToU8(sum);
-  
-  JvmValue resultLower;
-  resultLower.data = result.first;
-  resultLower.type = LONG;
-
-  JvmValue resultUpper;
-  resultUpper.data = result.second;
-  resultUpper.type = LONG;
-
-  frame->operandStack.push(resultUpper);
-
+  operateW(frame, ADD, LONG);
   frame->pc += 1;
 }
 
 void fadd (Frame * frame) {
   DCOUT << "fadd" << endl;
-
-  JvmValue first = frame->operandStack.top();
-  frame->operandStack.pop();
-  JvmValue second = frame->operandStack.top();
-  frame->operandStack.pop();
-
-  float sum = u4ToFloat(first.data) + u4ToFloat(second.data);
-
-  DCOUT << "Soma: " << sum << endl;
-
-  JvmValue result;
-  result.data = floatToU4(sum);
-  result.type = FLOAT;
-
-  frame->operandStack.push(result);
-
+  operate(frame, ADD, FLOAT);
   frame->pc += 1;
 }
 
 void dadd (Frame * frame) {
   DCOUT << "dadd" << endl;
-
-  JvmValue firstLower = frame->operandStack.top();
-  frame->operandStack.pop();
-  JvmValue firstUpper = frame->operandStack.top();
-  frame->operandStack.pop();
-  JvmValue secondLower = frame->operandStack.top();
-  frame->operandStack.pop();
-  JvmValue secondUpper = frame->operandStack.top();
-  frame->operandStack.pop();
-
-  double first = u4ToDouble(firstUpper.data, firstLower.data);
-  double second = u4ToDouble(secondUpper.data, secondLower.data);
-
-  double sum = first + second;
-
-  DCOUT << "Soma: " << sum << endl;
-
+  operateW(frame, ADD, DOUBLE);
   frame->pc += 1;
 }
 
@@ -1237,21 +1267,25 @@ void dadd (Frame * frame) {
 
 void isub (Frame * frame) {
   DCOUT << "isub" << endl;
+  operate(frame, SUB, INT);
   frame->pc += 1;
 }
 
 void lsub (Frame * frame) {
   DCOUT << "lsub" << endl;
+  operateW(frame, SUB, LONG);
   frame->pc += 1;
 }
 
 void fsub (Frame * frame) {
   DCOUT << "fsub" << endl;
+  operate(frame, SUB, FLOAT);
   frame->pc += 1;
 }
 
 void dsub (Frame * frame) {
   DCOUT << "dsub" << endl;
+  operateW(frame, SUB, DOUBLE);
   frame->pc += 1;
 }
 
@@ -1261,21 +1295,25 @@ void dsub (Frame * frame) {
 
 void imul (Frame * frame) {
   DCOUT << "imul" << endl;
+  operate(frame, MUL, INT);
   frame->pc += 1;
 }
 
 void lmul (Frame * frame) {
   DCOUT << "lmul" << endl;
+  operateW(frame, MUL, LONG);
   frame->pc += 1;
 }
 
 void fmul (Frame * frame) {
   DCOUT << "fmul" << endl;
+  operate(frame, MUL, FLOAT);
   frame->pc += 1;
 }
 
 void dmul (Frame * frame) {
   DCOUT << "dmul" << endl;
+  operateW(frame, MUL, DOUBLE);
   frame->pc += 1;
 }
 
@@ -1285,21 +1323,25 @@ void dmul (Frame * frame) {
 
 void idiv (Frame * frame) {
   DCOUT << "idiv" << endl;
+  operate(frame, DIV, INT);
   frame->pc += 1;
 }
 
 void ldiv (Frame * frame) {
   DCOUT << "ldiv" << endl;
+  operateW(frame, DIV, LONG);
   frame->pc += 1;
 }
 
 void fdiv (Frame * frame) {
   DCOUT << "fdiv" << endl;
+  operate(frame, DIV, FLOAT);
   frame->pc += 1;
 }
 
 void ddiv (Frame * frame) {
   DCOUT << "ddiv" << endl;
+  operateW(frame, DIV, DOUBLE);
   frame->pc += 1;
 }
 
@@ -1863,7 +1905,6 @@ void invokevirtual (Frame * frame) {
         cout << u4ToInt(value.data) << endl;
         break;
       case FLOAT:
-        // TODO: printar float
         cout << u4ToFloat(value.data) << endl;
         break;
       case STRING:
