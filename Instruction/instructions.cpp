@@ -228,15 +228,18 @@ float u4ToFloat (u4 value) {
     return result;
 }
 
-double u4ToDouble(u4 low, u4 high)
-{
+double u4ToDouble(u4 low, u4 high) {
     uint64_t valor = ((uint64_t)high << 32) | (uint64_t)low;
-    int sinal = ((valor >> 63) == 0) ? 1 : -1;
-    int expon = ((valor >> 52) & 0x7ffL);
-    long mant = (expon == 0) ? ((valor & 0xfffffffffffffL) << 1) : ((valor & 0xfffffffffffffL) | 0x10000000000000L);
+    // int sinal = ((valor >> 63) == 0) ? 1 : -1;
+    // int expon = ((valor >> 52) & 0x7ffL);
+    // long mant = (expon == 0) ? ((valor & 0xfffffffffffffL) << 1) : ((valor & 0xfffffffffffffL) | 0x10000000000000L);
 
-    double retorno = sinal * mant * (pow(2, expon - 1075));
-    return retorno;
+    // double retorno = sinal * mant * (pow(2, expon - 1075));
+    // return retorno;
+
+    double d;
+    memcpy(&d, &valor, sizeof(d));
+    return d;
 }
 
 #pragma endregion
@@ -1730,7 +1733,7 @@ void f2d (Frame * frame) {
   float _float = u4ToFloat(value.data);
   double _double = _float;
   auto [low, high] = doubleToU8(_double);
-  DCOUT << "f2d " << _float << " -> " << _double << " (0x" << hex << high << low << dec << ")" << endl;
+  DCOUT << "f2d " << _float << " (0x" << hex << value.data << dec << ") -> " << _double << " (0x" << hex << high << low << dec << ")" << endl;
 
   JvmValue highValue = {DOUBLE, high};
   JvmValue lowValue = {DOUBLE, low};
@@ -1751,7 +1754,7 @@ void d2i (Frame * frame) {
   DCOUT << "d2i 0x" << hex << highValue.data << lowValue.data << dec << endl;
   double _double = u4ToDouble(lowValue.data, highValue.data);
   int32_t integer = _double;
-  DCOUT << "d2i " << _double << " -> " << integer << endl;
+  DCOUT << "d2i " << fixed << setprecision(10) << _double << " -> " << integer << endl;
 
   JvmValue new_value = {INT, intToU4(integer)};
   frame->operandStack.push(new_value);
