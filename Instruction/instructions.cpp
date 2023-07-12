@@ -221,6 +221,32 @@ void iconst(u4 value, Frame * frame) {
   // cout << "item no topo pilha " << jvmValueToPrint.data << endl;
 }
 
+void lconst(u4 value, Frame * frame){
+
+  JvmValue jvmValue;
+  jvmValue.type = LONG;
+  jvmValue.data = value;
+  frame->operandStack.push(jvmValue);
+
+}
+
+void fconst(u4 value, Frame * frame){
+
+  JvmValue jvmValue;
+  jvmValue.type = FLOAT;
+  jvmValue.data = value;
+  frame->operandStack.push(jvmValue);
+
+}
+
+void dconst(u4 value, Frame * frame){
+
+  JvmValue jvmValue;
+  jvmValue.type = DOUBLE;
+  jvmValue.data = value;
+  frame->operandStack.push(jvmValue);
+
+}
 
 void load(int index, Frame * frame) {
     // só functiona para itens q ocupam 1 slot
@@ -322,36 +348,69 @@ void iconst_5 (Frame * frame) {
 
 void lconst_0 (Frame * frame) {
   cout << "lconst_0" << endl;
+
+  //dar push primeiro no high
+  lconst(0, frame);
+
+  //depois no low
+  lconst(0, frame);
+
   frame->pc += 1;
 }
 
 void lconst_1 (Frame * frame) {
   cout << "lconst_1" << endl;
+
+  //dar push primeiro no high
+  lconst(1, frame);
+
+  //depois no low
+  lconst(1, frame);
+
   frame->pc += 1;
 }
 
 void fconst_0 (Frame * frame) {
   cout << "fconst_0" << endl;
+
+  fconst(0, frame);
+
   frame->pc += 1;
 }
 
 void fconst_1 (Frame * frame) {
   cout << "fconst_1" << endl;
+
+  fconst(1, frame);
+
   frame->pc += 1;
 }
 
 void fconst_2 (Frame * frame) {
   cout << "fconst_2" << endl;
+  
+  fconst(2, frame);
+  
   frame->pc += 1;
 }
 
 void dconst_0 (Frame * frame) {
   cout << "dconst_0" << endl;
+
+  dconst(0, frame);
+  
+  dconst(0, frame);
+
   frame->pc += 1;
 }
 
 void dconst_1 (Frame * frame) {
   cout << "dconst_1" << endl;
+  
+  dconst(1, frame);
+
+  dconst(1, frame);
+  
   frame->pc += 1;
 }
 
@@ -427,11 +486,80 @@ void ldc (Frame * frame) {
 void ldc_w (Frame * frame) {
   // esse é wide e só é usado para indice de constant pool grande
   cout << "ldc_w" << endl;
+
+  u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
+
+  u4 id = (high_bytes << 8) | low_bytes;
+
+  cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
+  cout << "tipo da constante: " << c->tag << endl;
+
+  JvmValue value;
+  switch (c->tag) {
+    case 3:
+      cout << "int" << endl;
+      value.type = INT;
+      value.data = c->constant_type_union.Integer.bytes;
+      break;
+    case 4:
+      cout << "float" << endl;
+      value.type = FLOAT;
+      value.data = c->constant_type_union.Float.bytes;
+      break;
+    case 8:
+      cout << "string" << endl;
+      value.type = STRING;
+      value.data = c->constant_type_union.String.string_index;
+      break;
+    default:
+      cout << "tipo não reconhecido" << endl;
+      break;
+  }
+  frame->operandStack.push(value);
+  cout << "valor empilhado: " << frame->operandStack.top().data << endl;
+
   frame->pc += 3;
 }
 
 void ldc2_w (Frame * frame) {
   cout << "ldc2_w" << endl;
+
+  u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
+
+  u4 id = (high_bytes << 8) | low_bytes;
+
+  cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
+  cout << "tipo da constante: " << c->tag << endl;
+
+  JvmValue high_value;
+  JvmValue low_value;
+
+  switch (c->tag) {
+    case 6:
+      cout << "double" << endl;
+      high_value.type = DOUBLE;
+      low_value.type = DOUBLE;
+      high_value.data = c->constant_type_union.Double.high_bytes;
+      low_value.data = c->constant_type_union.Double.low_bytes;
+      break;
+    case 5:
+      cout << "long" << endl;
+      high_value.type = LONG;
+      low_value.type = LONG;
+      high_value.data = c->constant_type_union.Long.high_bytes;
+      low_value.data = c->constant_type_union.Long.low_bytes;
+      break;
+    default:
+      cout << "tipo não reconhecido" << endl;
+      break;
+  }
+
+  frame->operandStack.push(high_value);
+  frame->operandStack.push(low_value);
+  cout << "valor empilhado: " << frame->operandStack.top().data << endl;
+
   frame->pc += 3;
 }
 
@@ -448,6 +576,9 @@ void iload (Frame * frame) {
 
 void lload (Frame * frame) {
   cout << "lload" << endl;
+
+  
+
   frame->pc += 2;
 }
 
