@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../FrameStack/frameStack.hpp"
+#include <math.h>
 #include <iostream>
 
 typedef vector <void(*)(Frame *)> InstructionsMap;
