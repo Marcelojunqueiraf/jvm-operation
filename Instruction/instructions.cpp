@@ -297,11 +297,11 @@ u4 floatToU4(float value) {
   return result;
 }
 
-pair<u4,u4> doubleToU8(double value) {
+pair<u4,u4> doubleToU8(int64_t value) {
 
   int sinal = (value < 0) ? 1 : 0;
   int expoente = 0;
-  double mantissa = 0;
+  int64_t mantissa = 0;
 
   if (value == 0) {
     return {0, 0};
@@ -333,7 +333,9 @@ pair<u4,u4> doubleToU8(double value) {
 
   u8 result = ((u8) sinal << 63) | ((u8) expoente << 52) | ((u8) (mantissa * pow(2, 52)));
 
-  return {result & 0xffffffff, result >> 32};
+  u4 low = result & 0xffffffff;
+  u4 high = result >> 32;
+  return {low, high};
 }
 
 #pragma endregion
@@ -1192,11 +1194,44 @@ void ladd (Frame * frame) {
 
 void fadd (Frame * frame) {
   cout << "fadd" << endl;
+
+  JvmValue first = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue second = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  float sum = u4ToFloat(first.data) + u4ToFloat(second.data);
+
+  cout << "Soma: " << sum << endl;
+
+  JvmValue result;
+  result.data = floatToU4(sum);
+  result.type = FLOAT;
+
+  frame->operandStack.push(result);
+
   frame->pc += 1;
 }
 
 void dadd (Frame * frame) {
   cout << "dadd" << endl;
+
+  JvmValue firstLower = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue firstUpper = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue secondLower = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue secondUpper = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  double first = u4ToDouble(firstUpper.data, firstLower.data);
+  double second = u4ToDouble(secondUpper.data, secondLower.data);
+
+  double sum = first + second;
+
+  cout << "Soma: " << sum << endl;
+
   frame->pc += 1;
 }
 
