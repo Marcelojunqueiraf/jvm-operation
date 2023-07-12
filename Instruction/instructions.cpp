@@ -926,11 +926,21 @@ void lstore (Frame * frame) {
 
 void fstore (Frame * frame) {
   cout << "fstore" << endl;
+
+  u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+
+  storeFromStack(local_vector_index, frame);
+
   frame->pc += 2;
 }
 
 void dstore (Frame * frame) {
   cout << "dstore" << endl;
+
+  u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+
+  storeFromStackWide(local_vector_index, frame);
+
   frame->pc += 2;
 }
 
