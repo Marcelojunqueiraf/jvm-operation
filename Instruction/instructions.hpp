@@ -3,6 +3,7 @@
 #include "../FrameStack/frameStack.hpp"
 #include <math.h>
 #include <iostream>
+#include <iomanip> // std::setprecision
 
 typedef vector <void(*)(Frame *)> InstructionsMap;
 
