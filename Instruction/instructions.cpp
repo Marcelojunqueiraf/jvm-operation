@@ -1175,31 +1175,37 @@ void pop2 (Frame * frame) {
 
 void dup (Frame * frame) {
   DCOUT << "dup" << endl;
+  notSupported();
   frame->pc += 1;
 }
 
 void dup_x1 (Frame * frame) {
   DCOUT << "dup_x1" << endl;
+  notSupported();
   frame->pc += 1;
 }
 
 void dup_x2 (Frame * frame) {
   DCOUT << "dup_x2" << endl;
+  notSupported();
   frame->pc += 1;
 }
 
 void dup2 (Frame * frame) {
   DCOUT << "dup2" << endl;
+  notSupported();
   frame->pc += 1;
 }
 
 void dup2_x1 (Frame * frame) {
   DCOUT << "dup2_x1" << endl;
+  notSupported();
   frame->pc += 1;
 }
 
 void dup2_x2 (Frame * frame) {
   DCOUT << "dup2_x2" << endl;
+  notSupported();
   frame->pc += 1;
 }
 
@@ -1207,6 +1213,7 @@ void dup2_x2 (Frame * frame) {
 
 void swap (Frame * frame) {
   DCOUT << "swap" << endl;
+  notSupported();
   frame->pc += 1;
 }
 
@@ -2320,16 +2327,19 @@ void arraylength (Frame * frame) {
 
 void athrow (Frame * frame) {
   DCOUT << "athrow" << endl;
+  notSupported();
   frame->pc += 1;
 }
 
 void checkcast (Frame * frame) {
   DCOUT << "checkcast" << endl;
+  notSupported();
   frame->pc += 3;
 }
 
 void instanceof (Frame * frame) {
   DCOUT << "instanceof" << endl;
+  notSupported();
   frame->pc += 3;
 }
 
@@ -2337,11 +2347,13 @@ void instanceof (Frame * frame) {
 
 void monitorenter (Frame * frame) {
   DCOUT << "monitorenter" << endl;
+  notSupported();
   frame->pc += 1;
 }
 
 void monitorexit (Frame * frame) {
   DCOUT << "monitorexit" << endl;
+  notSupported();
   frame->pc += 1;
 }
 
