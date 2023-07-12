@@ -11,12 +11,12 @@ int main(int argc, char const *argv[])
     cout << "Correct use: ./jvm <class-path>" << endl;
     return 1;
   }
-  //cout << "Creating JVM" << endl;
+  
   JVM * jvm = new JVM();
-  cout << "----- Initializing JVM -----" << endl;
+  DCOUT << "----- Initializing JVM -----" << endl;
   jvm->initialize(argv[1]);
-  cout << "------- Running JVM --------" << endl;
+  DCOUT << "------- Running JVM --------" << endl;
   jvm->run();
-  cout << "------ Finishing JVM -------" << endl;
+  DCOUT << "------ Finishing JVM -------" << endl;
   return 0;
 }

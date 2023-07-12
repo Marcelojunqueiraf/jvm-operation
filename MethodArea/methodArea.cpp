@@ -15,7 +15,7 @@ ClassFile * MethodArea::loadClass(string className) {
 }
 
 ClassFile * MethodArea::loadClassFromPath(string path) {
-  cout << "Lendo o arquivo: " << path << endl;
+  DCOUT << "Lendo o arquivo: " << path << endl;
 
   // abre o descritor de arquivo class file
   FILE *fd = fopen(path.c_str(), "rb");   
