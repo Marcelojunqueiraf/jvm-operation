@@ -1,7 +1,9 @@
 public class ConversionsTest {
   public static void main(String[] args) {
-    int i = 2147483647;
-    double i2d = (double) i;
-    int d2i = (int) i2d;
+    double d = -123.12345678901234567890;
+
+    int d2i = (int) d;
+    long d2l = (long) d;
+    float d2f = (float) d;
   }
 }

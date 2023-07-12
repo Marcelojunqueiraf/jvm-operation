@@ -1596,8 +1596,6 @@ void iinc (Frame * frame) {
 void i2l (Frame * frame) {
   JvmValue value = frame->operandStack.top();
   frame->operandStack.pop();
-  value.type = LONG;
-
   
   int32_t integer = u4ToInt(value.data);
   int64_t longInteger = integer;
@@ -1622,7 +1620,7 @@ void i2f (Frame * frame) {
   u4 floatBits = floatToU4(_float);
   DCOUT << "i2f " << integer << " -> " << _float << " (0x" << hex << floatBits << dec << ')' << endl;
 
-  JvmValue new_value = {FLOAT, _float};
+  JvmValue new_value = {FLOAT, floatBits};
   frame->operandStack.push(new_value);
 
   frame->pc += 1;
@@ -1653,11 +1651,12 @@ void l2i (Frame * frame) {
   highValue = frame->operandStack.top();
   frame->operandStack.pop();
 
-  int32_t integer = u4ToInt(lowValue.data);
-  DCOUT << "l2i " << hex << highValue.data << ' ' << lowValue.data << dec << " -> " << integer << endl;
+  int64_t longInteger = u4ToLong(lowValue.data, highValue.data);
+  int32_t integer = longInteger;
+  DCOUT << "l2i " << longInteger << " -> " << integer << endl;
 
-  JvmValue value = {INT, integer};
-  frame->operandStack.push(value);
+  JvmValue new_value = {INT, integer};
+  frame->operandStack.push(new_value);
 
   frame->pc += 1;
 }
@@ -1671,9 +1670,10 @@ void l2f (Frame * frame) {
 
   int64_t longInteger = u4ToLong(lowValue.data, highValue.data);
   float _float = longInteger;
-  DCOUT << "l2f " << longInteger << " -> " << _float << endl;
+  u4 floatBits = floatToU4(_float);
+  DCOUT << "l2f " << longInteger << " -> " << _float << " (0x" << hex << floatBits << dec << ')' << endl;
 
-  JvmValue value = {FLOAT, floatToU4(_float)};
+  JvmValue value = {FLOAT, floatBits};
   frame->operandStack.push(value);
 
   frame->pc += 1;
@@ -1688,14 +1688,14 @@ void l2d (Frame * frame) {
 
   int64_t longInteger = u4ToLong(lowValue.data, highValue.data);
   double _double = longInteger;
-  DCOUT << "l2d " << longInteger << " -> " << _double << endl;
-
   auto [low, high] = doubleToU8(_double);
-  JvmValue highValue = {DOUBLE, high};
-  JvmValue lowValue = {DOUBLE, low};
+  DCOUT << "l2d " << longInteger << " -> " << _double << " (0x" << hex << high << low << dec << ")" << endl;
 
-  frame->operandStack.push(highValue);
-  frame->operandStack.push(lowValue);
+  JvmValue new_highValue = {DOUBLE, high};
+  JvmValue new_lowValue = {DOUBLE, low};
+
+  frame->operandStack.push(new_highValue);
+  frame->operandStack.push(new_lowValue);
 
   frame->pc += 1;
 }
@@ -1708,7 +1708,7 @@ void f2i (Frame * frame) {
   int32_t integer = _float;
   DCOUT << "f2i " << ' ' << _float << " -> " << integer << endl;
 
-  JvmValue new_value = {INT, integer};
+  JvmValue new_value = {INT, intToU4(integer)};
   frame->operandStack.push(new_value);
 
   frame->pc += 1;
@@ -1723,8 +1723,8 @@ void f2l (Frame * frame) {
   DCOUT << "f2l " << ' ' << _float << " -> " << longInteger << endl;
 
   auto [low, high] = longToU8(longInteger);
-  JvmValue highValue = {LONG, low};
-  JvmValue lowValue = {LONG, high};
+  JvmValue highValue = {LONG, high};
+  JvmValue lowValue = {LONG, low};
 
   frame->operandStack.push(highValue);
   frame->operandStack.push(lowValue);
@@ -1738,9 +1738,9 @@ void f2d (Frame * frame) {
 
   float _float = u4ToFloat(value.data);
   double _double = _float;
-  DCOUT << "f2d " << _float << " -> " << _double << endl;
-
   auto [low, high] = doubleToU8(_double);
+  DCOUT << "f2d " << _float << " -> " << _double << " (0x" << hex << high << low << dec << ")" << endl;
+
   JvmValue highValue = {DOUBLE, high};
   JvmValue lowValue = {DOUBLE, low};
 
@@ -1751,17 +1751,59 @@ void f2d (Frame * frame) {
 }
 
 void d2i (Frame * frame) {
-  DCOUT << "d2i" << endl;
+  JvmValue highValue, lowValue;
+  lowValue = frame->operandStack.top();
+  frame->operandStack.pop();
+  highValue = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  DCOUT << "d2i 0x" << hex << highValue.data << lowValue.data << dec << endl;
+  double _double = u4ToDouble(lowValue.data, highValue.data);
+  int32_t integer = _double;
+  DCOUT << "d2i " << _double << " -> " << integer << endl;
+
+  JvmValue new_value = {INT, intToU4(integer)};
+  frame->operandStack.push(new_value);
+
   frame->pc += 1;
 }
 
 void d2l (Frame * frame) {
-  DCOUT << "d2l" << endl;
+  JvmValue highValue, lowValue;
+  lowValue = frame->operandStack.top();
+  frame->operandStack.pop();
+  highValue = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  double _double = u4ToDouble(lowValue.data, highValue.data);
+  int64_t longInteger = _double;
+  DCOUT << "d2l " << _double << " -> " << longInteger << endl;
+
+  auto [low, high] = longToU8(longInteger);
+  JvmValue new_highValue = {LONG, high};
+  JvmValue new_lowValue = {LONG, low};
+
+  frame->operandStack.push(new_highValue);
+  frame->operandStack.push(new_lowValue);
+
   frame->pc += 1;
 }
 
 void d2f (Frame * frame) {
-  DCOUT << "d2f" << endl;
+  JvmValue highValue, lowValue;
+  lowValue = frame->operandStack.top();
+  frame->operandStack.pop();
+  highValue = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  double _double = u4ToDouble(lowValue.data, highValue.data);
+  float _float = _double;
+  u4 floatBits = floatToU4(_float);
+  DCOUT << "d2f " << _double << " -> " << _float << " (0x" << hex << floatBits << dec << ')' << endl;
+
+  JvmValue value = {FLOAT, floatBits};
+  frame->operandStack.push(value);
+
   frame->pc += 1;
 }
 
@@ -1771,9 +1813,9 @@ void i2b (Frame * frame) {
 
   int32_t integer = u4ToInt(value.data);
   int8_t byte = integer; // truncate and sign extension to u4
-  DCOUT << "i2b " << integer << " -> " << hex << (int) byte << dec << endl;
+  DCOUT << "i2b " << integer << " -> 0x" << hex << (int) byte << dec << endl;
 
-  JvmValue new_value = {BYTE, byte};
+  JvmValue new_value = {BYTE, (u4) byte};
   frame->operandStack.push(new_value);
 
   frame->pc += 1;
@@ -1787,7 +1829,7 @@ void i2c (Frame * frame) {
   uint16_t _char = integer; // truncate and zero extension to u4
   DCOUT << "i2c " << integer << " -> '" << (char) _char << "'" << endl;
 
-  JvmValue new_value = {CHAR, _char};
+  JvmValue new_value = {CHAR, (u4) _char};
   frame->operandStack.push(new_value);
 
   frame->pc += 1;
@@ -1801,7 +1843,7 @@ void i2s (Frame * frame) {
   int16_t _short = integer; // truncate and sign extension to u4
   DCOUT << "i2s " << integer << " -> " << _short << endl;
 
-  JvmValue new_value = {SHORT, _short};
+  JvmValue new_value = {SHORT, (u4) _short};
   frame->operandStack.push(new_value);
 
   frame->pc += 1;
