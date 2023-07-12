@@ -48,7 +48,7 @@ void JVM::executeFrame(Frame * frame) {
   
   // realizar a lógica do PC aqui 
   while(frame->pc < codeAtt->code_length){
-    cout << "Executing instruction at pc: " << frame->pc << endl;
+    cout << "Executing instruction at pc: " << frame->pc << " stackSize: " << frame->operandStack.size() << endl;
     u1 * opcode = codeAtt->code + frame->pc;
     this->executeInstruction(opcode, frame);
   };

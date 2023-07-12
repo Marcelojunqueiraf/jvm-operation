@@ -210,6 +210,134 @@ void loadInstructions(InstructionsMap * instructionsMap) {
 
 #pragma region aux
 
+#pragma region u4ToType
+
+int32_t u4ToInt (u4 value) {
+  return (int32_t) value;
+}
+
+int64_t u4ToLong (u4 low, u4 high) {
+  return ((int64_t) high << 32) | (int64_t) low;
+}
+
+float u4ToFloat (u4 value) {
+    int sinal = ((value >> 31) == 0) ? 1 : -1;
+    int expon = ((value >> 23) & 0xff);
+    int mant = (expon == 0) ? (value & 0x7fffff) << 1 : (value & 0x7fffff) | 0x800000;
+    float result = (sinal) * (mant) * (pow(2, expon - 150));
+    return result;
+}
+
+double u4ToDouble(u4 low, u4 high)
+{
+    uint64_t valor = ((uint64_t)high << 32) | (uint64_t)low;
+    int sinal = ((valor >> 63) == 0) ? 1 : -1;
+    int expon = ((valor >> 52) & 0x7ffL);
+    long mant = (expon == 0) ? ((valor & 0xfffffffffffffL) << 1) : ((valor & 0xfffffffffffffL) | 0x10000000000000L);
+
+    double retorno = sinal * mant * (pow(2, expon - 1075));
+    return retorno;
+}
+
+#pragma endregion
+
+#pragma region typeToU4
+
+u4 intToU4(int32_t value) {
+  return (u4) value;
+}
+
+pair<u4, u4> longToU8(int64_t value) {
+  u4 low = (u4) value;
+  u4 high = (u4) (value >> 32);
+
+
+  pair<u4, u4> result;
+  result.first = low;
+  result.second = high;
+  return result;
+}
+
+u4 floatToU4(float value) {
+  u4 result = 0;
+  int sinal = (value < 0) ? 1 : 0;
+  int expoente = 0;
+  float mantissa = 0;
+
+  if (value == 0) {
+    return 0;
+  }
+
+  if (value == INFINITY) {
+    return 0x7f800000;
+  }
+
+  if (value == -INFINITY) {
+    return 0xff800000;
+  }
+
+  if (isnan(value)) {
+    return 0x7fc00000;
+  }
+
+  if (value < 0) {
+    value = -value;
+  }
+
+  mantissa = frexp(value, &expoente);
+
+  expoente += 126;
+  mantissa *= 2;
+  if (mantissa >= 1) {
+    mantissa -= 1;
+  }
+
+  result = (sinal << 31) | (expoente << 23) | ((int) (mantissa * pow(2, 23)));
+
+  return result;
+}
+
+pair<u4,u4> doubleToU8(double value) {
+
+  int sinal = (value < 0) ? 1 : 0;
+  int expoente = 0;
+  double mantissa = 0;
+
+  if (value == 0) {
+    return {0, 0};
+  }
+
+  if (value == INFINITY) {
+    return {0, 0x7ff00000}; // 0x7ff0000000000000
+  }
+
+  if (value == -INFINITY) {
+    return {0, 0xfff00000}; // 0xfff0000000000000
+  }
+
+  if (isnan(value)) {
+    return {0, 0x7ff80000}; // 0x7ff8000000000000
+  }
+
+  if (value < 0) {
+    value = -value;
+  }
+
+  mantissa = frexp(value, &expoente);
+
+  expoente += 1022;
+  mantissa *= 2;
+  if (mantissa >= 1) {
+    mantissa -= 1;
+  }
+
+  u8 result = ((u8) sinal << 63) | ((u8) expoente << 52) | ((u8) (mantissa * pow(2, 52)));
+
+  return {result & 0xffffffff, result >> 32};
+}
+
+#pragma endregion
+
 void iconst(u4 value, Frame * frame) {
   
   JvmValue jvmValue;
@@ -223,6 +351,7 @@ void iconst(u4 value, Frame * frame) {
 
 
 void load(int index, Frame * frame) {
+    // só functiona para itens q ocupam 1 slot
     frame->operandStack.push(frame->localVariables[index]);
 }
 
@@ -231,6 +360,7 @@ void store(int index, Frame * frame) {
     
     JvmValue jvmValue = frame->operandStack.top();;
     jvmValue.type = INT;
+    // Só funciona pra int
 
     frame->localVariables[index] = jvmValue;
     // cout << "o topo da pilha é " << frame->localVariables[index].data << endl;
@@ -882,6 +1012,20 @@ void swap (Frame * frame) {
 #pragma region add
 
 void iadd (Frame * frame) {
+  JvmValue first = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue second = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  int32_t sum = ((int32_t)first.data + (int32_t)second.data);
+
+  cout << "Soma: " << sum << endl;
+
+  JvmValue result;
+  result.data = (u4) sum;
+  result.type = INT;
+
+  frame->operandStack.push(result);
   cout << "iadd" << endl;
   frame->pc += 1;
 }
@@ -1585,10 +1729,8 @@ void _return (Frame * frame) {
 void getstatic (Frame * frame) {
   cout << "getstatic" << endl;
 
-  frame->pc++;
-  u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
-  frame->pc++;
-  u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
+  u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
 
   u2 index = (first_bytes << 8) | second_bytes;  
 
@@ -1602,26 +1744,17 @@ void getstatic (Frame * frame) {
 
 
   //se o class name for <java/lang/System> pular o frame e continuar a vida
-  if(!frame->methodAreaItem->getUtf8(class_index).compare("java/lang/System")){
+  if(frame->methodAreaItem->getUtf8(class_index) == "java/lang/System"){
     cout << "é um getstatic para o System.class " << endl;
-    
-    // cout << "pulando o pc de " << frame->pc << " para " << frame->pc + 6 <<  endl;
-
-    //pegar o ldc
-    frame->pc++;
-    frame->pc++;
-    u1 string_index  = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
-    
-    string string_to_print = frame->methodAreaItem->getUtf8(string_index);
-    cout << "Print -> "<<  string_to_print << endl;
-
-    frame->pc += 4;
+    // nao fazer nada
   }
-
-  // se for uma chamada a uma classe já implementada
-  else{
-    frame->pc++;
+  else {
+    // outras classes
+    // Precisa procurar o nome da classe no pool de constantes, se não tiver, loadar a classe
+    // precisa procurar o field estático na classe carregada
+    // precisa colocar o field na pilha de operandos
   }
+  frame->pc += 3;
 }
 
 void putstatic (Frame * frame) {
@@ -1645,6 +1778,39 @@ void putfield (Frame * frame) {
 
 void invokevirtual (Frame * frame) {
   cout << "invokevirtual" << endl;
+
+  u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+
+  u2 index = (first_bytes << 8) | second_bytes;  
+
+  cp_info * method_ref = frame->methodAreaItem->getConstantPoolItem(index);
+  string className = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.class_index);
+
+  if(className == "java/io/PrintStream") {
+    JvmValue value = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    switch (value.type) {
+      case INT:
+        cout << (int32_t) value.data << endl;
+        break;
+      case FLOAT:
+        // TODO: printar float
+        cout << "u4: " << value.data << endl;
+        break;
+      case STRING:
+      {
+        string output = frame->methodAreaItem->getUtf8(value.data);
+        cout << output << endl;
+        break;
+      }
+      default:
+        cout << "Tipo não suportado" << endl;
+        break;
+    }
+  }
+
   frame->pc += 3;
 }
 
