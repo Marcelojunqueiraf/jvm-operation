@@ -251,11 +251,7 @@ pair<u4, u4> longToU8(int64_t value) {
   u4 low = (u4) value;
   u4 high = (u4) (value >> 32);
 
-
-  pair<u4, u4> result;
-  result.first = low;
-  result.second = high;
-  return result;
+  return {low, high};
 }
 
 u4 floatToU4(float value) {
@@ -333,7 +329,9 @@ pair<u4,u4> doubleToU8(double value) {
 
   u8 result = ((u8) sinal << 63) | ((u8) expoente << 52) | ((u8) (mantissa * pow(2, 52)));
 
-  return {result & 0xffffffff, result >> 32};
+  u4 low = result & 0xffffffff;
+  u4 high = result >> 32;
+  return {low, high};
 }
 
 #pragma endregion
@@ -1255,15 +1253,14 @@ void i2l (Frame * frame) {
   frame->operandStack.pop();
   value.type = LONG;
 
-  int32_t integer = value.data;
+  
+  int32_t integer = u4ToInt(value.data);
   int64_t longInteger = integer;
   cout << "i2l " << integer << " -> " << longInteger << endl;
 
-  JvmValue highValue, lowValue;
-  highValue.type = LONG;
-  highValue.data = longInteger >> 32;
-  lowValue.type = LONG;
-  lowValue.data = longInteger;
+  auto [low, high] = longToU8(longInteger);
+  JvmValue highValue = {LONG, high};
+  JvmValue lowValue = {LONG, low};
 
   frame->operandStack.push(highValue);
   frame->operandStack.push(lowValue);
@@ -1275,14 +1272,13 @@ void i2f (Frame * frame) {
   JvmValue value = frame->operandStack.top();
   frame->operandStack.pop();
 
-  int32_t integer = value.data;
+  int32_t integer = u4ToInt(value.data);
   float _float = integer;
-  cout << "i2f " << integer << " -> " << _float << " (0x" << hex << (union { float d; uint32_t u; }) {_float} .u << dec << ')' << endl;
+  u4 floatBits = floatToU4(_float);
+  cout << "i2f " << integer << " -> " << _float << " (0x" << hex << floatBits << dec << ')' << endl;
 
-  value.type = FLOAT;
-  value.data = _float;
-
-  frame->operandStack.push(value);
+  JvmValue new_value = {FLOAT, _float};
+  frame->operandStack.push(new_value);
 
   frame->pc += 1;
 }
@@ -1291,50 +1287,72 @@ void i2d (Frame * frame) {
   JvmValue value = frame->operandStack.top();
   frame->operandStack.pop();
 
-  int32_t integer = value.data;
+  int32_t integer = u4ToInt(value.data);
   double _double = integer;
-  cout << "i2d " << integer << " -> " << _double << " (0x" << hex << (union { double d; uint64_t u; }) {_double} .u << dec << ')' << endl;
+  auto [low, high] = doubleToU8(_double);
+  cout << "i2d " << integer << " -> " << _double << " (0x" << hex << high << low << dec << ")" << endl;
 
-  value.type = DOUBLE;
-  value.data = _double;
+  JvmValue highValue = {DOUBLE, high};
+  JvmValue lowValue = {DOUBLE, low};
 
-  // JvmValue highValue, lowValue;
-  // highValue.type = LONG;
-  // highValue.data = longUInteger >> 32;
-  // lowValue.type = LONG;
-  // lowValue.data = longUInteger;
-
-  frame->operandStack.push(value);
+  frame->operandStack.push(highValue);
+  frame->operandStack.push(lowValue);
 
   frame->pc += 1;
 }
 
 void l2i (Frame * frame) {
+  cout << "l2i" << endl;
   JvmValue highValue, lowValue;
   lowValue = frame->operandStack.top();
   frame->operandStack.pop();
   highValue = frame->operandStack.top();
   frame->operandStack.pop();
 
-  int32_t integer = lowValue.data;
+  int32_t integer = u4ToInt(lowValue.data);
   cout << "l2i " << hex << highValue.data << ' ' << lowValue.data << dec << " -> " << integer << endl;
 
-  JvmValue value;
-  value.type = INT;
-  value.data = integer;
-
+  JvmValue value = {INT, integer};
   frame->operandStack.push(value);
 
   frame->pc += 1;
 }
 
 void l2f (Frame * frame) {
-  cout << "l2f" << endl;
+  JvmValue highValue, lowValue;
+  lowValue = frame->operandStack.top();
+  frame->operandStack.pop();
+  highValue = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  int64_t longInteger = u4ToLong(lowValue.data, highValue.data);
+  float _float = longInteger;
+  cout << "l2f " << longInteger << " -> " << _float << endl;
+
+  JvmValue value = {FLOAT, floatToU4(_float)};
+  frame->operandStack.push(value);
+
   frame->pc += 1;
 }
 
 void l2d (Frame * frame) {
-  cout << "l2d" << endl;
+  JvmValue highValue, lowValue;
+  lowValue = frame->operandStack.top();
+  frame->operandStack.pop();
+  highValue = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  int64_t longInteger = u4ToLong(lowValue.data, highValue.data);
+  double _double = longInteger;
+  cout << "l2d " << longInteger << " -> " << _double << endl;
+
+  auto [low, high] = doubleToU8(_double);
+  JvmValue highValue = {DOUBLE, high};
+  JvmValue lowValue = {DOUBLE, low};
+
+  frame->operandStack.push(highValue);
+  frame->operandStack.push(lowValue);
+
   frame->pc += 1;
 }
 
@@ -1342,15 +1360,12 @@ void f2i (Frame * frame) {
   JvmValue value = frame->operandStack.top();
   frame->operandStack.pop();
 
-  float _float;
-  memcpy(&_float, &value.data, sizeof(float));
+  float _float = u4ToFloat(value.data);
   int32_t integer = _float;
   cout << "f2i " << ' ' << _float << " -> " << integer << endl;
 
-  value.type = INT;
-  value.data = integer;
-
-  frame->operandStack.push(value);
+  JvmValue new_value = {INT, integer};
+  frame->operandStack.push(new_value);
 
   frame->pc += 1;
 }
@@ -1359,16 +1374,13 @@ void f2l (Frame * frame) {
   JvmValue value = frame->operandStack.top();
   frame->operandStack.pop();
 
-  float _float;
-  memcpy(&_float, &value.data, sizeof(float));
+  float _float = u4ToFloat(value.data);
   int64_t longInteger = _float;
   cout << "f2l " << ' ' << _float << " -> " << longInteger << endl;
 
-  JvmValue highValue, lowValue;
-  highValue.type = LONG;
-  highValue.data = longInteger >> 32;
-  lowValue.type = LONG;
-  lowValue.data = longInteger;
+  auto [low, high] = longToU8(longInteger);
+  JvmValue highValue = {LONG, low};
+  JvmValue lowValue = {LONG, high};
 
   frame->operandStack.push(highValue);
   frame->operandStack.push(lowValue);
@@ -1377,7 +1389,20 @@ void f2l (Frame * frame) {
 }
 
 void f2d (Frame * frame) {
-  cout << "f2d" << endl;
+  JvmValue value = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  float _float = u4ToFloat(value.data);
+  double _double = _float;
+  cout << "f2d " << _float << " -> " << _double << endl;
+
+  auto [low, high] = doubleToU8(_double);
+  JvmValue highValue = {DOUBLE, high};
+  JvmValue lowValue = {DOUBLE, low};
+
+  frame->operandStack.push(highValue);
+  frame->operandStack.push(lowValue);
+
   frame->pc += 1;
 }
 
@@ -1400,14 +1425,12 @@ void i2b (Frame * frame) {
   JvmValue value = frame->operandStack.top();
   frame->operandStack.pop();
 
-  int32_t integer = value.data;
+  int32_t integer = u4ToInt(value.data);
   int8_t byte = integer; // truncate and sign extension to u4
-  cout << "i2b " << integer << " -> " << (int) byte << endl;
+  cout << "i2b " << integer << " -> " << hex << (int) byte << dec << endl;
 
-  value.type = BYTE;
-  value.data = byte;
-
-  frame->operandStack.push(value);
+  JvmValue new_value = {BYTE, byte};
+  frame->operandStack.push(new_value);
 
   frame->pc += 1;
 }
@@ -1416,14 +1439,12 @@ void i2c (Frame * frame) {
   JvmValue value = frame->operandStack.top();
   frame->operandStack.pop();
 
-  int32_t integer = value.data;
+  int32_t integer = u4ToInt(value.data);
   uint16_t _char = integer; // truncate and zero extension to u4
   cout << "i2c " << integer << " -> '" << (char) _char << "'" << endl;
 
-  value.type = CHAR;
-  value.data = _char;
-
-  frame->operandStack.push(value);
+  JvmValue new_value = {CHAR, _char};
+  frame->operandStack.push(new_value);
 
   frame->pc += 1;
 }
@@ -1436,10 +1457,8 @@ void i2s (Frame * frame) {
   int16_t _short = integer; // truncate and sign extension to u4
   cout << "i2s " << integer << " -> " << _short << endl;
 
-  value.type = SHORT;
-  value.data = _short;
-
-  frame->operandStack.push(value);
+  JvmValue new_value = {SHORT, _short};
+  frame->operandStack.push(new_value);
 
   frame->pc += 1;
 }
