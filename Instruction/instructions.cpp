@@ -616,8 +616,7 @@ void ldc (Frame * frame) {
       value.data = c->constant_type_union.String.string_index;
       break;
     default:
-      cout << "tipo não reconhecido" << endl;
-      exit(1);
+      throw std::runtime_error("tipo não reconhecido");
   }
   frame->operandStack.push(value);
   DCOUT << "valor empilhado: " << frame->operandStack.top().data << endl;
@@ -654,8 +653,7 @@ void ldc_w (Frame * frame) {
       value.data = c->constant_type_union.String.string_index;
       break;
     default:
-      cout << "tipo não reconhecido" << endl;
-      exit(1);
+      throw std::runtime_error("tipo não reconhecido");
       break;
   }
   frame->operandStack.push(value);
@@ -694,8 +692,7 @@ void ldc2_w (Frame * frame) {
       low_value.data = c->constant_type_union.Long.low_bytes;
       break;
     default:
-      cout << "tipo não reconhecido" << endl;
-      exit(1);
+      throw std::runtime_error("tipo não reconhecido");
       break;
   }
 
@@ -1152,8 +1149,7 @@ void pop (Frame * frame) {
   if (getCategory(value.type) == 1) {
     frame->operandStack.pop();
   } else {
-    cout << "pop não ocorreu" << endl;
-    exit(1);
+      throw std::runtime_error("pop não aconteceu");
   }
   frame->pc += 1;
 }
@@ -1167,8 +1163,7 @@ void pop2 (Frame * frame) {
     frame->operandStack.pop();
   } else {
     frame->operandStack.push(value1);
-    cout << "pop2 não ocorreu" << endl;
-    exit(1);
+    throw std::runtime_error("pop não aconteceu");
   }
   frame->pc += 1;
 }
@@ -1246,28 +1241,24 @@ T calculate(T first, T second, Operation op) {
                 result = first & second;
                 break;
             } else {
-                cout << "operacao sem suporte para tipos nao inteiros" << endl;
-                exit(1);
+                throw std::runtime_error("operacao sem suporte para tipos nao inteiros");
             }
         case OR:
             if constexpr (std::is_integral_v<T>) {
                 result = first | second;
                 break;
             } else {
-                cout << "operacao sem suporte para tipos nao inteiros" << endl;
-                exit(1);
+                throw std::runtime_error("operacao sem suporte para tipos nao inteiros");
             }
         case XOR:
             if constexpr (std::is_integral_v<T>) {
                 result = first ^ second;
                 break;
             } else {
-                cout << "operacao sem suporte para tipos nao inteiros" << endl;
-                exit(1);
+                throw std::runtime_error("operacao sem suporte para tipos nao inteiros");
             }
         default:
-            cout << "operacao nao implementada" << endl;
-            exit(1);
+            throw std::runtime_error("operacao nao implementada");
     }
 
     return result;
@@ -1703,34 +1694,83 @@ void dcmpg (Frame * frame) {
 
 #pragma region if
 
+void branch (Frame * frame) {
+
+  int16_t offset = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1] << 8 |
+                   frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
+  frame->pc += offset;
+}
+
 void ifeq (Frame * frame) {
   DCOUT << "ifeq" << endl;
-  frame->pc += 3;
+  JvmValue value = frame->operandStack.top();
+  if (value.type != INT) {
+    throw std::runtime_error("operand is not an integer");
+  }
+  if (value.data == 0)
+    branch(frame);
+  else
+    frame->pc += 3;
 }
 
 void ifne (Frame * frame) {
   DCOUT << "ifne" << endl;
-  frame->pc += 3;
+  JvmValue value = frame->operandStack.top();
+  if (value.type != INT) {
+    throw std::runtime_error("operand is not an integer");
+  }
+  if (value.data != 0)
+    branch(frame);
+  else
+    frame->pc += 3;
 }
 
 void iflt (Frame * frame) {
   DCOUT << "iflt" << endl;
-  frame->pc += 3;
+  JvmValue value = frame->operandStack.top();
+  if (value.type != INT) {
+    throw std::runtime_error("operand is not an integer");
+  }
+  if (u4ToInt(value.data) < 0)
+    branch(frame);
+  else
+    frame->pc += 3;
 }
 
 void ifge (Frame * frame) {
   DCOUT << "ifge" << endl;
-  frame->pc += 3;
+  JvmValue value = frame->operandStack.top();
+  if (value.type != INT) {
+    throw std::runtime_error("operand is not an integer");
+  }
+  if (u4ToInt(value.data) >= 0)
+    branch(frame);
+  else
+    frame->pc += 3;
 }
 
 void ifgt (Frame * frame) {
   DCOUT << "ifgt" << endl;
-  frame->pc += 3;
+  JvmValue value = frame->operandStack.top();
+  if (value.type != INT) {
+    throw std::runtime_error("operand is not an integer");
+  }
+  if (u4ToInt(value.data) > 0)
+    branch(frame);
+  else
+    frame->pc += 3;
 }
 
 void ifle (Frame * frame) {
   DCOUT << "ifle" << endl;
-  frame->pc += 3;
+  JvmValue value = frame->operandStack.top();
+  if (value.type != INT) {
+    throw std::runtime_error("operand is not an integer");
+  }
+  if (u4ToInt(value.data) <= 0)
+    branch(frame);
+  else
+    frame->pc += 3;
 }
 
 void if_icmpeq (Frame * frame) {
@@ -2175,8 +2215,7 @@ void impdep2 (Frame * frame) {
 #pragma endregion
 
 void notSupported() {
-  cout << "Instrução não suportada" << endl;
-  exit(1);
+  throw std::runtime_error("Instrução não suportada");
 }
 
 #pragma endregion
