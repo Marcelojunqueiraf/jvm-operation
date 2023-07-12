@@ -1,4 +1,4 @@
-TARGET = jvm
+TARGET = exec
 FLAGS = -Wall -std=c++17 -lm
 LEITOR = ./leitor/leitor.cpp ./leitor/utf8.cpp 
 EXTRA = FrameStack/frameStack.cpp JVM/jvm.cpp MethodArea/methodArea.cpp Instruction/instructions.cpp
