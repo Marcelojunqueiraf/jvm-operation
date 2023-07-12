@@ -1138,7 +1138,10 @@ enum Operation {
   ADD,
   SUB,
   MUL,
-  DIV
+  DIV,
+  AND,
+  OR,
+  XOR,
 };
 
 template<typename T>
@@ -1158,10 +1161,38 @@ T calculate(T first, T second, Operation op) {
         case DIV:
             result = first / second;
             break;
+        case AND:
+            if constexpr (std::is_integral_v<T>) {
+                result = first & second;
+                break;
+            } else {
+                cout << "operacao sem suporte para tipos nao inteiros" << endl;
+                exit(1);
+            }
+        case OR:
+            if constexpr (std::is_integral_v<T>) {
+                result = first | second;
+                break;
+            } else {
+                cout << "operacao sem suporte para tipos nao inteiros" << endl;
+                exit(1);
+            }
+        case XOR:
+            if constexpr (std::is_integral_v<T>) {
+                result = first ^ second;
+                break;
+            } else {
+                cout << "operacao sem suporte para tipos nao inteiros" << endl;
+                exit(1);
+            }
+        default:
+            cout << "operacao nao implementada" << endl;
+            exit(1);
     }
 
     return result;
 }
+
 
 void operate(Frame * frame, Operation op, PrimitiveType type) {
   JvmValue first = frame->operandStack.top();
@@ -1433,11 +1464,13 @@ void lushr (Frame * frame) {
 
 void iand (Frame * frame) {
   DCOUT << "iand" << endl;
+  operate(frame, AND, INT);
   frame->pc += 1;
 }
 
 void land (Frame * frame) {
   DCOUT << "land" << endl;
+  operateW(frame, AND, LONG);
   frame->pc += 1;
 }
 
@@ -1447,11 +1480,13 @@ void land (Frame * frame) {
 
 void ior (Frame * frame) {
   DCOUT << "ior" << endl;
+  operate(frame, OR, INT);
   frame->pc += 1;
 }
 
 void lor (Frame * frame) {
   DCOUT << "lor" << endl;
+  operateW(frame, OR, LONG);
   frame->pc += 1;
 }
 
@@ -1461,11 +1496,13 @@ void lor (Frame * frame) {
 
 void ixor (Frame * frame) {
   DCOUT << "ixor" << endl;
+  operate(frame, XOR, INT);
   frame->pc += 1;
 }
 
 void lxor (Frame * frame) {
   DCOUT << "lxor" << endl;
+  operateW(frame, XOR, LONG);
   frame->pc += 1;
 }
 
