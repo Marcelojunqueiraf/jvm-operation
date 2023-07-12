@@ -1733,7 +1733,7 @@ void f2d (Frame * frame) {
   float _float = u4ToFloat(value.data);
   double _double = _float;
   auto [low, high] = doubleToU8(_double);
-  DCOUT << "f2d " << _float << " -> " << _double << " (0x" << hex << high << low << dec << ")" << endl;
+  DCOUT << "f2d " << _float << " (0x" << hex << value.data << dec << ") -> " << _double << " (0x" << hex << high << low << dec << ")" << endl;
 
   JvmValue highValue = {DOUBLE, high};
   JvmValue lowValue = {DOUBLE, low};
