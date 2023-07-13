@@ -1,5 +1,6 @@
 #include "frameStack.hpp"
 
+// Frame
 
 stack<Frame> FrameStack::data = stack<Frame>();
 
@@ -15,6 +16,31 @@ Frame::Frame(Method_info * method_info, MethodAreaItem * methodAreaItem) {
   this->methodAreaItem = methodAreaItem;
   this->pc = 0;
 }
+
+JvmValue Frame::popOperandStack() {
+  JvmValue value = this->operandStack.top();
+  this->operandStack.pop();
+  return value;
+}
+
+void Frame::pushOperandStack(JvmValue value) {
+  this->operandStack.push(value);
+}
+
+pair<JvmValue, JvmValue> Frame::popWideOperandStack() {
+  JvmValue low = this->operandStack.top();
+  this->operandStack.pop();
+  JvmValue high = this->operandStack.top();
+  this->operandStack.pop();
+  return {low, high};
+}
+
+void Frame::pushWideOperandStack(JvmValue low, JvmValue high) {
+  this->operandStack.push(high);
+  this->operandStack.push(low);
+} 
+
+// FrameStack
 
 void FrameStack::pop(){
   this->data.pop();
