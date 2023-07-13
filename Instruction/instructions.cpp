@@ -2017,10 +2017,8 @@ void _goto (Frame * frame) {
   
   u1 start_pc = frame->pc;
   
-  frame->pc++;
-  u1 first_brach_byte = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
-  frame->pc++;
-  u1 second_brach_byte = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc];
+  u1 first_brach_byte = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 second_brach_byte = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
 
   u4 branchoffset = (first_brach_byte << 8) | second_brach_byte;
 
