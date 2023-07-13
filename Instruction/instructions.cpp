@@ -1897,105 +1897,183 @@ void branch (Frame * frame) {
 }
 
 void ifeq (Frame * frame) {
-  DCOUT << "ifeq" << endl;
   JvmValue value = frame->operandStack.top();
+  frame->operandStack.pop();
+  
   if (value.type != INT) {
     throw std::runtime_error("operand is not an integer");
   }
-  if (value.data == 0)
-    branch(frame);
-  else
-    frame->pc += 3;
+  
+  DCOUT << "ifeq " << u4ToInt(value.data) << " == " << 0 << endl;
+  if (u4ToInt(value.data) == 0) branch(frame);
+  else frame->pc += 3;
 }
 
 void ifne (Frame * frame) {
-  DCOUT << "ifne" << endl;
   JvmValue value = frame->operandStack.top();
+  frame->operandStack.pop();
+  
   if (value.type != INT) {
     throw std::runtime_error("operand is not an integer");
   }
-  if (value.data != 0)
-    branch(frame);
-  else
-    frame->pc += 3;
+  
+  DCOUT << "ifne " << u4ToInt(value.data) << " != " << 0 << endl;
+  if (u4ToInt(value.data) != 0) branch(frame);
+  else frame->pc += 3;
 }
 
 void iflt (Frame * frame) {
-  DCOUT << "iflt" << endl;
   JvmValue value = frame->operandStack.top();
+  frame->operandStack.pop();
+  
   if (value.type != INT) {
     throw std::runtime_error("operand is not an integer");
   }
-  if (u4ToInt(value.data) < 0)
-    branch(frame);
-  else
-    frame->pc += 3;
+  
+  DCOUT << "iflt " << u4ToInt(value.data) << " < " << 0 << endl;
+  if (u4ToInt(value.data) < 0) branch(frame);
+  else frame->pc += 3;
 }
 
 void ifge (Frame * frame) {
-  DCOUT << "ifge" << endl;
   JvmValue value = frame->operandStack.top();
+  frame->operandStack.pop();
+  
   if (value.type != INT) {
     throw std::runtime_error("operand is not an integer");
   }
-  if (u4ToInt(value.data) >= 0)
-    branch(frame);
-  else
-    frame->pc += 3;
+  
+  DCOUT << "ifge " << u4ToInt(value.data) << " >= " << 0 << endl;
+  if (u4ToInt(value.data) >= 0) branch(frame);
+  else frame->pc += 3;
 }
 
 void ifgt (Frame * frame) {
-  DCOUT << "ifgt" << endl;
   JvmValue value = frame->operandStack.top();
+  frame->operandStack.pop();
+  
   if (value.type != INT) {
     throw std::runtime_error("operand is not an integer");
   }
-  if (u4ToInt(value.data) > 0)
-    branch(frame);
-  else
-    frame->pc += 3;
+  
+  DCOUT << "ifgt " << u4ToInt(value.data) << " > " << 0 << endl;
+  if (u4ToInt(value.data) > 0) branch(frame);
+  else frame->pc += 3;
 }
 
 void ifle (Frame * frame) {
-  DCOUT << "ifle" << endl;
   JvmValue value = frame->operandStack.top();
+  frame->operandStack.pop();
+  
   if (value.type != INT) {
     throw std::runtime_error("operand is not an integer");
   }
-  if (u4ToInt(value.data) <= 0)
-    branch(frame);
-  else
-    frame->pc += 3;
+  
+  DCOUT << "ifle " << u4ToInt(value.data) << " <= " << 0 << endl;
+  if (u4ToInt(value.data) <= 0) branch(frame);
+  else frame->pc += 3;
 }
 
 void if_icmpeq (Frame * frame) {
-  DCOUT << "if_icmpeq" << endl;
-  frame->pc += 3;
+  JvmValue second = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue first = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  if (first.type != INT || second.type != INT) {
+    throw std::runtime_error("operand is not an integer");
+  }
+
+  int32_t v1 = u4ToInt(first.data), v2 = u4ToInt(second.data);
+  DCOUT << "if_icmpeq " << v1 << " == " << v2 << endl;
+
+  if (v1 == v2) branch(frame);
+  else frame->pc += 3;
 }
 
 void if_icmpne (Frame * frame) {
-  DCOUT << "if_icmpne" << endl;
-  frame->pc += 3;
+  JvmValue second = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue first = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  if (first.type != INT || second.type != INT) {
+    throw std::runtime_error("operand is not an integer");
+  }
+
+  int32_t v1 = u4ToInt(first.data), v2 = u4ToInt(second.data);
+  DCOUT << "if_icmpne " << v1 << " != " << v2 << endl;
+
+  if (v1 != v2) branch(frame);
+  else frame->pc += 3;
 }
 
 void if_icmplt (Frame * frame) {
-  DCOUT << "if_icmplt" << endl;
-  frame->pc += 3;
+  JvmValue second = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue first = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  if (first.type != INT || second.type != INT) {
+    throw std::runtime_error("operand is not an integer");
+  }
+
+  int32_t v1 = u4ToInt(first.data), v2 = u4ToInt(second.data);
+  DCOUT << "if_icmplt " << v1 << " < " << v2 << endl;
+
+  if (v1 < v2) branch(frame);
+  else frame->pc += 3;
 }
 
 void if_icmpge (Frame * frame) {
-  DCOUT << "if_icmpge" << endl;
-  frame->pc += 3;
+  JvmValue second = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue first = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  if (first.type != INT || second.type != INT) {
+    throw std::runtime_error("operand is not an integer");
+  }
+
+  int32_t v1 = u4ToInt(first.data), v2 = u4ToInt(second.data);
+  DCOUT << "if_icmpge " << v1 << " >= " << v2 << endl;
+
+  if (v1 >= v2) branch(frame);
+  else frame->pc += 3;
 }
 
 void if_icmpgt (Frame * frame) {
-  DCOUT << "if_icmpgt" << endl;
-  frame->pc += 3;
+  JvmValue second = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue first = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  if (first.type != INT || second.type != INT) {
+    throw std::runtime_error("operand is not an integer");
+  }
+
+  int32_t v1 = u4ToInt(first.data), v2 = u4ToInt(second.data);
+  DCOUT << "if_icmpgt " << v1 << " > " << v2 << endl;
+
+  if (v1 > v2) branch(frame);
+  else frame->pc += 3;
 }
 
 void if_icmple (Frame * frame) {
-  DCOUT << "if_icmple" << endl;
-  frame->pc += 3;
+  JvmValue second = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue first = frame->operandStack.top();
+  frame->operandStack.pop();
+
+  if (first.type != INT || second.type != INT) {
+    throw std::runtime_error("operand is not an integer");
+  }
+
+  int32_t v1 = u4ToInt(first.data), v2 = u4ToInt(second.data);
+  DCOUT << "if_icmple " << v1 << " <= " << v2 << endl;
+
+  if (v1 <= v2) branch(frame);
+  else frame->pc += 3;
 }
 
 void if_acmpeq (Frame * frame) {
