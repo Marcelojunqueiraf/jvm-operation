@@ -1274,9 +1274,9 @@ T calculate(T first, T second, Operation op) {
 
 
 void operate(Frame * frame, Operation op, PrimitiveType type) {
-  JvmValue first = frame->operandStack.top();
-  frame->operandStack.pop();
   JvmValue second = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue first = frame->operandStack.top();
   frame->operandStack.pop();
 
   u4 result = 0;
@@ -1305,13 +1305,13 @@ void operate(Frame * frame, Operation op, PrimitiveType type) {
 }
 
 void operateW(Frame * frame, Operation op, PrimitiveType type) {
-  JvmValue firstLower = frame->operandStack.top();
-  frame->operandStack.pop();
-  JvmValue firstUpper = frame->operandStack.top();
-  frame->operandStack.pop();
   JvmValue secondLower = frame->operandStack.top();
   frame->operandStack.pop();
   JvmValue secondUpper = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue firstLower = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue firstUpper = frame->operandStack.top();
   frame->operandStack.pop();
 
   pair<u4, u4> result = {0,0};
