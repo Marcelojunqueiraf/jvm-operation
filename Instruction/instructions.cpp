@@ -1592,7 +1592,7 @@ void iinc (Frame * frame) {
   u1 _const = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
 
   int32_t _const_signed = (int8_t) _const;
-  DCOUT << "iinc " << frame->localVariables[index].data << " += " << _const_signed << endl;
+  DCOUT << "iinc " << u4ToInt(frame->localVariables[index].data) << " += " << _const_signed << endl;
   frame->localVariables[index].data += _const_signed;
   
   frame->pc += 3;
