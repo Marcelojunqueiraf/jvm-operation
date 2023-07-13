@@ -383,12 +383,9 @@ void load(int index, Frame * frame) {
 }
 
 void loadWide(int index, Frame * frame) {
-  // FIXME: use pushWideOperandStack
-  // JvmValue jvmValueLowBytes = frame->localVariables[index];
-  // JvmValue jvmValueHighBytes = frame->localVariables[index + 1];
-  // frame->pushWideOperandStack(jvmValueLowBytes, jvmValueHighBytes);
-    frame->operandStack.push(frame->localVariables[index]);
-    frame->operandStack.push(frame->localVariables[index + 1]);
+  JvmValue jvmValueHighBytes = frame->localVariables[index];
+  JvmValue jvmValueLowBytes = frame->localVariables[index + 1];
+  frame->pushWideOperandStack(jvmValueLowBytes, jvmValueHighBytes);
 }
 
 void store(int index, Frame * frame, JvmValue jvmValue) {
@@ -402,10 +399,10 @@ void storeFromStack(int index, Frame * frame) {
 }
 
 void storeFromStackWide(int index, Frame * frame) {
-  auto [jvm_value_low_bytes, jvm_value_high_bytes] = frame->popWideOperandStack();
+  auto [jvmValueLowBytes, jvmValueHighBytes] = frame->popWideOperandStack();
 
-  store(index, frame, jvm_value_high_bytes);
-  store(index + 1, frame, jvm_value_low_bytes);
+  store(index, frame, jvmValueHighBytes);
+  store(index + 1, frame, jvmValueLowBytes);
 }
 
 int getCategory(PrimitiveType type) {
@@ -2125,7 +2122,7 @@ void tableswitch (Frame * frame) {
           break;
       }
       
-      printf("\t\t%d: %d (+%d)\n", i + 1, jump_bytes, bytes);
+      DCOUT << "\t\t" << i + 1 << ": " << jump_bytes << " (+" << bytes << ")" << endl;
   };
 
 }
