@@ -2568,6 +2568,21 @@ void invokedynamic (Frame * frame) {
 
 void _new (Frame * frame) {
   DCOUT << "new" << endl;
+  u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+  u4 index = (high_bytes << 8) | low_bytes;
+
+  cp_info * classRef = frame->methodAreaItem->getConstantPoolItem(index);
+  string classname = frame->methodAreaItem->getUtf8(classRef->constant_type_union.Class_info.name_index);
+
+  DCOUT << classname << endl;
+
+  MethodArea  * methodAreaRef = frame->methodAreaItem->getMethodArea();
+  MethodAreaItem * classMethodAreaItem = methodAreaRef->getMethodAreaItem(classname);
+
+  // TODO: criar a instância
+  // TODO: colocar a referência da instância na pilha de operandos
+
   frame->pc += 3;
 }
 

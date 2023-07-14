@@ -35,12 +35,12 @@ ClassFile * MethodArea::loadClassFromPath(string path) {
 }
 
 void MethodArea::insert (MethodAreaItem * methodAreaItem) {
-  this->data.push_back(methodAreaItem);
+  this->methodItems.push_back(methodAreaItem);
 }
 
 MethodAreaItem * MethodArea::getMethodAreaItem (string className) {
   // check if class is already loaded
-  for (auto methodAreaItem : this->data) {
+  for (auto methodAreaItem : this->methodItems) {
     if (methodAreaItem->getClassName() == className) {
       return methodAreaItem;
     }

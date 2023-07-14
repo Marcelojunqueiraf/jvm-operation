@@ -32,7 +32,7 @@ class MethodAreaItem {
 
 class MethodArea {
   private:
-    vector<MethodAreaItem *> data;
+    vector<MethodAreaItem *> methodItems;
     // tabela de nomes e paths aqui
     ClassFile * loadClass(string className);
     ClassFile * loadClassFromPath(string className);
