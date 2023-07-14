@@ -11,7 +11,7 @@ Frame::Frame(Method_info * method_info, MethodAreaItem * methodAreaItem) {
 
   stack<JvmValue> operandStack;
   this->operandStack = operandStack;
-  
+
   this->method_info = method_info;
   this->methodAreaItem = methodAreaItem;
   this->pc = 0;

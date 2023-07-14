@@ -31,7 +31,8 @@ public:
   void pop();
   Frame * top();
   void push(Frame frame);
-  int getStackSize();
+  int getStackSize(); 
+  // criar invoke 
 };
 
 #endif

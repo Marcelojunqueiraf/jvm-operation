@@ -2294,6 +2294,40 @@ void invokespecial (Frame * frame) {
 
 void invokestatic (Frame * frame) {
   DCOUT << "invokestatic" << endl;
+  // 1. fazer a checagem para ver se a classe ja foi carregada com base no nome
+  //     1. foi? então acessa
+  //     2. não foi? então carrega e depois acessa
+  // 2. retira o metodo atual da pilha de frames e coloca o metodo do method_item criado na pilha 
+
+  //pegar o index para o pool
+  u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+
+  u2 index = (high_bytes << 8) | low_bytes;
+  
+  cp_info * method_ref = frame->methodAreaItem->getConstantPoolItem(index);
+
+  //pegar nome da classe
+  string static_class_name = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.class_index);
+  
+  //pegar nome do metodo
+  string static_method_name = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.name_and_type_index); 
+
+  // checar se a classe ja foi carregada na area de metodos, caso não existir, carregar
+  
+  MethodArea  * method_area_ref = frame->methodAreaItem->getMethodArea();
+
+  MethodAreaItem * static_class_method_area_item = method_area_ref->getMethodAreaItem(static_class_name);
+
+  Method_info * static_class_method =  static_class_method_area_item->getMethodByName(static_method_name);
+
+  // com o method em maos, criar um frame e depois de readicionar o frame atual na pilha, adicionar o frame em questão...
+
+  //fazer o invoke 
+  // pular o pc desse frame
+  // colocar esse frame devolta na pilha
+  // colocar o novo frame estatico na pilha
+
   frame->pc += 3;
 }
 
