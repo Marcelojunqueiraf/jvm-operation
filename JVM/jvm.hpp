@@ -34,7 +34,6 @@ class JVM {
     void initialize(string classPath);
     void run();
     int pushHeapItem(HeapItem * heapItem);
-    void invoke(Frame frame);
     void returnVoid();
     void returnValue(JvmValue);
     void returnValueWide(JvmValue low, JvmValue high);
