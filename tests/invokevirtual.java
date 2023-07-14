@@ -1,5 +1,8 @@
 class animal {
 
+  String nome = "cachorro";
+  String cor;
+
   animal() {
     System.out.println("constructor");
   }

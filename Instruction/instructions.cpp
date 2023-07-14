@@ -2493,10 +2493,14 @@ void invokevirtual (Frame * frame, JVM * jvm) {
 }
 
 void invokespecial (Frame * frame, JVM * jvm) {
-  
-
-
   DCOUT << "invokespecial" << endl;
+
+  // Method_info * initMethod = methodAreaItem->getInitMethod();
+  // Frame * initFrame = new Frame(initMethod, methodAreaItem);
+
+  // MethodArea * methodArea = methodAreaItem->getMethodArea();
+  // methodArea->invoke(*initFrame);
+
   frame->pc += 3;
 }
 
@@ -2571,8 +2575,13 @@ void _new (Frame * frame, JVM * jvm) {
   MethodArea  * methodAreaRef = frame->methodAreaItem->getMethodArea();
   MethodAreaItem * classMethodAreaItem = methodAreaRef->getMethodAreaItem(classname);
 
-  // TODO: criar a instância
-  // TODO: colocar a referência da instância na pilha de operandos
+  // iniciar fields com os valores default, acontecerá no init
+  HeapItem * heapItem = new HeapItem(classMethodAreaItem);
+  int heapIndex = jvm->pushHeapItem(heapItem);
+  
+  JvmValue value = {INT, intToU4(heapIndex)};
+  frame->pushOperandStack(value); // Objectref será o índice da instância na heap
+  DCOUT << "new " << classname << " -> " << heapIndex << endl;
 
   frame->pc += 3;
 }

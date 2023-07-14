@@ -20,8 +20,7 @@ ClassFile * MethodArea::loadClassFromPath(string path) {
   // abre o descritor de arquivo class file
   FILE *fd = fopen(path.c_str(), "rb");   
   if (fd == NULL) {
-    cout << "Erro ao abrir arquivo: " << path << endl;
-    exit(1);
+    throw std::runtime_error("Erro ao abrir arquivo: " + path);
   }
 
   // malloc de uma estrutura class file
@@ -50,7 +49,7 @@ MethodAreaItem * MethodArea::getMethodAreaItem (string className) {
   ClassFile * classfile = this->loadClass(className);
   MethodAreaItem * newClass = new MethodAreaItem(classfile, this);
   this->insert(newClass);
-  cout << "Classe " << className << ".class" <<" carregada na method area" <<endl;
+  DCOUT << "Classe " << className << ".class" <<" carregada na method area" <<endl;
   return newClass;
 }
 
@@ -81,9 +80,18 @@ string MethodAreaItem::getSuper() {
 Method_info * MethodAreaItem::getMainMethod() {
   auto method = this->getMethodByName("main");
   if (method == NULL) {
-    cout << "Method not found: " << this->getClassName() << ".main" << endl;
-    exit(1);
+    throw std::runtime_error("Method not found: " + this->getClassName() + ".main");
   }
+
+  return method;
+}
+
+Method_info * MethodAreaItem::getInitMethod() {
+  auto method = this->getMethodByName("<init>");
+  if (method == NULL) {
+    throw std::runtime_error("Method not found: " + this->getClassName() + ".<init>");
+  }
+
   return method;
 }
 
