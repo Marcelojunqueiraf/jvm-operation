@@ -50,10 +50,13 @@ void JVM::executeFrame(Frame * frame) {
 
   if (frame->pc < codeAtt->code_length) {
     DCOUT << "Executing instruction at pc: " << frame->pc << " stackSize: " << frame->operandStack.size() << endl;
-
+    
     u1 * opcode = codeAtt->code + frame->pc;
     this->executeInstruction(opcode, frame);
-  };
+  }
+  else{
+    this->returnVoid();
+  }
 }
 
 void JVM::invoke(Frame frame) {

@@ -2529,6 +2529,10 @@ void invokestatic (Frame * frame, JVM * jvm) {
 
   Method_info * static_class_method =  static_class_method_area_item->getMethodByName(static_method_name);
 
+  Frame * invokedFrame = new Frame(static_class_method, static_class_method_area_item);
+  
+  jvm->invoke(*invokedFrame);
+
   // com o method em maos, criar um frame e depois de readicionar o frame atual na pilha, adicionar o frame em questão...
 
   //fazer o invoke 
