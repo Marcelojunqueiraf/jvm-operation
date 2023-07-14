@@ -1227,7 +1227,10 @@ void pop2 (Frame * frame) {
 
 void dup (Frame * frame) {
   DCOUT << "dup" << endl;
-  notSupported();
+  JvmValue value = frame->popOperandStack();
+  frame->pushOperandStack(value);
+  frame->pushOperandStack(value);
+
   frame->pc += 1;
 }
 
