@@ -2,9 +2,14 @@
 #ifndef HEAP_H
 #define HEAP_H
 
+class HeapItem {
+  MethodAreaItem * methodAreaItem;
+};
+
+
 class Heap {
   private:
-    void * data;
+    HeapItem * heapItems;
 };
 
 #endif

@@ -477,19 +477,19 @@ void javaPrintln(Frame * frame, vector<string> argTypes) {
 
 #pragma region operations
 
-void nop (Frame * frame) {
+void nop (Frame * frame, JVM * jvm) {
   DCOUT << "nop" << endl;
   frame->pc += 1;
 }
 
 #pragma region const
 
-void aconst_null (Frame * frame) {
+void aconst_null (Frame * frame, JVM * jvm) {
   DCOUT << "aconst_null" << endl;
   frame->pc += 1;
 }
 
-void iconst_m1 (Frame * frame) {
+void iconst_m1 (Frame * frame, JVM * jvm) {
   DCOUT << "iconst_m1" << endl;
   
   iconst(-1, frame);
@@ -497,7 +497,7 @@ void iconst_m1 (Frame * frame) {
   frame->pc += 1;
 }
 
-void iconst_0 (Frame * frame) {
+void iconst_0 (Frame * frame, JVM * jvm) {
   DCOUT << "iconst_0" << endl;
 
   iconst(0, frame);
@@ -505,7 +505,7 @@ void iconst_0 (Frame * frame) {
   frame->pc += 1;
 }
 
-void iconst_1 (Frame * frame) {
+void iconst_1 (Frame * frame, JVM * jvm) {
   DCOUT << "iconst_1" << endl;
 
   iconst(1, frame);
@@ -513,7 +513,7 @@ void iconst_1 (Frame * frame) {
   frame->pc += 1;
 }
 
-void iconst_2 (Frame * frame) {
+void iconst_2 (Frame * frame, JVM * jvm) {
   DCOUT << "iconst_2" << endl;
   
   iconst(2, frame);
@@ -521,7 +521,7 @@ void iconst_2 (Frame * frame) {
   frame->pc += 1;
 }
 
-void iconst_3 (Frame * frame) {
+void iconst_3 (Frame * frame, JVM * jvm) {
   DCOUT << "iconst_3" << endl;
 
   iconst(3, frame);
@@ -529,7 +529,7 @@ void iconst_3 (Frame * frame) {
   frame->pc += 1;
 }
 
-void iconst_4 (Frame * frame) {
+void iconst_4 (Frame * frame, JVM * jvm) {
   DCOUT << "iconst_4" << endl;
   
   iconst(4, frame);
@@ -537,7 +537,7 @@ void iconst_4 (Frame * frame) {
   frame->pc += 1; 
 }
 
-void iconst_5 (Frame * frame) {
+void iconst_5 (Frame * frame, JVM * jvm) {
   DCOUT << "iconst_5" << endl;
   
   iconst(5, frame);
@@ -545,7 +545,7 @@ void iconst_5 (Frame * frame) {
   frame->pc += 1;
 }
 
-void lconst_0 (Frame * frame) {
+void lconst_0 (Frame * frame, JVM * jvm) {
   DCOUT << "lconst_0" << endl;
 
   //dar push primeiro no high
@@ -557,7 +557,7 @@ void lconst_0 (Frame * frame) {
   frame->pc += 1;
 }
 
-void lconst_1 (Frame * frame) {
+void lconst_1 (Frame * frame, JVM * jvm) {
   DCOUT << "lconst_1" << endl;
 
   //dar push primeiro no high
@@ -569,7 +569,7 @@ void lconst_1 (Frame * frame) {
   frame->pc += 1;
 }
 
-void fconst_0 (Frame * frame) {
+void fconst_0 (Frame * frame, JVM * jvm) {
   DCOUT << "fconst_0" << endl;
 
   fconst(0, frame);
@@ -577,7 +577,7 @@ void fconst_0 (Frame * frame) {
   frame->pc += 1;
 }
 
-void fconst_1 (Frame * frame) {
+void fconst_1 (Frame * frame, JVM * jvm) {
   DCOUT << "fconst_1" << endl;
 
   fconst(1, frame);
@@ -585,7 +585,7 @@ void fconst_1 (Frame * frame) {
   frame->pc += 1;
 }
 
-void fconst_2 (Frame * frame) {
+void fconst_2 (Frame * frame, JVM * jvm) {
   DCOUT << "fconst_2" << endl;
   
   fconst(2, frame);
@@ -593,17 +593,17 @@ void fconst_2 (Frame * frame) {
   frame->pc += 1;
 }
 
-void dconst_0 (Frame * frame) {
+void dconst_0 (Frame * frame, JVM * jvm) {
   DCOUT << "dconst_0" << endl;
 
-  dconst(0, frame);
+  dconst(0, frame); // FIXME: checa se isso ta certo
   
   dconst(0, frame);
 
   frame->pc += 1;
 }
 
-void dconst_1 (Frame * frame) {
+void dconst_1 (Frame * frame, JVM * jvm) {
   DCOUT << "dconst_1" << endl;
   
   dconst(1, frame);
@@ -617,7 +617,7 @@ void dconst_1 (Frame * frame) {
 
 #pragma region push
 
-void bipush (Frame * frame) {
+void bipush (Frame * frame, JVM * jvm) {
   DCOUT << "bipush" << endl;
   u1 bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   int8_t bytesSigned = bytes;
@@ -628,7 +628,7 @@ void bipush (Frame * frame) {
   frame->pc += 2;
 }
 
-void sipush (Frame * frame) {
+void sipush (Frame * frame, JVM * jvm) {
   DCOUT << "sipush" << endl;
   u1 bytes1 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   u1 bytes2 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
@@ -646,7 +646,7 @@ void sipush (Frame * frame) {
 
 #pragma region ldc
 
-void ldc (Frame * frame) {
+void ldc (Frame * frame, JVM * jvm) {
   DCOUT << "ldc" << endl;
   u1 id = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
@@ -677,7 +677,7 @@ void ldc (Frame * frame) {
   frame->pc += 2;
 }
 
-void ldc_w (Frame * frame) {
+void ldc_w (Frame * frame, JVM * jvm) {
   // esse é wide e só é usado para indice de constant pool grande
   DCOUT << "ldc_w" << endl;
 
@@ -716,7 +716,7 @@ void ldc_w (Frame * frame) {
   frame->pc += 3;
 }
 
-void ldc2_w (Frame * frame) {
+void ldc2_w (Frame * frame, JVM * jvm) {
   DCOUT << "ldc2_w" << endl;
 
   u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
@@ -760,198 +760,198 @@ void ldc2_w (Frame * frame) {
 
 #pragma region load
 
-void iload (Frame * frame) {
+void iload (Frame * frame, JVM * jvm) {
   DCOUT << "iload" << endl;
   u1 immediate = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   load(immediate, frame);
   frame->pc += 2;
 }
 
-void lload (Frame * frame) {
+void lload (Frame * frame, JVM * jvm) {
   DCOUT << "lload" << endl;
   u1 index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   loadWide(index, frame);
   frame->pc += 2;
 }
 
-void fload (Frame * frame) {
+void fload (Frame * frame, JVM * jvm) {
   DCOUT << "fload" << endl;
   u1 immediate = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   load(immediate, frame);
   frame->pc += 2;
 }
 
-void dload (Frame * frame) {
+void dload (Frame * frame, JVM * jvm) {
   DCOUT << "dload" << endl;
   u1 immediate = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   loadWide(immediate, frame);
   frame->pc += 2;
 }
 
-void aload (Frame * frame) {
+void aload (Frame * frame, JVM * jvm) {
   DCOUT << "aload" << endl;
   u1 immediate = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   load(immediate, frame);
   frame->pc += 2;
 }
 
-void iload_0 (Frame * frame) {
+void iload_0 (Frame * frame, JVM * jvm) {
   DCOUT << "iload_0" << endl;
   load(0, frame);
   frame->pc += 1;
 }
 
-void iload_1 (Frame * frame) {
+void iload_1 (Frame * frame, JVM * jvm) {
   DCOUT << "iload_1" << endl;
   load(1, frame);
   DCOUT << "topo da pilha é " << frame->operandStack.top().data << endl;
   frame->pc += 1;
 }
 
-void iload_2 (Frame * frame) {
+void iload_2 (Frame * frame, JVM * jvm) {
   DCOUT << "iload_2" << endl;
   load(2, frame);
   frame->pc += 1;
 }
 
-void iload_3 (Frame * frame) {
+void iload_3 (Frame * frame, JVM * jvm) {
   DCOUT << "iload_3" << endl;
   load(3, frame);
   frame->pc += 1;
 }
 
-void lload_0 (Frame * frame) {
+void lload_0 (Frame * frame, JVM * jvm) {
   DCOUT << "lload_0" << endl;
   loadWide(0, frame);
   frame->pc += 1;
 }
 
-void lload_1 (Frame * frame) {
+void lload_1 (Frame * frame, JVM * jvm) {
   DCOUT << "lload_1" << endl;
   loadWide(1, frame);
   frame->pc += 1;
 }
 
-void lload_2 (Frame * frame) {
+void lload_2 (Frame * frame, JVM * jvm) {
   DCOUT << "lload_2" << endl;
   loadWide(2, frame);
   frame->pc += 1;
 }
 
-void lload_3 (Frame * frame) {
+void lload_3 (Frame * frame, JVM * jvm) {
   DCOUT << "lload_3" << endl;
   loadWide(3, frame);
   frame->pc += 1;
 }
 
-void fload_0 (Frame * frame) {
+void fload_0 (Frame * frame, JVM * jvm) {
   DCOUT << "fload_0" << endl;
   load(0, frame);
   frame->pc += 1;
 }
 
-void fload_1 (Frame * frame) {
+void fload_1 (Frame * frame, JVM * jvm) {
   DCOUT << "fload_1" << endl;
   load(1, frame);
   frame->pc += 1;
 }
 
-void fload_2 (Frame * frame) {
+void fload_2 (Frame * frame, JVM * jvm) {
   DCOUT << "fload_2" << endl;
   load(2, frame);
   frame->pc += 1;
 }
 
-void fload_3 (Frame * frame) {
+void fload_3 (Frame * frame, JVM * jvm) {
   DCOUT << "fload_3" << endl;
   load(3, frame);
   frame->pc += 1;
 }
 
-void dload_0 (Frame * frame) {
+void dload_0 (Frame * frame, JVM * jvm) {
   DCOUT << "dload_0" << endl;
   loadWide(0, frame);
   frame->pc += 1;
 }
 
-void dload_1 (Frame * frame) {
+void dload_1 (Frame * frame, JVM * jvm) {
   DCOUT << "dload_1" << endl;
   loadWide(1, frame);
   frame->pc += 1;
 }
 
-void dload_2 (Frame * frame) {
+void dload_2 (Frame * frame, JVM * jvm) {
   DCOUT << "dload_2" << endl;
   loadWide(2, frame);
   frame->pc += 1;
 }
 
-void dload_3 (Frame * frame) {
+void dload_3 (Frame * frame, JVM * jvm) {
   DCOUT << "dload_3" << endl;
   loadWide(3, frame);
   frame->pc += 1;
 }
 
-void aload_0 (Frame * frame) {
+void aload_0 (Frame * frame, JVM * jvm) {
   DCOUT << "aload_0" << endl;
   load(0, frame);
   frame->pc += 1;
 }
 
-void aload_1 (Frame * frame) {
+void aload_1 (Frame * frame, JVM * jvm) {
   DCOUT << "aload_1" << endl;
   load(1, frame);
   frame->pc += 1;
 }
 
-void aload_2 (Frame * frame) {
+void aload_2 (Frame * frame, JVM * jvm) {
   DCOUT << "aload_2" << endl;
   load(2, frame);
   frame->pc += 1;
 }
 
-void aload_3 (Frame * frame) {
+void aload_3 (Frame * frame, JVM * jvm) {
   DCOUT << "aload_3" << endl;
   load(3, frame);
   frame->pc += 1;
 }
 
-void iaload (Frame * frame) {
+void iaload (Frame * frame, JVM * jvm) {
   DCOUT << "iaload" << endl;
   frame->pc += 1;
 }
 
-void laload (Frame * frame) {
+void laload (Frame * frame, JVM * jvm) {
   DCOUT << "laload" << endl;
   frame->pc += 1;
 }
 
-void faload (Frame * frame) {
+void faload (Frame * frame, JVM * jvm) {
   DCOUT << "faload" << endl;
   frame->pc += 1;
 }
 
-void daload (Frame * frame) {
+void daload (Frame * frame, JVM * jvm) {
   DCOUT << "daload" << endl;
   frame->pc += 1;
 }
 
-void aaload (Frame * frame) {
+void aaload (Frame * frame, JVM * jvm) {
   DCOUT << "aaload" << endl;
   frame->pc += 1;
 }
 
-void baload (Frame * frame) {
+void baload (Frame * frame, JVM * jvm) {
   DCOUT << "baload" << endl;
   frame->pc += 1;
 }
 
-void caload (Frame * frame) {
+void caload (Frame * frame, JVM * jvm) {
   DCOUT << "caload" << endl;
   frame->pc += 1;
 }
 
-void saload (Frame * frame) {
+void saload (Frame * frame, JVM * jvm) {
   DCOUT << "saload" << endl;
   frame->pc += 1;
 }
@@ -960,7 +960,7 @@ void saload (Frame * frame) {
 
 #pragma region store
 
-void istore (Frame * frame) {
+void istore (Frame * frame, JVM * jvm) {
   DCOUT << "istore" << endl;
   
   u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
@@ -970,7 +970,7 @@ void istore (Frame * frame) {
   frame->pc += 2;
 }
 
-void lstore (Frame * frame) {
+void lstore (Frame * frame, JVM * jvm) {
   DCOUT << "lstore" << endl;
 
   u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
@@ -980,7 +980,7 @@ void lstore (Frame * frame) {
   frame->pc += 2;
 }
 
-void fstore (Frame * frame) {
+void fstore (Frame * frame, JVM * jvm) {
   DCOUT << "fstore" << endl;
 
   u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
@@ -990,7 +990,7 @@ void fstore (Frame * frame) {
   frame->pc += 2;
 }
 
-void dstore (Frame * frame) {
+void dstore (Frame * frame, JVM * jvm) {
   DCOUT << "dstore" << endl;
 
   u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
@@ -1000,12 +1000,12 @@ void dstore (Frame * frame) {
   frame->pc += 2;
 }
 
-void astore (Frame * frame) {
+void astore (Frame * frame, JVM * jvm) {
   DCOUT << "astore" << endl;
   frame->pc += 2;
 }
 
-void istore_0 (Frame * frame) {
+void istore_0 (Frame * frame, JVM * jvm) {
   DCOUT << "istore_0" << endl;
 
   storeFromStack(0, frame);
@@ -1013,7 +1013,7 @@ void istore_0 (Frame * frame) {
   frame->pc += 1;
 }
 
-void istore_1 (Frame * frame) {
+void istore_1 (Frame * frame, JVM * jvm) {
   DCOUT << "istore_1" << endl;
 
   storeFromStack(1, frame);
@@ -1022,7 +1022,7 @@ void istore_1 (Frame * frame) {
   DCOUT << "vetor de variaveis de indice = 1 " << frame->localVariables[1].data << endl;  
 }
 
-void istore_2 (Frame * frame) {
+void istore_2 (Frame * frame, JVM * jvm) {
   DCOUT << "istore_2" << endl;
   
   storeFromStack(2, frame);
@@ -1030,13 +1030,13 @@ void istore_2 (Frame * frame) {
   frame->pc += 1;
 }
 
-void istore_3 (Frame * frame) {
+void istore_3 (Frame * frame, JVM * jvm) {
   DCOUT << "istore_3" << endl;
   storeFromStack(3, frame);
   frame->pc += 1;
 }
 
-void lstore_0 (Frame * frame) {
+void lstore_0 (Frame * frame, JVM * jvm) {
   DCOUT << "lstore_0" << endl;
 
   storeFromStackWide(0, frame);
@@ -1044,7 +1044,7 @@ void lstore_0 (Frame * frame) {
   frame->pc += 1;
 }
 
-void lstore_1 (Frame * frame) {
+void lstore_1 (Frame * frame, JVM * jvm) {
   DCOUT << "lstore_1" << endl;
 
   storeFromStackWide(1, frame);
@@ -1052,7 +1052,7 @@ void lstore_1 (Frame * frame) {
   frame->pc += 1;
 }
 
-void lstore_2 (Frame * frame) {
+void lstore_2 (Frame * frame, JVM * jvm) {
   DCOUT << "lstore_2" << endl;
 
   storeFromStackWide(2, frame);
@@ -1060,7 +1060,7 @@ void lstore_2 (Frame * frame) {
   frame->pc += 1;
 }
 
-void lstore_3 (Frame * frame) {
+void lstore_3 (Frame * frame, JVM * jvm) {
   DCOUT << "lstore_3" << endl;
 
   storeFromStackWide(3, frame);
@@ -1068,7 +1068,7 @@ void lstore_3 (Frame * frame) {
   frame->pc += 1;
 }
 
-void fstore_0 (Frame * frame) {
+void fstore_0 (Frame * frame, JVM * jvm) {
   DCOUT << "fstore_0" << endl;
 
   storeFromStack(0, frame);
@@ -1076,7 +1076,7 @@ void fstore_0 (Frame * frame) {
   frame->pc += 1;
 }
 
-void fstore_1 (Frame * frame) {
+void fstore_1 (Frame * frame, JVM * jvm) {
   DCOUT << "fstore_1" << endl;
 
   storeFromStack(1, frame);
@@ -1084,7 +1084,7 @@ void fstore_1 (Frame * frame) {
   frame->pc += 1;
 }
 
-void fstore_2 (Frame * frame) {
+void fstore_2 (Frame * frame, JVM * jvm) {
   DCOUT << "fstore_2" << endl;
 
   storeFromStack(2, frame);
@@ -1092,7 +1092,7 @@ void fstore_2 (Frame * frame) {
   frame->pc += 1;
 }
 
-void fstore_3 (Frame * frame) {
+void fstore_3 (Frame * frame, JVM * jvm) {
   DCOUT << "fstore_3" << endl;
 
   storeFromStack(3, frame);
@@ -1100,7 +1100,7 @@ void fstore_3 (Frame * frame) {
   frame->pc += 1;
 }
 
-void dstore_0 (Frame * frame) {
+void dstore_0 (Frame * frame, JVM * jvm) {
   DCOUT << "dstore_0" << endl;
 
   storeFromStackWide(0, frame);
@@ -1108,7 +1108,7 @@ void dstore_0 (Frame * frame) {
   frame->pc += 1;
 }
 
-void dstore_1 (Frame * frame) {
+void dstore_1 (Frame * frame, JVM * jvm) {
   DCOUT << "dstore_1" << endl;
 
   storeFromStackWide(1, frame);
@@ -1116,7 +1116,7 @@ void dstore_1 (Frame * frame) {
   frame->pc += 1;
 }
 
-void dstore_2 (Frame * frame) {
+void dstore_2 (Frame * frame, JVM * jvm) {
   DCOUT << "dstore_2" << endl;
 
   storeFromStackWide(2, frame);
@@ -1124,7 +1124,7 @@ void dstore_2 (Frame * frame) {
   frame->pc += 1;
 }
 
-void dstore_3 (Frame * frame) {
+void dstore_3 (Frame * frame, JVM * jvm) {
   DCOUT << "dstore_3" << endl;
 
   storeFromStackWide(3, frame);
@@ -1132,62 +1132,62 @@ void dstore_3 (Frame * frame) {
   frame->pc += 1;
 }
 
-void astore_0 (Frame * frame) {
+void astore_0 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_0" << endl;
   frame->pc += 1;
 }
 
-void astore_1 (Frame * frame) {
+void astore_1 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_1" << endl;
   frame->pc += 1;
 }
 
-void astore_2 (Frame * frame) {
+void astore_2 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_2" << endl;
   frame->pc += 1;
 }
 
-void astore_3 (Frame * frame) {
+void astore_3 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_3" << endl;
   frame->pc += 1;
 }
 
-void iastore (Frame * frame) {
+void iastore (Frame * frame, JVM * jvm) {
   DCOUT << "iastore" << endl;
   frame->pc += 1;
 }
 
-void lastore (Frame * frame) {
+void lastore (Frame * frame, JVM * jvm) {
   DCOUT << "lastore" << endl;
   frame->pc += 1;
 }
 
-void fastore (Frame * frame) {
+void fastore (Frame * frame, JVM * jvm) {
   DCOUT << "fastore" << endl;
   frame->pc += 1;
 }
 
-void dastore (Frame * frame) {
+void dastore (Frame * frame, JVM * jvm) {
   DCOUT << "dastore" << endl;
   frame->pc += 1;
 }
 
-void aastore (Frame * frame) {
+void aastore (Frame * frame, JVM * jvm) {
   DCOUT << "aastore" << endl;
   frame->pc += 1;
 }
 
-void bastore (Frame * frame) {
+void bastore (Frame * frame, JVM * jvm) {
   DCOUT << "bastore" << endl;
   frame->pc += 1;
 }
 
-void castore (Frame * frame) {
+void castore (Frame * frame, JVM * jvm) {
   DCOUT << "castore" << endl;
   frame->pc += 1;
 }
 
-void sastore (Frame * frame) {
+void sastore (Frame * frame, JVM * jvm) {
   DCOUT << "sastore" << endl;
   frame->pc += 1;
 }
@@ -1196,7 +1196,7 @@ void sastore (Frame * frame) {
 
 #pragma region pop
 
-void pop (Frame * frame) {
+void pop (Frame * frame, JVM * jvm) {
   DCOUT << "pop" << endl;
   JvmValue value = frame->operandStack.top();
   if (getCategory(value.type) == 1) {
@@ -1207,7 +1207,7 @@ void pop (Frame * frame) {
   frame->pc += 1;
 }
 
-void pop2 (Frame * frame) {
+void pop2 (Frame * frame, JVM * jvm) {
   DCOUT << "pop2" << endl;
   JvmValue value1 = frame->operandStack.top();
   frame->operandStack.pop();
@@ -1225,7 +1225,7 @@ void pop2 (Frame * frame) {
 
 #pragma region dup
 
-void dup (Frame * frame) {
+void dup (Frame * frame, JVM * jvm) {
   DCOUT << "dup" << endl;
   JvmValue value = frame->popOperandStack();
   frame->pushOperandStack(value);
@@ -1234,31 +1234,31 @@ void dup (Frame * frame) {
   frame->pc += 1;
 }
 
-void dup_x1 (Frame * frame) {
+void dup_x1 (Frame * frame, JVM * jvm) {
   DCOUT << "dup_x1" << endl;
   notSupported();
   frame->pc += 1;
 }
 
-void dup_x2 (Frame * frame) {
+void dup_x2 (Frame * frame, JVM * jvm) {
   DCOUT << "dup_x2" << endl;
   notSupported();
   frame->pc += 1;
 }
 
-void dup2 (Frame * frame) {
+void dup2 (Frame * frame, JVM * jvm) {
   DCOUT << "dup2" << endl;
   notSupported();
   frame->pc += 1;
 }
 
-void dup2_x1 (Frame * frame) {
+void dup2_x1 (Frame * frame, JVM * jvm) {
   DCOUT << "dup2_x1" << endl;
   notSupported();
   frame->pc += 1;
 }
 
-void dup2_x2 (Frame * frame) {
+void dup2_x2 (Frame * frame, JVM * jvm) {
   DCOUT << "dup2_x2" << endl;
   notSupported();
   frame->pc += 1;
@@ -1266,7 +1266,7 @@ void dup2_x2 (Frame * frame) {
 
 #pragma endregion
 
-void swap (Frame * frame) {
+void swap (Frame * frame, JVM * jvm) {
   DCOUT << "swap" << endl;
   notSupported();
   frame->pc += 1;
@@ -1384,25 +1384,25 @@ void operateW(Frame * frame, Operation op, PrimitiveType type) {
 
 #pragma region add
 
-void iadd (Frame * frame) {
+void iadd (Frame * frame, JVM * jvm) {
   DCOUT << "iadd" << endl;
   operate(frame, ADD, INT);
   frame->pc += 1;
 }
 
-void ladd (Frame * frame) {
+void ladd (Frame * frame, JVM * jvm) {
   DCOUT << "ladd" << endl;
   operateW(frame, ADD, LONG);
   frame->pc += 1;
 }
 
-void fadd (Frame * frame) {
+void fadd (Frame * frame, JVM * jvm) {
   DCOUT << "fadd" << endl;
   operate(frame, ADD, FLOAT);
   frame->pc += 1;
 }
 
-void dadd (Frame * frame) {
+void dadd (Frame * frame, JVM * jvm) {
   DCOUT << "dadd" << endl;
   operateW(frame, ADD, DOUBLE);
   frame->pc += 1;
@@ -1412,25 +1412,25 @@ void dadd (Frame * frame) {
 
 #pragma region sub
 
-void isub (Frame * frame) {
+void isub (Frame * frame, JVM * jvm) {
   DCOUT << "isub" << endl;
   operate(frame, SUB, INT);
   frame->pc += 1;
 }
 
-void lsub (Frame * frame) {
+void lsub (Frame * frame, JVM * jvm) {
   DCOUT << "lsub" << endl;
   operateW(frame, SUB, LONG);
   frame->pc += 1;
 }
 
-void fsub (Frame * frame) {
+void fsub (Frame * frame, JVM * jvm) {
   DCOUT << "fsub" << endl;
   operate(frame, SUB, FLOAT);
   frame->pc += 1;
 }
 
-void dsub (Frame * frame) {
+void dsub (Frame * frame, JVM * jvm) {
   DCOUT << "dsub" << endl;
   operateW(frame, SUB, DOUBLE);
   frame->pc += 1;
@@ -1440,25 +1440,25 @@ void dsub (Frame * frame) {
 
 #pragma region mul
 
-void imul (Frame * frame) {
+void imul (Frame * frame, JVM * jvm) {
   DCOUT << "imul" << endl;
   operate(frame, MUL, INT);
   frame->pc += 1;
 }
 
-void lmul (Frame * frame) {
+void lmul (Frame * frame, JVM * jvm) {
   DCOUT << "lmul" << endl;
   operateW(frame, MUL, LONG);
   frame->pc += 1;
 }
 
-void fmul (Frame * frame) {
+void fmul (Frame * frame, JVM * jvm) {
   DCOUT << "fmul" << endl;
   operate(frame, MUL, FLOAT);
   frame->pc += 1;
 }
 
-void dmul (Frame * frame) {
+void dmul (Frame * frame, JVM * jvm) {
   DCOUT << "dmul" << endl;
   operateW(frame, MUL, DOUBLE);
   frame->pc += 1;
@@ -1468,25 +1468,25 @@ void dmul (Frame * frame) {
 
 #pragma region div
 
-void idiv (Frame * frame) {
+void idiv (Frame * frame, JVM * jvm) {
   DCOUT << "idiv" << endl;
   operate(frame, DIV, INT);
   frame->pc += 1;
 }
 
-void ldiv (Frame * frame) {
+void ldiv (Frame * frame, JVM * jvm) {
   DCOUT << "ldiv" << endl;
   operateW(frame, DIV, LONG);
   frame->pc += 1;
 }
 
-void fdiv (Frame * frame) {
+void fdiv (Frame * frame, JVM * jvm) {
   DCOUT << "fdiv" << endl;
   operate(frame, DIV, FLOAT);
   frame->pc += 1;
 }
 
-void ddiv (Frame * frame) {
+void ddiv (Frame * frame, JVM * jvm) {
   DCOUT << "ddiv" << endl;
   operateW(frame, DIV, DOUBLE);
   frame->pc += 1;
@@ -1496,22 +1496,22 @@ void ddiv (Frame * frame) {
 
 #pragma region rem
 
-void irem (Frame * frame) {
+void irem (Frame * frame, JVM * jvm) {
   cout << "irem" << endl;
   frame->pc += 1;
 }
 
-void lrem (Frame * frame) {
+void lrem (Frame * frame, JVM * jvm) {
   cout << "lrem" << endl;
   frame->pc += 1;
 }
 
-void frem (Frame * frame) {
+void frem (Frame * frame, JVM * jvm) {
   cout << "frem" << endl;
   frame->pc += 1;
 }
 
-void drem (Frame * frame) {
+void drem (Frame * frame, JVM * jvm) {
   cout << "drem" << endl;
   frame->pc += 1;
 }
@@ -1520,7 +1520,7 @@ void drem (Frame * frame) {
 
 #pragma region neg
 
-void ineg (Frame * frame) {
+void ineg (Frame * frame, JVM * jvm) {
   cout << "ineg" << endl;
   JvmValue value = frame->operandStack.top();
   if (value.type == INT) {
@@ -1536,7 +1536,7 @@ void ineg (Frame * frame) {
   frame->pc += 1;
 }
 
-void lneg (Frame * frame) {
+void lneg (Frame * frame, JVM * jvm) {
   cout << "lneg" << endl;
   JvmValue value2 = frame->operandStack.top();
   frame->operandStack.pop();
@@ -1558,7 +1558,7 @@ void lneg (Frame * frame) {
   frame->pc += 1;
 }
 
-void fneg (Frame * frame) {
+void fneg (Frame * frame, JVM * jvm) {
   cout << "fneg" << endl;
   JvmValue value = frame->operandStack.top();
   if (value.type == FLOAT) {
@@ -1574,7 +1574,7 @@ void fneg (Frame * frame) {
   frame->pc += 1;
 }
 
-void dneg (Frame * frame) {
+void dneg (Frame * frame, JVM * jvm) {
   cout << "dneg" << endl;
   JvmValue value2 = frame->operandStack.top();
   frame->operandStack.pop();
@@ -1600,7 +1600,7 @@ void dneg (Frame * frame) {
 
 #pragma region shift
 
-void ishl (Frame * frame) {
+void ishl (Frame * frame, JVM * jvm) {
   cout << "ishl" << endl;
   JvmValue stack2 = frame->operandStack.top();
   frame->operandStack.pop();
@@ -1622,7 +1622,7 @@ void ishl (Frame * frame) {
   frame->pc += 1;
 }
 
-void lshl (Frame * frame) {
+void lshl (Frame * frame, JVM * jvm) {
   cout << "lshl" << endl;
   JvmValue stack3 = frame->operandStack.top();
   frame->operandStack.pop();
@@ -1650,7 +1650,7 @@ void lshl (Frame * frame) {
   frame->pc += 1;
 }
 
-void ishr (Frame * frame) {
+void ishr (Frame * frame, JVM * jvm) {
   cout << "ishr" << endl;
   JvmValue stack2 = frame->operandStack.top();
   frame->operandStack.pop();
@@ -1672,7 +1672,7 @@ void ishr (Frame * frame) {
   frame->pc += 1;
 }
 
-void lshr (Frame * frame) {
+void lshr (Frame * frame, JVM * jvm) {
   cout << "lshr" << endl;
   JvmValue stack3 = frame->operandStack.top();
   frame->operandStack.pop();
@@ -1700,7 +1700,7 @@ void lshr (Frame * frame) {
   frame->pc += 1;
 }
 
-void iushr (Frame * frame) {
+void iushr (Frame * frame, JVM * jvm) {
   cout << "iushr" << endl;
   JvmValue stack2 = frame->operandStack.top();
   frame->operandStack.pop();
@@ -1719,7 +1719,7 @@ void iushr (Frame * frame) {
   frame->pc += 1;
 }
 
-void lushr (Frame * frame) {
+void lushr (Frame * frame, JVM * jvm) {
   cout << "lushr" << endl;
   JvmValue stack3 = frame->operandStack.top();
   frame->operandStack.pop();
@@ -1749,13 +1749,13 @@ void lushr (Frame * frame) {
 
 #pragma region and
 
-void iand (Frame * frame) {
+void iand (Frame * frame, JVM * jvm) {
   DCOUT << "iand" << endl;
   operate(frame, AND, INT);
   frame->pc += 1;
 }
 
-void land (Frame * frame) {
+void land (Frame * frame, JVM * jvm) {
   DCOUT << "land" << endl;
   operateW(frame, AND, LONG);
   frame->pc += 1;
@@ -1765,13 +1765,13 @@ void land (Frame * frame) {
 
 #pragma region or
 
-void ior (Frame * frame) {
+void ior (Frame * frame, JVM * jvm) {
   DCOUT << "ior" << endl;
   operate(frame, OR, INT);
   frame->pc += 1;
 }
 
-void lor (Frame * frame) {
+void lor (Frame * frame, JVM * jvm) {
   DCOUT << "lor" << endl;
   operateW(frame, OR, LONG);
   frame->pc += 1;
@@ -1781,13 +1781,13 @@ void lor (Frame * frame) {
 
 #pragma region xor
 
-void ixor (Frame * frame) {
+void ixor (Frame * frame, JVM * jvm) {
   DCOUT << "ixor" << endl;
   operate(frame, XOR, INT);
   frame->pc += 1;
 }
 
-void lxor (Frame * frame) {
+void lxor (Frame * frame, JVM * jvm) {
   DCOUT << "lxor" << endl;
   operateW(frame, XOR, LONG);
   frame->pc += 1;
@@ -1795,7 +1795,7 @@ void lxor (Frame * frame) {
 
 #pragma endregion
 
-void iinc (Frame * frame) {
+void iinc (Frame * frame, JVM * jvm) {
   u1 index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   u1 _const = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
 
@@ -1808,7 +1808,7 @@ void iinc (Frame * frame) {
 
 #pragma region conversions
 
-void i2l (Frame * frame) {
+void i2l (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
   
   int32_t integer = u4ToInt(value.data);
@@ -1824,7 +1824,7 @@ void i2l (Frame * frame) {
   frame->pc += 1;
 }
 
-void i2f (Frame * frame) {
+void i2f (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
   int32_t integer = u4ToInt(value.data);
@@ -1838,7 +1838,7 @@ void i2f (Frame * frame) {
   frame->pc += 1;
 }
 
-void i2d (Frame * frame) {
+void i2d (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
   int32_t integer = u4ToInt(value.data);
@@ -1854,7 +1854,7 @@ void i2d (Frame * frame) {
   frame->pc += 1;
 }
 
-void l2i (Frame * frame) {
+void l2i (Frame * frame, JVM * jvm) {
   auto [lowValue, highValue] = frame->popWideOperandStack();
 
   int64_t longInteger = u4ToLong(lowValue.data, highValue.data);
@@ -1867,7 +1867,7 @@ void l2i (Frame * frame) {
   frame->pc += 1;
 }
 
-void l2f (Frame * frame) {
+void l2f (Frame * frame, JVM * jvm) {
   auto [lowValue, highValue] = frame->popWideOperandStack();
 
   int64_t longInteger = u4ToLong(lowValue.data, highValue.data);
@@ -1881,7 +1881,7 @@ void l2f (Frame * frame) {
   frame->pc += 1;
 }
 
-void l2d (Frame * frame) {
+void l2d (Frame * frame, JVM * jvm) {
   auto [lowValue, highValue] = frame->popWideOperandStack();
 
   int64_t longInteger = u4ToLong(lowValue.data, highValue.data);
@@ -1897,7 +1897,7 @@ void l2d (Frame * frame) {
   frame->pc += 1;
 }
 
-void f2i (Frame * frame) {
+void f2i (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
   float _float = u4ToFloat(value.data);
@@ -1910,7 +1910,7 @@ void f2i (Frame * frame) {
   frame->pc += 1;
 }
 
-void f2l (Frame * frame) {
+void f2l (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
   float _float = u4ToFloat(value.data);
@@ -1926,7 +1926,7 @@ void f2l (Frame * frame) {
   frame->pc += 1;
 }
 
-void f2d (Frame * frame) {
+void f2d (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
   float _float = u4ToFloat(value.data);
@@ -1942,7 +1942,7 @@ void f2d (Frame * frame) {
   frame->pc += 1;
 }
 
-void d2i (Frame * frame) {
+void d2i (Frame * frame, JVM * jvm) {
   auto [lowValue, highValue] = frame->popWideOperandStack();
 
   DCOUT << "d2i 0x" << hex << highValue.data << lowValue.data << dec << endl;
@@ -1956,7 +1956,7 @@ void d2i (Frame * frame) {
   frame->pc += 1;
 }
 
-void d2l (Frame * frame) {
+void d2l (Frame * frame, JVM * jvm) {
   auto [lowValue, highValue] = frame->popWideOperandStack();
 
   double _double = u4ToDouble(lowValue.data, highValue.data);
@@ -1972,7 +1972,7 @@ void d2l (Frame * frame) {
   frame->pc += 1;
 }
 
-void d2f (Frame * frame) {
+void d2f (Frame * frame, JVM * jvm) {
   auto [lowValue, highValue] = frame->popWideOperandStack();
 
   double _double = u4ToDouble(lowValue.data, highValue.data);
@@ -1986,7 +1986,7 @@ void d2f (Frame * frame) {
   frame->pc += 1;
 }
 
-void i2b (Frame * frame) {
+void i2b (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
   int32_t integer = u4ToInt(value.data);
@@ -1999,7 +1999,7 @@ void i2b (Frame * frame) {
   frame->pc += 1;
 }
 
-void i2c (Frame * frame) {
+void i2c (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
   int32_t integer = u4ToInt(value.data);
@@ -2012,7 +2012,7 @@ void i2c (Frame * frame) {
   frame->pc += 1;
 }
 
-void i2s (Frame * frame) {
+void i2s (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
   int32_t integer = value.data;
@@ -2029,27 +2029,27 @@ void i2s (Frame * frame) {
 
 #pragma region compares
 
-void lcmp (Frame * frame) {
+void lcmp (Frame * frame, JVM * jvm) {
   DCOUT << "lcmp" << endl;
   frame->pc += 1;
 }
 
-void fcmpl (Frame * frame) {
+void fcmpl (Frame * frame, JVM * jvm) {
   DCOUT << "fcmpl" << endl;
   frame->pc += 1;
 }
 
-void fcmpg (Frame * frame) {
+void fcmpg (Frame * frame, JVM * jvm) {
   DCOUT << "fcmpg" << endl;
   frame->pc += 1;
 }
 
-void dcmpl (Frame * frame) {
+void dcmpl (Frame * frame, JVM * jvm) {
   DCOUT << "dcmpl" << endl;
   frame->pc += 1;
 }
 
-void dcmpg (Frame * frame) {
+void dcmpg (Frame * frame, JVM * jvm) {
   DCOUT << "dcmpg" << endl;
   frame->pc += 1;
 }
@@ -2065,7 +2065,7 @@ void branch (Frame * frame) {
   frame->pc += offset;
 }
 
-void ifeq (Frame * frame) {
+void ifeq (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
   
   if (value.type != INT) {
@@ -2077,7 +2077,7 @@ void ifeq (Frame * frame) {
   else frame->pc += 3;
 }
 
-void ifne (Frame * frame) {
+void ifne (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
   
   if (value.type != INT) {
@@ -2089,7 +2089,7 @@ void ifne (Frame * frame) {
   else frame->pc += 3;
 }
 
-void iflt (Frame * frame) {
+void iflt (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
   
   if (value.type != INT) {
@@ -2101,7 +2101,7 @@ void iflt (Frame * frame) {
   else frame->pc += 3;
 }
 
-void ifge (Frame * frame) {
+void ifge (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
   
   if (value.type != INT) {
@@ -2113,7 +2113,7 @@ void ifge (Frame * frame) {
   else frame->pc += 3;
 }
 
-void ifgt (Frame * frame) {
+void ifgt (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
   
   if (value.type != INT) {
@@ -2125,7 +2125,7 @@ void ifgt (Frame * frame) {
   else frame->pc += 3;
 }
 
-void ifle (Frame * frame) {
+void ifle (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
   
   if (value.type != INT) {
@@ -2137,7 +2137,7 @@ void ifle (Frame * frame) {
   else frame->pc += 3;
 }
 
-void if_icmpeq (Frame * frame) {
+void if_icmpeq (Frame * frame, JVM * jvm) {
   auto [second, first] = frame->popWideOperandStack();
 
   if (first.type != INT || second.type != INT) {
@@ -2151,7 +2151,7 @@ void if_icmpeq (Frame * frame) {
   else frame->pc += 3;
 }
 
-void if_icmpne (Frame * frame) {
+void if_icmpne (Frame * frame, JVM * jvm) {
   auto [second, first] = frame->popWideOperandStack();
 
   if (first.type != INT || second.type != INT) {
@@ -2165,7 +2165,7 @@ void if_icmpne (Frame * frame) {
   else frame->pc += 3;
 }
 
-void if_icmplt (Frame * frame) {
+void if_icmplt (Frame * frame, JVM * jvm) {
   auto [second, first] = frame->popWideOperandStack();
 
   if (first.type != INT || second.type != INT) {
@@ -2179,7 +2179,7 @@ void if_icmplt (Frame * frame) {
   else frame->pc += 3;
 }
 
-void if_icmpge (Frame * frame) {
+void if_icmpge (Frame * frame, JVM * jvm) {
   auto [second, first] = frame->popWideOperandStack();
 
   if (first.type != INT || second.type != INT) {
@@ -2193,7 +2193,7 @@ void if_icmpge (Frame * frame) {
   else frame->pc += 3;
 }
 
-void if_icmpgt (Frame * frame) {
+void if_icmpgt (Frame * frame, JVM * jvm) {
   auto [second, first] = frame->popWideOperandStack();
 
   if (first.type != INT || second.type != INT) {
@@ -2207,7 +2207,7 @@ void if_icmpgt (Frame * frame) {
   else frame->pc += 3;
 }
 
-void if_icmple (Frame * frame) {
+void if_icmple (Frame * frame, JVM * jvm) {
   auto [second, first] = frame->popWideOperandStack();
 
   if (first.type != INT || second.type != INT) {
@@ -2221,12 +2221,12 @@ void if_icmple (Frame * frame) {
   else frame->pc += 3;
 }
 
-void if_acmpeq (Frame * frame) {
+void if_acmpeq (Frame * frame, JVM * jvm) {
   DCOUT << "if_acmpeq" << endl;
   frame->pc += 3;
 }
 
-void if_acmpne (Frame * frame) {
+void if_acmpne (Frame * frame, JVM * jvm) {
   DCOUT << "if_acmpne" << endl;
   frame->pc += 3;
 }
@@ -2235,7 +2235,7 @@ void if_acmpne (Frame * frame) {
 
 #pragma region jump
 
-void _goto (Frame * frame) {
+void _goto (Frame * frame, JVM * jvm) {
   DCOUT << "goto" << endl;
   
   u1 start_pc = frame->pc;
@@ -2250,12 +2250,12 @@ void _goto (Frame * frame) {
   frame->pc += branchoffset;
 }
 
-void jsr (Frame * frame) {
+void jsr (Frame * frame, JVM * jvm) {
   DCOUT << "jsr" << endl;
   frame->pc += 3;
 }
 
-void ret (Frame * frame) {
+void ret (Frame * frame, JVM * jvm) {
   DCOUT << "ret" << endl;
   frame->pc += 2;
 }
@@ -2265,7 +2265,7 @@ void ret (Frame * frame) {
 #pragma region switch
 
 //implementado pelo Piano 
-void tableswitch (Frame * frame) {
+void tableswitch (Frame * frame, JVM * jvm) {
   DCOUT << "tableswitch" << endl;
 
 
@@ -2360,7 +2360,7 @@ void tableswitch (Frame * frame) {
 
 }
 
-void lookupswitch (Frame * frame) {
+void lookupswitch (Frame * frame, JVM * jvm) {
   DCOUT << "lookupswitch" << endl;
   // FIXME: consertar os pulos
   frame->pc += 4;
@@ -2374,64 +2374,51 @@ void lookupswitch (Frame * frame) {
 
 #pragma region return
 
-void returnValue(Frame * frame) {
+void returnValue(Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
-  if (frame->previousFrame != NULL) {
-    frame->previousFrame->pushOperandStack(value);
-  }
+  jvm->returnValue(value);
 }
 
-void returnValueWide(Frame * frame) {
+void returnValueWide(Frame * frame, JVM * jvm) {
   auto [lowerValue, upperValue] = frame->popWideOperandStack();
-
-  if(frame->previousFrame != NULL) {
-    frame->previousFrame->pushWideOperandStack(lowerValue, upperValue);
-  }
+  jvm->returnValueWide(lowerValue, upperValue);
 }
 
-void goToEndOFrame(Frame * frame) {
-  frame->pc = frame->method_info->attributes->attribute_info_union.code_attribute.code_length;
-}
-
-void ireturn (Frame * frame) {
+void ireturn (Frame * frame, JVM * jvm) {
   DCOUT << "ireturn" << endl;
-  returnValue(frame);
-  goToEndOFrame(frame);
+  returnValue(frame, jvm);
 }
 
-void lreturn (Frame * frame) {
+void lreturn (Frame * frame, JVM * jvm) {
   DCOUT << "lreturn" << endl;
-  returnValueWide(frame);
-  goToEndOFrame(frame);
+  returnValueWide(frame, jvm);
 }
 
-void freturn (Frame * frame) {
+void freturn (Frame * frame, JVM * jvm) {
   DCOUT << "freturn" << endl;
-  returnValue(frame);
-  goToEndOFrame(frame);
+  returnValue(frame, jvm);
 }
 
-void dreturn (Frame * frame) {
+void dreturn (Frame * frame, JVM * jvm) {
   DCOUT << "dreturn" << endl;
-  returnValueWide(frame);
-  goToEndOFrame(frame);
+  returnValueWide(frame, jvm);
 }
 
-void areturn (Frame * frame) {
+void areturn (Frame * frame, JVM * jvm) {
   DCOUT << "areturn" << endl;
   frame->pc += 1;
 }
 
-void _return (Frame * frame) {
+void _return (Frame * frame, JVM * jvm) {
   DCOUT << "return" << endl;
-  goToEndOFrame(frame);
+  jvm->returnVoid();
 }
 
 #pragma endregion
 
 #pragma region class_fields
 
-void getstatic (Frame * frame) {
+void getstatic (Frame * frame, JVM * jvm) {
   DCOUT << "getstatic" << endl;
 
   u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
@@ -2462,17 +2449,17 @@ void getstatic (Frame * frame) {
   frame->pc += 3;
 }
 
-void putstatic (Frame * frame) {
+void putstatic (Frame * frame, JVM * jvm) {
   DCOUT << "putstatic" << endl;
   frame->pc += 3;
 }
 
-void getfield (Frame * frame) {
+void getfield (Frame * frame, JVM * jvm) {
   DCOUT << "getfield" << endl;
   frame->pc += 3;
 }
 
-void putfield (Frame * frame) {
+void putfield (Frame * frame, JVM * jvm) {
   DCOUT << "putfield" << endl;
   frame->pc += 3;
 }
@@ -2481,7 +2468,7 @@ void putfield (Frame * frame) {
 
 #pragma region invoke
 
-void invokevirtual (Frame * frame) {
+void invokevirtual (Frame * frame, JVM * jvm) {
   DCOUT << "invokevirtual" << endl;
 
   u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
@@ -2505,7 +2492,7 @@ void invokevirtual (Frame * frame) {
   frame->pc += 3;
 }
 
-void invokespecial (Frame * frame) {
+void invokespecial (Frame * frame, JVM * jvm) {
   
 
 
@@ -2513,7 +2500,7 @@ void invokespecial (Frame * frame) {
   frame->pc += 3;
 }
 
-void invokestatic (Frame * frame) {
+void invokestatic (Frame * frame, JVM * jvm) {
   DCOUT << "invokestatic" << endl;
   // 1. fazer a checagem para ver se a classe ja foi carregada com base no nome
   //     1. foi? então acessa
@@ -2552,12 +2539,12 @@ void invokestatic (Frame * frame) {
   frame->pc += 3;
 }
 
-void invokeinterface (Frame * frame) {
+void invokeinterface (Frame * frame, JVM * jvm) {
   DCOUT << "invokeinterface" << endl;
   frame->pc += 5;
 }
 
-void invokedynamic (Frame * frame) {
+void invokedynamic (Frame * frame, JVM * jvm) {
   DCOUT << "invokedynamic" << endl;
   frame->pc += 5;
 }
@@ -2566,7 +2553,7 @@ void invokedynamic (Frame * frame) {
 
 #pragma region new
 
-void _new (Frame * frame) {
+void _new (Frame * frame, JVM * jvm) {
   DCOUT << "new" << endl;
   u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
   u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
@@ -2586,12 +2573,12 @@ void _new (Frame * frame) {
   frame->pc += 3;
 }
 
-void newarray (Frame * frame) {
+void newarray (Frame * frame, JVM * jvm) {
   DCOUT << "newarray" << endl;
   frame->pc += 2;
 }
 
-void anewarray (Frame * frame) {
+void anewarray (Frame * frame, JVM * jvm) {
   DCOUT << "anewarray" << endl;
   frame->pc += 3;
 }
@@ -2600,24 +2587,24 @@ void anewarray (Frame * frame) {
 
 #pragma region common
 
-void arraylength (Frame * frame) {
+void arraylength (Frame * frame, JVM * jvm) {
   DCOUT << "arraylength" << endl;
   frame->pc += 1;
 }
 
-void athrow (Frame * frame) {
+void athrow (Frame * frame, JVM * jvm) {
   DCOUT << "athrow" << endl;
   notSupported();
   frame->pc += 1;
 }
 
-void checkcast (Frame * frame) {
+void checkcast (Frame * frame, JVM * jvm) {
   DCOUT << "checkcast" << endl;
   notSupported();
   frame->pc += 3;
 }
 
-void instanceof (Frame * frame) {
+void instanceof (Frame * frame, JVM * jvm) {
   DCOUT << "instanceof" << endl;
   notSupported();
   frame->pc += 3;
@@ -2625,36 +2612,36 @@ void instanceof (Frame * frame) {
 
 #pragma endregion
 
-void monitorenter (Frame * frame) {
+void monitorenter (Frame * frame, JVM * jvm) {
   DCOUT << "monitorenter" << endl;
   notSupported();
   frame->pc += 1;
 }
 
-void monitorexit (Frame * frame) {
+void monitorexit (Frame * frame, JVM * jvm) {
   DCOUT << "monitorexit" << endl;
   notSupported();
   frame->pc += 1;
 }
 
-void wide (Frame * frame) {
+void wide (Frame * frame, JVM * jvm) {
   DCOUT << "wide" << endl;
   notSupported();
 }
 
-void multianewarray (Frame * frame) {
+void multianewarray (Frame * frame, JVM * jvm) {
   DCOUT << "multianewarray" << endl;
   frame->pc += 4;
 }
 
 #pragma region ifnull
 
-void ifnull (Frame * frame) {
+void ifnull (Frame * frame, JVM * jvm) {
   DCOUT << "ifnull" << endl;
   frame->pc += 3;
 }
 
-void ifnonnull (Frame * frame) {
+void ifnonnull (Frame * frame, JVM * jvm) {
   DCOUT << "ifnonnull" << endl;
   frame->pc += 3;
 }
@@ -2663,31 +2650,31 @@ void ifnonnull (Frame * frame) {
 
 #pragma region jump_w
 
-void goto_w (Frame * frame) {
+void goto_w (Frame * frame, JVM * jvm) {
   DCOUT << "goto_w" << endl;
   frame->pc += 5;
 }
 
-void jsr_w (Frame * frame) {
+void jsr_w (Frame * frame, JVM * jvm) {
   DCOUT << "jsr_w" << endl;
   frame->pc += 5;
 }
 
 #pragma endregion
 
-void breakpoint (Frame * frame) {
+void breakpoint (Frame * frame, JVM * jvm) {
   DCOUT << "breakpoint" << endl;
   notSupported();
 }
 
 #pragma region impdep
 
-void impdep1 (Frame * frame) {
+void impdep1 (Frame * frame, JVM * jvm) {
   DCOUT << "impdep1" << endl;
   notSupported();
 }
 
-void impdep2 (Frame * frame) {
+void impdep2 (Frame * frame, JVM * jvm) {
   DCOUT << "impdep2" << endl;
   notSupported();
 }

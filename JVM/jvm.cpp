@@ -34,36 +34,60 @@ code_attribute * getCode(Method_info * method_info, MethodAreaItem * methodAreaI
 }
 
 void JVM::executeInstruction(u1 * opcode, Frame * frame){
-  this->instructionsMap[*opcode](frame);
+  this->instructionsMap[*opcode](frame, this);
 }
 
 void JVM::executeFrame(Frame * frame) {
   string methodName = frame->methodAreaItem->getUtf8(frame->method_info->name_index);
+  // salvar methodName no frame por performance?
+
   DCOUT << "executeFrame #" <<  frame->method_info->name_index << ' ' << methodName << " from " << frame->methodAreaItem->getClassName() << ".class" <<endl;
+
   code_attribute * codeAtt = getCode(frame->method_info, frame->methodAreaItem);
+  // salvar ponteiro pro code por performance?
+
   DCOUT << "code len: " << codeAtt->code_length << endl;
 
-  
-  // realizar a lógica do PC aqui 
-  while(frame->pc < codeAtt->code_length){
+  if (frame->pc < codeAtt->code_length) {
     DCOUT << "Executing instruction at pc: " << frame->pc << " stackSize: " << frame->operandStack.size() << endl;
+
     u1 * opcode = codeAtt->code + frame->pc;
     this->executeInstruction(opcode, frame);
   };
 }
 
+void JVM::invoke(Frame frame) {
+  DCOUT << "invoke" << endl;
+  this->frameStack.push(frame);
+}
+
+void JVM::returnVoid() {
+  DCOUT << "return void" << endl;
+  this->frameStack.pop();
+}
+
+void JVM::returnValue(JvmValue value) {
+  DCOUT << "return value" << endl;
+  this->frameStack.pop();
+  Frame * nextFrame = this->frameStack.top();
+  nextFrame->pushOperandStack(value);
+}
+
+void JVM::returnValueWide(JvmValue low, JvmValue high) {
+  DCOUT << "return wide value" << endl;
+  this->frameStack.pop();
+  Frame * nextFrame = this->frameStack.top();
+  nextFrame->pushWideOperandStack(low, high);
+}
+
 void JVM::run() {
   while (this->frameStack.getStackSize() > 0) {
     Frame * frame = this->frameStack.top();
-    this->frameStack.pop();
-    if(this->frameStack.getStackSize() > 1) 
-      frame->previousFrame = this->frameStack.top();
-    else frame->previousFrame = NULL;
     this->executeFrame(frame);
   }
 }
 
 JVM::JVM() {
-  this->instructionsMap = vector <void(*)(Frame *)>(256);
+  this->instructionsMap = InstructionsMap(256);
   loadInstructions(&this->instructionsMap);
 }

@@ -14,7 +14,6 @@ struct Frame {
   Method_info * method_info;
   MethodAreaItem * methodAreaItem;
   int pc;
-  Frame * previousFrame;
   Frame(Method_info * method_info, MethodAreaItem * methodAreaItem);
   JvmValue popOperandStack();
   void pushOperandStack(JvmValue value);
