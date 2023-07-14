@@ -413,6 +413,45 @@ int getCategory(PrimitiveType type) {
   }
 }
 
+void javaPrintln(Frame * frame, vector<string> argTypes) {
+  string argType = argTypes[0];
+
+  if (argType == "INT") {
+    JvmValue value = frame->popOperandStack();
+    int32_t integer = u4ToInt(value.data);
+    cout << integer << endl;
+  } else if (argType == "FLOAT") {
+    JvmValue value = frame->popOperandStack();
+    float _float = u4ToFloat(value.data);
+    cout << _float << endl;
+  } else if (argType == "Ljava/lang/String;") { // STRING
+    JvmValue value = frame->popOperandStack();
+    string _string = frame->methodAreaItem->getUtf8(value.data);
+    cout << _string << endl;
+  } else if (argType == "LONG") {
+    auto [low, high] = frame->popWideOperandStack();
+    int64_t _long = u4ToLong(low.data, high.data);
+    cout << fixed << setprecision(7) << _long << endl;
+  } else if (argType == "DOUBLE") {
+    auto [low, high] = frame->popWideOperandStack();
+    double _double = u4ToDouble(low.data, high.data);
+    cout << fixed << setprecision(15) << _double << endl;
+  } else if (argType == "CHAR") {
+    JvmValue value = frame->popOperandStack();
+    char _char = value.data;
+    cout << _char << endl;
+  } else if (argType == "BOOL") {
+    JvmValue value = frame->popOperandStack();
+    bool _bool = value.data;
+    cout << (_bool ? "true" : "false") << endl;
+  // } else if (argType == "BYTE") { // jvm compila byte como int
+  // } else if (argType == "SHORT") { // jvm compila short como int
+  } else {
+    throw std::runtime_error("Tipo não suportado (" + argType + ")");
+  }
+  // TODO: RETURNADDRESS, não sei se precisa
+}
+
 #pragma endregion
 
 
@@ -2258,64 +2297,15 @@ void invokevirtual (Frame * frame) {
 
   cp_info * method_ref = frame->methodAreaItem->getConstantPoolItem(index);
   string className = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.class_index);
-  string nameAndType = frame->methodAreaItem->getNameAndTypeUtf8(method_ref->constant_type_union.Methodref_info.name_and_type_index);
+  string methodName = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.name_and_type_index);
+  vector<string> argTypes = frame->methodAreaItem->getMethodArgTypes(method_ref->constant_type_union.Methodref_info.name_and_type_index);
+  
+  DCOUT << "methodName " << methodName << endl;
 
-  if(className == "java/io/PrintStream") {
-    PrimitiveType topType = frame->operandStack.top().type;
-
-    cout << "name_and_type " << nameAndType << endl;
-
-    switch (topType) {
-      case INT:
-      {
-        JvmValue value = frame->popOperandStack();
-        int32_t integer = u4ToInt(value.data);
-        cout << integer << endl;
-        break;
-      }
-      case FLOAT:
-      {
-        JvmValue value = frame->popOperandStack();
-        float _float = u4ToFloat(value.data);
-        cout << _float << endl;
-        break;
-      }
-      case STRING:
-      {
-        JvmValue value = frame->popOperandStack();
-        string output = frame->methodAreaItem->getUtf8(value.data);
-        cout << output << endl;
-        break;
-      }
-      case LONG:
-      {
-        auto [low, high] = frame->popWideOperandStack();
-        int64_t _long = u4ToLong(low.data, high.data);
-        cout << _long << endl;
-        break;
-      }
-      case DOUBLE:
-      {
-        auto [low, high] = frame->popWideOperandStack();
-        double _double = u4ToDouble(low.data, high.data);
-        cout << _double << endl;
-        break;
-      }
-      case CHAR:
-      {
-        JvmValue value = frame->popOperandStack();
-        char _char = value.data;
-        cout << _char << endl;
-        break;
-      }
-      // TODO: BYTE
-      // TODO: SHORT
-      // TODO: BOOL
-      // TODO: RETURNADDRESS
-      default:
-        cout << "Tipo não suportado (" << topType << ")" << endl;
-        break;
-    }
+  if (className == "java/io/PrintStream") {
+    javaPrintln(frame, argTypes);
+  } else {
+    throw std::runtime_error("invokevirtual not implemented for " + className + "." + methodName);
   }
 
   frame->pc += 3;

@@ -117,20 +117,61 @@ string MethodAreaItem::getUtf8(u2 index) {
   return utf8ToString(actual);
 }
 
-string MethodAreaItem::getNameAndTypeUtf8(u2 index) {
-  u2 actualIndex = index;
-  cp_info * actual = this->getConstantPoolItem(actualIndex);
-  while (actual->tag != CONSTANT_NameAndType_info) {
-    actualIndex = actual->constant_type_union.Class_info.name_index;
-    actual = this->getConstantPoolItem(actualIndex);
-  }
-
-  string name = getUtf8(actual->constant_type_union.NameAndType.name_index);
-  string descriptor = getUtf8(actual->constant_type_union.NameAndType.descriptor_index);
-  return name + ':' + descriptor;
-}
-
-
 MethodArea * MethodAreaItem::getMethodArea() {
   return this->methodArea;
+}
+
+vector<string> MethodAreaItem::getMethodArgTypes(u2 nameAndTypeIndex) {
+  cp_info * actual = this->getConstantPoolItem(nameAndTypeIndex);
+  string descriptor = this->getUtf8(actual->constant_type_union.NameAndType.descriptor_index);
+  string returnTypeString = descriptor.substr(descriptor.find(')') + 1);
+
+  DCOUT << "descriptor: " << descriptor << endl;
+
+  vector<string> types; // não usei o tipo PrimitiveType pq o tipo L não é uma string com valor fixo, + array e void
+  int i = 1; // pula o '('
+  while (descriptor[i] != ')') {
+    auto [argType, jump] = getArgType(descriptor, i);
+    types.push_back(argType);
+    i += jump;
+  }
+
+  types.push_back(getArgType(returnTypeString, 0).first); // último tipo é o retorno
+
+  return types;
+}
+
+pair<string, int> getArgType(string signature, int index) {
+  // retorno: {tipo, pulo}
+  switch (signature[index]) {
+    case 'B':
+      return {"BYTE", 1};
+    case 'C':
+      return {"CHAR", 1};
+    case 'D':
+      return {"DOUBLE", 1};
+    case 'F':
+      return {"FLOAT", 1};
+    case 'I':
+      return {"INT", 1};
+    case 'J':
+      return {"LONG", 1};
+    case 'S':
+      return {"SHORT", 1};
+    case 'Z':
+      return {"BOOL", 1};
+    case 'V':
+      return {"VOID", 1};
+    case 'L': // class
+    {
+      int asize = index;
+      while (signature[asize] != ';') asize++;
+      return {signature.substr(index, asize), asize};
+    }
+    case '[':
+      // TODO: array
+    default:
+      throw std::runtime_error("Tipo de argumento não reconhecido " + signature + " no index " + to_string(index));
+      break;
+  }
 }
