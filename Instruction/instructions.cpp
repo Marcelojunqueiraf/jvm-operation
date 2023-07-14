@@ -591,7 +591,7 @@ void ldc (Frame * frame) {
   DCOUT << "ldc" << endl;
   u1 id = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
-  DCOUT << "tipo da constante: " << c->tag << endl;
+  DCOUT << "tipo da constante: " << (int) c->tag << endl;
 
   JvmValue value;
   switch (c->tag) {
@@ -2258,25 +2258,62 @@ void invokevirtual (Frame * frame) {
 
   cp_info * method_ref = frame->methodAreaItem->getConstantPoolItem(index);
   string className = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.class_index);
+  string nameAndType = frame->methodAreaItem->getNameAndTypeUtf8(method_ref->constant_type_union.Methodref_info.name_and_type_index);
 
   if(className == "java/io/PrintStream") {
-    JvmValue value = frame->popOperandStack();
+    PrimitiveType topType = frame->operandStack.top().type;
 
-    switch (value.type) {
+    cout << "name_and_type " << nameAndType << endl;
+
+    switch (topType) {
       case INT:
-        cout << (int32_t) value.data << endl;
+      {
+        JvmValue value = frame->popOperandStack();
+        int32_t integer = u4ToInt(value.data);
+        cout << integer << endl;
         break;
+      }
       case FLOAT:
-        cout << u4ToFloat(value.data) << endl;
+      {
+        JvmValue value = frame->popOperandStack();
+        float _float = u4ToFloat(value.data);
+        cout << _float << endl;
         break;
+      }
       case STRING:
       {
+        JvmValue value = frame->popOperandStack();
         string output = frame->methodAreaItem->getUtf8(value.data);
         cout << output << endl;
         break;
       }
+      case LONG:
+      {
+        auto [low, high] = frame->popWideOperandStack();
+        int64_t _long = u4ToLong(low.data, high.data);
+        cout << _long << endl;
+        break;
+      }
+      case DOUBLE:
+      {
+        auto [low, high] = frame->popWideOperandStack();
+        double _double = u4ToDouble(low.data, high.data);
+        cout << _double << endl;
+        break;
+      }
+      case CHAR:
+      {
+        JvmValue value = frame->popOperandStack();
+        char _char = value.data;
+        cout << _char << endl;
+        break;
+      }
+      // TODO: BYTE
+      // TODO: SHORT
+      // TODO: BOOL
+      // TODO: RETURNADDRESS
       default:
-        cout << "Tipo não suportado" << endl;
+        cout << "Tipo não suportado (" << topType << ")" << endl;
         break;
     }
   }

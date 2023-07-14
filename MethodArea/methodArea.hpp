@@ -26,6 +26,7 @@ class MethodAreaItem {
   cp_info * getConstantPoolItem(u2 index); 
   string getSuper();
   string getUtf8(u2 index);
+  string getNameAndTypeUtf8(u2 index);
   MethodArea * getMethodArea();
 };
 

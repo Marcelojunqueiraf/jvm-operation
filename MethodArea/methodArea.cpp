@@ -117,6 +117,19 @@ string MethodAreaItem::getUtf8(u2 index) {
   return utf8ToString(actual);
 }
 
+string MethodAreaItem::getNameAndTypeUtf8(u2 index) {
+  u2 actualIndex = index;
+  cp_info * actual = this->getConstantPoolItem(actualIndex);
+  while (actual->tag != CONSTANT_NameAndType_info) {
+    actualIndex = actual->constant_type_union.Class_info.name_index;
+    actual = this->getConstantPoolItem(actualIndex);
+  }
+
+  string name = getUtf8(actual->constant_type_union.NameAndType.name_index);
+  string descriptor = getUtf8(actual->constant_type_union.NameAndType.descriptor_index);
+  return name + ':' + descriptor;
+}
+
 
 MethodArea * MethodAreaItem::getMethodArea() {
   return this->methodArea;
