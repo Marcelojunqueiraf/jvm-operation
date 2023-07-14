@@ -24,5 +24,6 @@ public class TableSwitch {
         System.out.println("Sunday");
         break;
     }
+    System.out.println("End of program");
   }
 }

@@ -16,6 +16,10 @@ struct Frame {
   int pc;
   Frame * previousFrame;
   Frame(Method_info * method_info, MethodAreaItem * methodAreaItem);
+  JvmValue popOperandStack();
+  void pushOperandStack(JvmValue value);
+  pair<JvmValue, JvmValue> popWideOperandStack();
+  void pushWideOperandStack(JvmValue low, JvmValue high);
 };
 
 class FrameStack
@@ -27,7 +31,8 @@ public:
   void pop();
   Frame * top();
   void push(Frame frame);
-  int getStackSize();
+  int getStackSize(); 
+  // criar invoke 
 };
 
 #endif

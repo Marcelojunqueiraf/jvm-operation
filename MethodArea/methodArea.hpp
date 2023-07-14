@@ -10,13 +10,15 @@
 
 using namespace std;
 
+class MethodArea;
 
 class MethodAreaItem {
   private:
   ClassFile * classfile;
   map <string, JvmValue> staticFields;
+  MethodArea * methodArea;
   public:
-  MethodAreaItem(ClassFile * classfile);
+  MethodAreaItem(ClassFile * classfile, MethodArea * methodArea);
   string getClassName();
   Method_info * getMainMethod();
   Method_info * getStaticBlock();
@@ -24,6 +26,8 @@ class MethodAreaItem {
   cp_info * getConstantPoolItem(u2 index); 
   string getSuper();
   string getUtf8(u2 index);
+  MethodArea * getMethodArea();
+  vector<string> getMethodArgTypes(u2 index);
 };
 
 class MethodArea {
@@ -38,10 +42,7 @@ class MethodArea {
     MethodAreaItem * getMethodAreaItemFromFile(string path);
 };
 
-// função que pega os arr de paths e cria um name_and_path map
-// ["path1", "path2", "path3", ...]
-/// @brief Função que pega um vetor com paths e cria um map [nome(chave), path] 
-
+pair<string, int> getArgType(string signature, int index);
 
 
 #endif
