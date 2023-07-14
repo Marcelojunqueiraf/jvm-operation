@@ -87,6 +87,10 @@ void JVM::run() {
   }
 }
 
+int JVM::pushHeapItem(HeapItem *heapItem) {
+  return this->heap.pushHeapItem(heapItem);
+}
+
 JVM::JVM() {
   this->instructionsMap = InstructionsMap(256);
   loadInstructions(&this->instructionsMap);

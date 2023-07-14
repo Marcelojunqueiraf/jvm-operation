@@ -28,13 +28,11 @@ class JVM {
     void initClass(MethodAreaItem * methodAreaItem);
     void executeFrame(Frame * frame);
     void executeInstruction(u1 * instruction, Frame * frame);
-    void invoke(Frame frame);
-
-    bool invoked = false;
-    Frame * invokedFrame;
   public:
     void initialize(string classPath);
     void run();
+    int pushHeapItem(HeapItem * heapItem);
+    void invoke(Frame frame);
     void returnVoid();
     void returnValue(JvmValue);
     void returnValueWide(JvmValue low, JvmValue high);

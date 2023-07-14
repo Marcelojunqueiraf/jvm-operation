@@ -21,6 +21,7 @@ class MethodAreaItem {
   MethodAreaItem(ClassFile * classfile, MethodArea * methodArea);
   string getClassName();
   Method_info * getMainMethod();
+  Method_info * getInitMethod();
   Method_info * getStaticBlock();
   Method_info * getMethodByName(string name);
   cp_info * getConstantPoolItem(u2 index); 

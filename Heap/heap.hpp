@@ -1,15 +1,25 @@
+#pragma once
 
-#ifndef HEAP_H
-#define HEAP_H
+#include "../common/index.hpp"
+#include "../MethodArea/methodArea.hpp"
+#include "../FrameStack/frameStack.hpp"
 
 class HeapItem {
-  MethodAreaItem * methodAreaItem;
+  private:
+    map<string, JvmValue> fields;
+    MethodAreaItem * methodAreaItem;
+  public:
+    JvmValue getFieldValue(string fieldName);
+    void setFieldValue(string fieldName, JvmValue value);
+    HeapItem(MethodAreaItem * methodAreaItem);
 };
 
 
 class Heap {
   private:
-    HeapItem * heapItems;
+    vector<HeapItem *> heapItems;
+  public:
+    HeapItem * getHeapItem(int index);
+    int pushHeapItem(HeapItem * heapItem);
+    Heap();
 };
-
-#endif
