@@ -416,40 +416,60 @@ int getCategory(PrimitiveType type) {
 void javaPrintln(Frame * frame, vector<string> argTypes) {
   string argType = argTypes[0];
 
-  if (argType == "INT") {
+  if (argType == "INT")
+  {
+    // + "BYTE" jvm interpreta byte como int no print, não sei se em outros casos é assim
+    // + "SHORT" jvm interpreta short como int no print, não sei se em outros casos é assim
     JvmValue value = frame->popOperandStack();
     int32_t integer = u4ToInt(value.data);
     cout << integer << endl;
-  } else if (argType == "FLOAT") {
+  }
+  else if (argType == "FLOAT")
+  {
     JvmValue value = frame->popOperandStack();
     float _float = u4ToFloat(value.data);
-    cout << _float << endl;
-  } else if (argType == "Ljava/lang/String;") { // STRING
-    JvmValue value = frame->popOperandStack();
-    string _string = frame->methodAreaItem->getUtf8(value.data);
-    cout << _string << endl;
-  } else if (argType == "LONG") {
+    cout << fixed << setprecision(7) << _float << endl;
+  }
+  else if (argType == "LONG")
+  {
     auto [low, high] = frame->popWideOperandStack();
     int64_t _long = u4ToLong(low.data, high.data);
-    cout << fixed << setprecision(7) << _long << endl;
-  } else if (argType == "DOUBLE") {
+    cout << _long << endl;
+  }
+  else if (argType == "DOUBLE")
+  {
     auto [low, high] = frame->popWideOperandStack();
     double _double = u4ToDouble(low.data, high.data);
     cout << fixed << setprecision(15) << _double << endl;
-  } else if (argType == "CHAR") {
+  }
+  else if (argType == "Ljava/lang/String;")
+  { // STRING
+    JvmValue value = frame->popOperandStack();
+    string _string = frame->methodAreaItem->getUtf8(value.data);
+    cout << _string << endl;
+  }
+  else if (argType == "CHAR")
+  {
     JvmValue value = frame->popOperandStack();
     char _char = value.data;
     cout << _char << endl;
-  } else if (argType == "BOOL") {
+  }
+  else if (argType == "BOOL")
+  {
     JvmValue value = frame->popOperandStack();
     bool _bool = value.data;
     cout << (_bool ? "true" : "false") << endl;
-  // } else if (argType == "BYTE") { // jvm compila byte como int
-  // } else if (argType == "SHORT") { // jvm compila short como int
-  } else {
+  }
+  else if (argType == "VOID")
+  {
+    cout << endl;
+  }
+  else
+  {
+  // TODO: print CHAR[]
+  // TODO: print OBJECT
     throw std::runtime_error("Tipo não suportado (" + argType + ")");
   }
-  // TODO: RETURNADDRESS, não sei se precisa
 }
 
 #pragma endregion
