@@ -1485,21 +1485,77 @@ void drem (Frame * frame) {
 
 void ineg (Frame * frame) {
   cout << "ineg" << endl;
+  JvmValue value = frame->operandStack.top();
+  if (value.type == INT) {
+    frame->operandStack.pop();
+    int32_t neg = u4ToInt(value.data);
+    neg *= -1;
+    value.data = neg;
+    frame->operandStack.push(value);
+    DCOUT << "valor empilhado: " << neg << endl;
+  } else {
+    DCOUT << "falha na operação" << endl;
+  }
   frame->pc += 1;
 }
 
 void lneg (Frame * frame) {
   cout << "lneg" << endl;
+  JvmValue value2 = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue value1 = frame->operandStack.top();
+  if (value1.type == LONG && value2.type == LONG) {
+    frame->operandStack.pop();
+    int64_t neg = u4ToLong(value2.data, value1.data);
+    neg *= -1;
+    pair<u4, u4> result = longToU8(neg);
+    value1.data = result.first;
+    value2.data = result.second;
+    frame->operandStack.push(value1);
+    frame->operandStack.push(value2);
+    DCOUT << "valor empilhado: " << neg << endl;
+  } else {
+    frame->operandStack.push(value2);
+    DCOUT << "falha na operação" << endl;
+  }
   frame->pc += 1;
 }
 
 void fneg (Frame * frame) {
   cout << "fneg" << endl;
+  JvmValue value = frame->operandStack.top();
+  if (value.type == FLOAT) {
+    frame->operandStack.pop();
+    float neg = u4ToFloat(value.data);
+    neg *= -1;
+    value.data = floatToU4(neg);
+    frame->operandStack.push(value);
+    DCOUT << "valor empilhado: " << neg << endl;
+  } else {
+    DCOUT << "falha na operação" << endl;
+  }
   frame->pc += 1;
 }
 
 void dneg (Frame * frame) {
   cout << "dneg" << endl;
+  JvmValue value2 = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue value1 = frame->operandStack.top();
+  if (value1.type == DOUBLE && value2.type == DOUBLE) {
+    frame->operandStack.pop();
+    int64_t neg = u4ToDouble(value2.data, value1.data);
+    neg *= -1;
+    pair<u4, u4> result = doubleToU8(neg);
+    value1.data = result.first;
+    value2.data = result.second;
+    frame->operandStack.push(value1);
+    frame->operandStack.push(value2);
+    DCOUT << "valor empilhado: " << neg << endl;
+  } else {
+    frame->operandStack.push(value2);
+    DCOUT << "falha na operação" << endl;
+  }
   frame->pc += 1;
 }
 
@@ -1509,31 +1565,146 @@ void dneg (Frame * frame) {
 
 void ishl (Frame * frame) {
   cout << "ishl" << endl;
+  JvmValue stack2 = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue stack1 = frame->operandStack.top();
+  if (stack1.type == INT && stack2.type == INT) {
+    frame->operandStack.pop();
+    int32_t value = u4ToInt(stack1.data);
+    int32_t shiftby = u4ToInt(stack2.data);
+    DCOUT << "Value:" << value << endl;
+    DCOUT << "Shiftby: " << shiftby << endl;
+    value <<= shiftby;
+    stack1.data = value;
+    frame->operandStack.push(stack1);
+    DCOUT << "valor empilhado: " << value << endl;
+  } else {
+    frame->operandStack.push(stack2);
+    DCOUT << "falha na operação" << endl;
+  }
   frame->pc += 1;
 }
 
 void lshl (Frame * frame) {
   cout << "lshl" << endl;
+  JvmValue stack3 = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue stack2 = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue stack1 = frame->operandStack.top();
+  if (stack1.type == LONG && stack2.type == LONG && stack3.type == INT) {
+    frame->operandStack.pop();
+    int64_t value = u4ToLong(stack2.data, stack1.data);
+    int32_t shiftby = u4ToInt(stack3.data);
+    DCOUT << "Value:" << value << endl;
+    DCOUT << "Shiftby: " << shiftby << endl;
+    value <<= shiftby;
+    pair<u4, u4> result = longToU8(value);
+    stack1.data = result.first;
+    stack2.data = result.second;
+    frame->operandStack.push(stack1);
+    frame->operandStack.push(stack2);
+    DCOUT << "valor empilhado: " << value << endl;
+  } else {
+    frame->operandStack.push(stack2);
+    frame->operandStack.push(stack3);
+    DCOUT << "falha na operação" << endl;
+  }
   frame->pc += 1;
 }
 
 void ishr (Frame * frame) {
   cout << "ishr" << endl;
+  JvmValue stack2 = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue stack1 = frame->operandStack.top();
+  if (stack1.type == INT && stack2.type == INT) {
+    frame->operandStack.pop();
+    int32_t value = u4ToInt(stack1.data);
+    int32_t shiftby = u4ToInt(stack2.data);
+    DCOUT << "Value:" << value << endl;
+    DCOUT << "Shiftby: " << shiftby << endl;    
+    value >>= shiftby;
+    stack1.data = value;
+    frame->operandStack.push(stack1);
+    DCOUT << "valor empilhado: " << value << endl;
+  } else {
+    frame->operandStack.push(stack2);
+    DCOUT << "falha na operação" << endl;
+  }
   frame->pc += 1;
 }
 
 void lshr (Frame * frame) {
   cout << "lshr" << endl;
+  JvmValue stack3 = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue stack2 = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue stack1 = frame->operandStack.top();
+  if (stack1.type == LONG && stack2.type == LONG && stack3.type == INT) {
+    frame->operandStack.pop();
+    int64_t value = u4ToLong(stack2.data, stack1.data);
+    int32_t shiftby = u4ToInt(stack3.data);
+    DCOUT << "Value:" << value << endl;
+    DCOUT << "Shiftby: " << shiftby << endl;    
+    value >>= shiftby;
+    pair<u4, u4> result = longToU8(value);
+    stack1.data = result.first;
+    stack2.data = result.second;
+    frame->operandStack.push(stack1);
+    frame->operandStack.push(stack2);
+    DCOUT << "valor empilhado: " << value << endl;
+  } else {
+    frame->operandStack.push(stack2);
+    frame->operandStack.push(stack3);
+    DCOUT << "falha na operação" << endl;
+  }
   frame->pc += 1;
 }
 
 void iushr (Frame * frame) {
   cout << "iushr" << endl;
+  JvmValue stack2 = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue stack1 = frame->operandStack.top();
+  if (stack1.type == INT && stack2.type == INT) {
+    frame->operandStack.pop();
+    DCOUT << "Value:" << stack1.data << endl;
+    DCOUT << "Shiftby: " << stack2.data << endl;
+    stack1.data >>= stack2.data;
+    frame->operandStack.push(stack1);
+    DCOUT << "valor empilhado: " << frame->operandStack.top().data << endl;
+  } else {
+    frame->operandStack.push(stack2);
+    DCOUT << "falha na operação" << endl;
+  }
   frame->pc += 1;
 }
 
 void lushr (Frame * frame) {
   cout << "lushr" << endl;
+  JvmValue stack3 = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue stack2 = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue stack1 = frame->operandStack.top();
+  if (stack1.type == LONG && stack2.type == LONG && stack3.type == INT) {
+    frame->operandStack.pop();
+    u8 value = (stack1.data << 32) | stack2.data;
+    DCOUT << "Value:" << value << endl;
+    DCOUT << "Shiftby: " << stack3.data << endl;    
+    value >>= stack3.data;
+    stack1.data = (u4) value >> 32;
+    stack2.data = (u4) value;
+    frame->operandStack.push(stack1);
+    frame->operandStack.push(stack2);
+    DCOUT << "valor empilhado: " << value << endl;
+  } else {
+    frame->operandStack.push(stack2);
+    frame->operandStack.push(stack3);
+    DCOUT << "falha na operação" << endl;
+  }  
   frame->pc += 1;
 }
 
