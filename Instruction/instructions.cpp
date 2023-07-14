@@ -2522,6 +2522,13 @@ void invokestatic (Frame * frame, JVM * jvm) {
   //pegar nome da classe
   string static_class_name = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.class_index);
   
+  if(static_class_name == JAVA_OBJ_CLASSNAME){
+    // se for java/lang/Object, não fazer nada
+    frame->pc += 3;
+    DCOUT << "é um invokestatic para o Object.class INGORADO!" << endl;
+    return;
+  } 
+
   //pegar nome do metodo
   string static_method_name = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.name_and_type_index); 
 
