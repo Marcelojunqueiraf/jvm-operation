@@ -10,7 +10,7 @@ ClassFile * MethodArea::loadClass(string className) {
   if (className == JAVA_OBJ_CLASSNAME)
     return this->loadClassFromPath("./tests/Object.class");
 
-  string path = "./tests" + className + ".class";
+  string path = "./tests/" + className + ".class";
   return this->loadClassFromPath(path);
 }
 
@@ -48,24 +48,25 @@ MethodAreaItem * MethodArea::getMethodAreaItem (string className) {
 
   // E se der erro no load?
   ClassFile * classfile = this->loadClass(className);
-  MethodAreaItem * newClass = new MethodAreaItem(classfile);
+  MethodAreaItem * newClass = new MethodAreaItem(classfile, this);
   this->insert(newClass);
+  cout << "Classe " << className << ".class" <<" carregada na method area" <<endl;
   return newClass;
 }
 
 MethodAreaItem * MethodArea::getMethodAreaItemFromFile(string path) {
   ClassFile * classfile = this->loadClassFromPath(path);
-  MethodAreaItem * methodAreaItem = new MethodAreaItem(classfile);
+  MethodAreaItem * methodAreaItem = new MethodAreaItem(classfile, this);
   
   return methodAreaItem;
 }
 
 /* Method area Item*/
 ////////////////////
-MethodAreaItem::MethodAreaItem(ClassFile * classfile) {
+MethodAreaItem::MethodAreaItem(ClassFile * classfile, MethodArea * methodArea) {
   // Inicializar staticFields
   this->staticFields = map <string, JvmValue>();
-
+  this->methodArea = methodArea;
   this->classfile = classfile;
 }
 
@@ -114,4 +115,9 @@ string MethodAreaItem::getUtf8(u2 index) {
   }
 
   return utf8ToString(actual);
+}
+
+
+MethodArea * MethodAreaItem::getMethodArea() {
+  return this->methodArea;
 }

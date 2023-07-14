@@ -10,13 +10,15 @@
 
 using namespace std;
 
+class MethodArea;
 
 class MethodAreaItem {
   private:
   ClassFile * classfile;
   map <string, JvmValue> staticFields;
+  MethodArea * methodArea;
   public:
-  MethodAreaItem(ClassFile * classfile);
+  MethodAreaItem(ClassFile * classfile, MethodArea * methodArea);
   string getClassName();
   Method_info * getMainMethod();
   Method_info * getStaticBlock();
@@ -24,6 +26,7 @@ class MethodAreaItem {
   cp_info * getConstantPoolItem(u2 index); 
   string getSuper();
   string getUtf8(u2 index);
+  MethodArea * getMethodArea();
 };
 
 class MethodArea {
