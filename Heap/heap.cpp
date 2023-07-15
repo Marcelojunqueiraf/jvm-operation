@@ -25,7 +25,7 @@ HeapItem::HeapItem(MethodAreaItem *methodAreaItem) {
   // TODO: iniciar fields como null
 }
 
-HeapItem * Heap::getHeapItem(int index) {
+HeapItem * Heap::getHeapItem(u4 index) {
   if (index < 0 || index >= this->heapItems.size()) {
     throw std::runtime_error("HeapItem não encontrado no index " + to_string(index));
   }
@@ -33,7 +33,7 @@ HeapItem * Heap::getHeapItem(int index) {
   return this->heapItems[index];
 }
 
-int Heap::pushHeapItem(HeapItem *heapItem) {
+u4 Heap::pushHeapItem(HeapItem *heapItem) {
   this->heapItems.push_back(heapItem);
   return this->heapItems.size() - 1;
 }

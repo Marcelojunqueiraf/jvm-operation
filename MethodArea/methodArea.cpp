@@ -129,9 +129,13 @@ MethodArea * MethodAreaItem::getMethodArea() {
   return this->methodArea;
 }
 
-vector<string> MethodAreaItem::getMethodArgTypes(u2 nameAndTypeIndex) {
+vector<string> MethodAreaItem::getMethodArgTypesByNameAndTypeIndex(u2 nameAndTypeIndex) {
   cp_info * actual = this->getConstantPoolItem(nameAndTypeIndex);
-  string descriptor = this->getUtf8(actual->constant_type_union.NameAndType.descriptor_index);
+  return this->getMethodArgTypesByDescriptorIndex(actual->constant_type_union.NameAndType.descriptor_index);
+}
+
+vector<string> MethodAreaItem::getMethodArgTypesByDescriptorIndex(u2 descriptorIndex) {
+  string descriptor = this->getUtf8(descriptorIndex);
   string returnTypeString = descriptor.substr(descriptor.find(')') + 1);
 
   DCOUT << "descriptor: " << descriptor << endl;
@@ -182,4 +186,10 @@ pair<string, int> getArgType(string signature, int index) {
       throw std::runtime_error("Tipo de argumento não reconhecido " + signature + " no index " + to_string(index));
       break;
   }
+}
+
+int getArgSize(string argType) {
+  if (argType == "VOID") return 0;
+  if (argType == "DOUBLE" || argType == "LONG") return 2;
+  return 1;
 }

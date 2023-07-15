@@ -2479,7 +2479,7 @@ void invokevirtual (Frame * frame, JVM * jvm) {
   cp_info * method_ref = frame->methodAreaItem->getConstantPoolItem(index);
   string className = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.class_index);
   string methodName = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.name_and_type_index);
-  vector<string> argTypes = frame->methodAreaItem->getMethodArgTypes(method_ref->constant_type_union.Methodref_info.name_and_type_index);
+  vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(method_ref->constant_type_union.Methodref_info.name_and_type_index);
   
   DCOUT << "methodName " << methodName << endl;
 
@@ -2493,14 +2493,43 @@ void invokevirtual (Frame * frame, JVM * jvm) {
 }
 
 void invokespecial (Frame * frame, JVM * jvm) {
-  DCOUT << "invokespecial" << endl;
+  u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+  u4 index = (high_bytes << 8) | low_bytes;
+  DCOUT << "invokespecial #" << index << endl;
 
-  // Method_info * initMethod = methodAreaItem->getInitMethod();
-  // Frame * initFrame = new Frame(initMethod, methodAreaItem);
+  cp_info * classRef = frame->methodAreaItem->getConstantPoolItem(index);
+  string classname = frame->methodAreaItem->getUtf8(classRef->constant_type_union.Class_info.name_index);
 
-  // MethodArea * methodArea = methodAreaItem->getMethodArea();
-  // methodArea->invoke(*initFrame);
+  MethodArea  * methodAreaRef = frame->methodAreaItem->getMethodArea();
+  MethodAreaItem * classMethodAreaItem = methodAreaRef->getMethodAreaItem(classname);
 
+  // TODO: lidar com as exceções que a especificação diz que podem acontecer
+  
+  Method_info * initMethod = classMethodAreaItem->getInitMethod();
+  Frame * initFrame = new Frame(initMethod, classMethodAreaItem);
+
+  vector<string> argTypes = classMethodAreaItem->getMethodArgTypesByDescriptorIndex(initMethod->descriptor_index);
+  string returnType = argTypes.back();
+  argTypes.pop_back();
+
+  DCOUT << "initMethod " << classMethodAreaItem->getUtf8(initMethod->name_index) << endl;
+  DCOUT << "argTypes " << argTypes.size() << endl;
+
+  initFrame->localVariables[0] = frame->popOperandStack(); // Objectref será o primeiro argumento
+
+  for (int i = 0; i < (int) argTypes.size(); i++) {
+    int argSize = getArgSize(argTypes[i]);
+    if (argSize == 1) {
+      initFrame->localVariables[i + 1] = frame->popOperandStack();
+    } else if (argSize == 2) {
+      auto [lowValue, highValue] = frame->popWideOperandStack();
+      initFrame->localVariables[i + 1] = highValue; // na mesma ordem que o storeFromStackWide
+      initFrame->localVariables[i + 2] = lowValue;
+    }
+  }
+
+  jvm->invoke(*initFrame);
   frame->pc += 3;
 }
 
@@ -2525,7 +2554,7 @@ void invokestatic (Frame * frame, JVM * jvm) {
   if(static_class_name == JAVA_OBJ_CLASSNAME){
     // se for java/lang/Object, não fazer nada
     frame->pc += 3;
-    DCOUT << "é um invokestatic para o Object.class INGORADO!" << endl;
+    DCOUT << "é um invokestatic para o Object.class IGNORADO!" << endl;
     return;
   } 
 
@@ -2577,15 +2606,15 @@ void _new (Frame * frame, JVM * jvm) {
   cp_info * classRef = frame->methodAreaItem->getConstantPoolItem(index);
   string classname = frame->methodAreaItem->getUtf8(classRef->constant_type_union.Class_info.name_index);
 
-  DCOUT << classname << endl;
-
   MethodArea  * methodAreaRef = frame->methodAreaItem->getMethodArea();
   MethodAreaItem * classMethodAreaItem = methodAreaRef->getMethodAreaItem(classname);
+
+  // TODO: lidar com as exceções que a especificação diz que podem acontecer
 
   // iniciar fields com os valores default, acontecerá no init
   HeapItem * heapItem = new HeapItem(classMethodAreaItem);
   int heapIndex = jvm->pushHeapItem(heapItem);
-  
+
   JvmValue value = {INT, intToU4(heapIndex)};
   frame->pushOperandStack(value); // Objectref será o índice da instância na heap
   DCOUT << "new " << classname << " -> " << heapIndex << endl;

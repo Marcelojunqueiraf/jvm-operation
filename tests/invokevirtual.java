@@ -16,6 +16,11 @@ class animal {
 public class invokevirtual {
   public static void main(String[] args) {
     animal a = new animal();
+    a.nome = "gato1";
     a.grito();
+
+    animal b = new animal();
+    b.nome = "gato";
+    b.grito();
   }
 }

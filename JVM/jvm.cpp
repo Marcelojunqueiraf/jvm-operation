@@ -49,7 +49,7 @@ void JVM::executeFrame(Frame * frame) {
   DCOUT << "code len: " << codeAtt->code_length << endl;
 
   if (frame->pc < codeAtt->code_length) {
-    DCOUT << "Executing instruction at pc: " << frame->pc << " stackSize: " << frame->operandStack.size() << endl;
+    DCOUT << "Executing instruction at pc: " << frame->pc << ", stackSize: " << frame->operandStack.size() << endl;
     
     u1 * opcode = codeAtt->code + frame->pc;
     this->executeInstruction(opcode, frame);

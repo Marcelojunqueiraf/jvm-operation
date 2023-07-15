@@ -19,7 +19,7 @@ class Heap {
   private:
     vector<HeapItem *> heapItems;
   public:
-    HeapItem * getHeapItem(int index);
-    int pushHeapItem(HeapItem * heapItem);
+    HeapItem * getHeapItem(u4 index);
+    u4 pushHeapItem(HeapItem * heapItem);
     Heap();
 };
