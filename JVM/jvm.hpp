@@ -30,12 +30,19 @@ class JVM {
     void executeInstruction(u1 * instruction, Frame * frame);
 
   public:
-    void invoke(Frame frame);
+    JVM();
     void initialize(string classPath);
     void run();
-    int pushHeapItem(HeapItem * heapItem);
+    
+    void invoke(Frame frame);
     void returnVoid();
     void returnValue(JvmValue);
     void returnValueWide(JvmValue low, JvmValue high);
-    JVM();
+    
+    u4 pushHeapItem(HeapItem * heapItem);
+
+    JvmValue getField(u4 heapItemIndex, string fieldName);
+    pair<JvmValue, JvmValue> getFieldWide(u4 heapItemIndex, string fieldName);
+    JvmValue getStaticField(u4 heapItemIndex, string fieldName);
+    pair<JvmValue, JvmValue> getStaticFieldWide(u4 heapItemIndex, string fieldName);
 };

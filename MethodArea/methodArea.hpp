@@ -28,8 +28,8 @@ class MethodAreaItem {
   string getSuper();
   string getUtf8(u2 index);
   MethodArea * getMethodArea();
-  vector<string> getMethodArgTypesByDescriptorIndex(u2 descriptorIndex);
-  vector<string> getMethodArgTypesByNameAndTypeIndex(u2 index);
+  vector<string> getMethodArgTypesByDescriptorIndex(u2 descriptorIndex, bool isField = false);
+  vector<string> getMethodArgTypesByNameAndTypeIndex(u2 index, bool isField = false);
 };
 
 class MethodArea {
@@ -45,6 +45,7 @@ class MethodArea {
 };
 
 pair<string, int> getArgType(string signature, int index);
+int getArgSize(PrimitiveType argType);
 int getArgSize(string argType);
 
 

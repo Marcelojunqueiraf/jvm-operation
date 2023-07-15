@@ -1,26 +1,35 @@
 #include "heap.hpp"
 
 JvmValue HeapItem::getFieldValue(string fieldName) {
-  if (this->fields.find(fieldName) == this->fields.end()) {
-    string classname = this->methodAreaItem->getClassName();
-    throw std::runtime_error("Campo " + fieldName + " não encontrado numa instância da classe " + classname);
-  }
+  this->throwIfNotFound(fieldName);
+  return this->fields[fieldName].first;
+}
 
+pair<JvmValue, JvmValue> HeapItem::getFieldValueWide(string fieldName) {
+  this->throwIfNotFound(fieldName);
   return this->fields[fieldName];
 }
 
 void HeapItem::setFieldValue(string fieldName, JvmValue value) {
+  this->throwIfNotFound(fieldName);
+  this->fields[fieldName] = {value, JvmValue()};
+}
+
+void HeapItem::setFieldValueWide(string fieldName, JvmValue low, JvmValue high) {
+  this->throwIfNotFound(fieldName);
+  this->fields[fieldName] = {low, high};
+}
+
+void HeapItem::throwIfNotFound(string fieldName) {
   if (this->fields.find(fieldName) == this->fields.end()) {
     string classname = this->methodAreaItem->getClassName();
     throw std::runtime_error("Campo " + fieldName + " não encontrado numa instância da classe " + classname);
   }
-
-  this->fields[fieldName] = value;
 }
 
 HeapItem::HeapItem(MethodAreaItem *methodAreaItem) {
   this->methodAreaItem = methodAreaItem;
-  this->fields = map<string, JvmValue>();
+  this->fields = map<string, pair<JvmValue, JvmValue>>();
 
   // TODO: iniciar fields como null
 }

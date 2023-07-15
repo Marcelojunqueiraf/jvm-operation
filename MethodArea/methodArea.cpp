@@ -129,26 +129,29 @@ MethodArea * MethodAreaItem::getMethodArea() {
   return this->methodArea;
 }
 
-vector<string> MethodAreaItem::getMethodArgTypesByNameAndTypeIndex(u2 nameAndTypeIndex) {
+vector<string> MethodAreaItem::getMethodArgTypesByNameAndTypeIndex(u2 nameAndTypeIndex, bool isField) {
   cp_info * actual = this->getConstantPoolItem(nameAndTypeIndex);
-  return this->getMethodArgTypesByDescriptorIndex(actual->constant_type_union.NameAndType.descriptor_index);
+  return this->getMethodArgTypesByDescriptorIndex(actual->constant_type_union.NameAndType.descriptor_index, isField);
 }
 
-vector<string> MethodAreaItem::getMethodArgTypesByDescriptorIndex(u2 descriptorIndex) {
+vector<string> MethodAreaItem::getMethodArgTypesByDescriptorIndex(u2 descriptorIndex, bool isField) {
   string descriptor = this->getUtf8(descriptorIndex);
-  string returnTypeString = descriptor.substr(descriptor.find(')') + 1);
-
   DCOUT << "descriptor: " << descriptor << endl;
+
+  if (isField) descriptor = '(' + descriptor + ')'; // adiciona os parenteses para o caso de ser field, facilita o parse
 
   vector<string> types; // não usei o tipo PrimitiveType pq o tipo L não é uma string com valor fixo, + array e void
   int i = 1; // pula o '('
-  while (descriptor[i] != ')') {
+  while (i < descriptor.size() && descriptor[i] != ')') {
     auto [argType, jump] = getArgType(descriptor, i);
     types.push_back(argType);
     i += jump;
   }
 
-  types.push_back(getArgType(returnTypeString, 0).first); // último tipo é o retorno
+  if (!isField) { // se for função, pega o tipo de retorno
+    string returnTypeString = descriptor.substr(descriptor.find(')') + 1);
+    types.push_back(getArgType(returnTypeString, 0).first); // último tipo é o retorno
+  }
 
   return types;
 }
@@ -178,14 +181,19 @@ pair<string, int> getArgType(string signature, int index) {
     {
       int asize = index;
       while (signature[asize] != ';') asize++;
-      return {signature.substr(index, asize), asize};
+      return {signature.substr(index, asize), asize+1};
     }
     case '[':
       // TODO: array
     default:
-      throw std::runtime_error("Tipo de argumento não reconhecido " + signature + " no index " + to_string(index));
+      throw std::runtime_error("Tipo de argumento não reconhecido \"" + string(1, signature[index]) + "\" no tipo " + signature);
       break;
   }
+}
+
+int getArgSize(PrimitiveType argType) {
+  if (argType == DOUBLE || argType == LONG) return 2;
+  return 1;
 }
 
 int getArgSize(string argType) {

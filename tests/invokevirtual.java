@@ -7,8 +7,8 @@ class animal {
     System.out.println("constructor");
   }
   
-  public void grito() {
-    System.out.println("auuu");
+  public void grito(String nome) {
+    System.out.println(nome);
   }
 
 }
@@ -16,11 +16,10 @@ class animal {
 public class invokevirtual {
   public static void main(String[] args) {
     animal a = new animal();
-    a.nome = "gato1";
-    a.grito();
+    a.grito(a.nome);
 
     animal b = new animal();
     b.nome = "gato";
-    b.grito();
+    b.grito(b.nome);
   }
 }

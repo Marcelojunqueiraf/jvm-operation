@@ -90,8 +90,26 @@ void JVM::run() {
   }
 }
 
-int JVM::pushHeapItem(HeapItem *heapItem) {
+u4 JVM::pushHeapItem(HeapItem *heapItem) {
   return this->heap.pushHeapItem(heapItem);
+}
+
+JvmValue JVM::getField(u4 heapItemIndex, string fieldName) {
+  HeapItem * heapItem = this->heap.getHeapItem(heapItemIndex);
+  return heapItem->getFieldValue(fieldName);
+}
+
+pair<JvmValue, JvmValue> JVM::getFieldWide(u4 heapItemIndex, string fieldName) {
+  HeapItem * heapItem = this->heap.getHeapItem(heapItemIndex);
+  return heapItem->getFieldValueWide(fieldName);
+}
+
+JvmValue JVM::getStaticField(u4 heapItemIndex, string fieldName) {
+  return JvmValue();
+}
+
+pair<JvmValue, JvmValue> JVM::getStaticFieldWide(u4 heapItemIndex, string fieldName) {
+  return pair<JvmValue, JvmValue>();
 }
 
 JVM::JVM() {
