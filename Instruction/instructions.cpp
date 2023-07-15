@@ -2315,13 +2315,25 @@ void if_icmple (Frame * frame, JVM * jvm) {
 
 void if_acmpeq (Frame * frame, JVM * jvm) {
   DCOUT << "if_acmpeq" << endl;
-  frame->pc += 3;
+  JvmValue value1 = frame->popOperandStack();
+  JvmValue value2 = frame->popOperandStack();
+  if (value1.data == value2.data) {
+    branch(frame);
+  } else {
+    frame->pc += 3;
+  }
 }
 
 void if_acmpne (Frame * frame, JVM * jvm) {
   DCOUT << "if_acmpne" << endl;
-  frame->pc += 3;
-}
+  JvmValue value1 = frame->popOperandStack();
+  JvmValue value2 = frame->popOperandStack();
+  if (value1.data != value2.data) {
+    branch(frame);
+  } else {
+    frame->pc += 3;
+  }
+  }
 
 #pragma endregion
 
