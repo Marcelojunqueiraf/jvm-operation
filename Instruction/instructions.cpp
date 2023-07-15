@@ -2828,11 +2828,16 @@ void multianewarray (Frame * frame, JVM * jvm) {
 
 void ifnull (Frame * frame, JVM * jvm) {
   DCOUT << "ifnull" << endl;
-  frame->pc += 3;
+  JvmValue value = frame->popOperandStack();
+  if (value.data == 0) branch(frame);
+  else frame->pc += 3;
 }
 
 void ifnonnull (Frame * frame, JVM * jvm) {
   DCOUT << "ifnonnull" << endl;
+  JvmValue value = frame->popOperandStack();
+  if (value.data != 0) branch(frame);
+  else frame->pc += 3;
   frame->pc += 3;
 }
 
