@@ -48,4 +48,5 @@ u4 Heap::pushHeapItem(HeapItem *heapItem) {
 
 Heap::Heap() {
   this->heapItems = vector<HeapItem *>();
+  heapItems.push_back(nullptr); // Ponteiro para null
 }

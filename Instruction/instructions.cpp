@@ -486,6 +486,9 @@ void nop (Frame * frame, JVM * jvm) {
 
 void aconst_null (Frame * frame, JVM * jvm) {
   DCOUT << "aconst_null" << endl;
+
+  frame->pushOperandStack({REFERENCE, 0});
+  
   frame->pc += 1;
 }
 
