@@ -11,13 +11,14 @@ typedef enum {
     FLOAT,
     DOUBLE,
     BOOL,
+    REFERENCE,
     STRING,
     RETURNADDRESS
-  } PrimitiveType;
+  } JVMType;
 
 typedef struct
 {
-  PrimitiveType type;
+  JVMType type;
   u4 data;
 } JvmValue;
 

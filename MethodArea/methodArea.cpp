@@ -191,7 +191,7 @@ pair<string, int> getArgType(string signature, int index) {
   }
 }
 
-int getArgSize(PrimitiveType argType) {
+int getArgSize(JVMType argType) {
   if (argType == DOUBLE || argType == LONG) return 2;
   return 1;
 }

@@ -405,7 +405,7 @@ void storeFromStackWide(int index, Frame * frame) {
   store(index + 1, frame, jvmValueLowBytes);
 }
 
-int getCategory(PrimitiveType type) {
+int getCategory(JVMType type) {
   if (type == LONG || type == DOUBLE) {
     return 2;
   } else {
@@ -1002,6 +1002,10 @@ void dstore (Frame * frame, JVM * jvm) {
 
 void astore (Frame * frame, JVM * jvm) {
   DCOUT << "astore" << endl;
+  u1 index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+
+  storeFromStack(index, frame);
+
   frame->pc += 2;
 }
 
@@ -1134,21 +1138,25 @@ void dstore_3 (Frame * frame, JVM * jvm) {
 
 void astore_0 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_0" << endl;
+  storeFromStack(0, frame);
   frame->pc += 1;
 }
 
 void astore_1 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_1" << endl;
+  storeFromStack(0, frame);
   frame->pc += 1;
 }
 
 void astore_2 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_2" << endl;
+  storeFromStack(0, frame);
   frame->pc += 1;
 }
 
 void astore_3 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_3" << endl;
+  storeFromStack(0, frame);
   frame->pc += 1;
 }
 
@@ -1328,7 +1336,7 @@ T calculate(T first, T second, Operation op) {
 }
 
 
-void operate(Frame * frame, Operation op, PrimitiveType type) {
+void operate(Frame * frame, Operation op, JVMType type) {
   auto [second, first] = frame->popWideOperandStack();
 
   u4 result = 0;
@@ -1355,7 +1363,7 @@ void operate(Frame * frame, Operation op, PrimitiveType type) {
   frame->pushOperandStack(resultValue);
 }
 
-void operateW(Frame * frame, Operation op, PrimitiveType type) {
+void operateW(Frame * frame, Operation op, JVMType type) {
   auto [secondLower, secondUpper] = frame->popWideOperandStack();
   auto [firstLower, firstUpper] = frame->popWideOperandStack();
 
