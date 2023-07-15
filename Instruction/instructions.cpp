@@ -622,7 +622,7 @@ void bipush (Frame * frame, JVM * jvm) {
   u1 bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   int8_t bytesSigned = bytes;
 
-  JvmValue value = {INT, bytesSigned};
+  JvmValue value = {INT, intToU4(bytesSigned)};
   frame->pushOperandStack(value);
   DCOUT << "valor empilhado: " << bytesSigned << endl;
   frame->pc += 2;
@@ -636,7 +636,7 @@ void sipush (Frame * frame, JVM * jvm) {
   u2 bytes = (bytes1 << 8) | bytes2;
   int16_t bytesSigned = (int16_t) bytes;
 
-  JvmValue value = {INT, bytesSigned};
+  JvmValue value = {INT, intToU4(bytesSigned)};
   frame->pushOperandStack(value);
   DCOUT << "valor empilhado: " << bytesSigned << endl;
   frame->pc += 3;
@@ -1347,6 +1347,8 @@ void operate(Frame * frame, Operation op, PrimitiveType type) {
       result = floatToU4(calc);
       break;
     }
+    default:
+      throw std::runtime_error("tipo nao implementado");
   }
 
   JvmValue resultValue = {type, result};
@@ -1373,6 +1375,8 @@ void operateW(Frame * frame, Operation op, PrimitiveType type) {
       result = doubleToU8(calc);
       break;
     }
+    default:
+      throw std::runtime_error("tipo nao implementado");
   }
 
   JvmValue resultLower = {type, result.first};
@@ -1721,27 +1725,18 @@ void iushr (Frame * frame, JVM * jvm) {
 
 void lushr (Frame * frame, JVM * jvm) {
   cout << "lushr" << endl;
-  JvmValue stack3 = frame->operandStack.top();
-  frame->operandStack.pop();
-  JvmValue stack2 = frame->operandStack.top();
-  frame->operandStack.pop();
-  JvmValue stack1 = frame->operandStack.top();
-  if (stack1.type == LONG && stack2.type == LONG && stack3.type == INT) {
-    frame->operandStack.pop();
-    u8 value = (stack1.data << 32) | stack2.data;
-    DCOUT << "Value:" << value << endl;
-    DCOUT << "Shiftby: " << stack3.data << endl;    
-    value >>= stack3.data;
-    stack1.data = (u4) value >> 32;
-    stack2.data = (u4) value;
-    frame->operandStack.push(stack1);
-    frame->operandStack.push(stack2);
-    DCOUT << "valor empilhado: " << value << endl;
-  } else {
-    frame->operandStack.push(stack2);
-    frame->operandStack.push(stack3);
-    DCOUT << "falha na operação" << endl;
-  }  
+
+  // pop long
+  pair<JvmValue, JvmValue> longValue = frame->popWideOperandStack();
+  JvmValue shiftValue = frame->popOperandStack();
+
+  int32_t shift = u4ToInt(shiftValue.data);
+
+  JvmValue resultLower = {LONG, longValue.first.data >> shift};
+  JvmValue resultUpper = {LONG, longValue.second.data >> shift};
+  frame->pushWideOperandStack(resultLower, resultUpper);
+
+  DCOUT << "valor empilhado: " << u4ToLong(longValue.first.data, longValue.second.data) << endl;
   frame->pc += 1;
 }
 
@@ -1861,7 +1856,7 @@ void l2i (Frame * frame, JVM * jvm) {
   int32_t integer = longInteger;
   DCOUT << "l2i " << longInteger << " -> " << integer << endl;
 
-  JvmValue new_value = {INT, integer};
+  JvmValue new_value = {INT, intToU4(integer)};
   frame->pushOperandStack(new_value);
 
   frame->pc += 1;
@@ -2338,7 +2333,7 @@ void ret (Frame * frame, JVM * jvm) {
 
 //implementado pelo Piano 
 void tableswitch (Frame * frame, JVM * jvm) {
-  DCOUT << "tableswitch" << endl;
+  /*DCOUT << "tableswitch" << endl;
 
 
   code_attribute codeAtt = frame->method_info->attributes->attribute_info_union.code_attribute;
@@ -2428,7 +2423,7 @@ void tableswitch (Frame * frame, JVM * jvm) {
       }
       
       DCOUT << "\t\t" << i + 1 << ": " << jump_bytes << " (+" << bytes << ")" << endl;
-  };
+  };*/
 
 }
 
@@ -2640,7 +2635,7 @@ void invokespecial (Frame * frame, JVM * jvm) {
 
   initFrame->localVariables[0] = frame->popOperandStack(); // Objectref será o primeiro argumento
 
-  int localVariableIndex = 1;
+  unsigned int localVariableIndex = 1;
   while (localVariableIndex < argTypes.size()) {
     int argSize = getArgSize(argTypes[localVariableIndex]);
     if (argSize == 1) {

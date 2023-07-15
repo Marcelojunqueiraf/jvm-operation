@@ -141,7 +141,7 @@ vector<string> MethodAreaItem::getMethodArgTypesByDescriptorIndex(u2 descriptorI
   if (isField) descriptor = '(' + descriptor + ')'; // adiciona os parenteses para o caso de ser field, facilita o parse
 
   vector<string> types; // não usei o tipo PrimitiveType pq o tipo L não é uma string com valor fixo, + array e void
-  int i = 1; // pula o '('
+  unsigned int i = 1; // pula o '('
   while (i < descriptor.size() && descriptor[i] != ')') {
     auto [argType, jump] = getArgType(descriptor, i);
     types.push_back(argType);
