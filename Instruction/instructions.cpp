@@ -2518,14 +2518,15 @@ void invokespecial (Frame * frame, JVM * jvm) {
 
   initFrame->localVariables[0] = frame->popOperandStack(); // Objectref será o primeiro argumento
 
-  for (int i = 0; i < (int) argTypes.size(); i++) {
-    int argSize = getArgSize(argTypes[i]);
+  int localVariableIndex = 1;
+  while (localVariableIndex < argTypes.size()) {
+    int argSize = getArgSize(argTypes[localVariableIndex]);
     if (argSize == 1) {
-      initFrame->localVariables[i + 1] = frame->popOperandStack();
+      initFrame->localVariables[localVariableIndex++] = frame->popOperandStack();
     } else if (argSize == 2) {
       auto [lowValue, highValue] = frame->popWideOperandStack();
-      initFrame->localVariables[i + 1] = highValue; // na mesma ordem que o storeFromStackWide
-      initFrame->localVariables[i + 2] = lowValue;
+      initFrame->localVariables[localVariableIndex++] = highValue; // na mesma ordem que o storeFromStackWide
+      initFrame->localVariables[localVariableIndex++] = lowValue;
     }
   }
 
