@@ -472,6 +472,20 @@ void javaPrintln(Frame * frame, vector<string> argTypes) {
   }
 }
 
+pair<string, u4> getFieldNameAndSize(Frame * frame, u2 index) {
+  cp_info * fieldRef = frame->methodAreaItem->getConstantPoolItem(index);
+
+  string classname = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.class_index);
+  string fieldName = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.name_and_type_index);
+  DCOUT << "field " << classname << "." << fieldName << endl;
+
+  vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(fieldRef->constant_type_union.Fieldref_info.name_and_type_index, true);
+  string fieldType = argTypes.back();
+  int valueSize = getArgSize(fieldType);
+  
+  return {fieldName, valueSize};
+}
+
 #pragma endregion
 
 
@@ -2534,20 +2548,12 @@ void putstatic (Frame * frame, JVM * jvm) {
 
 void getfield (Frame * frame, JVM * jvm) {
   DCOUT << "getfield" << endl;
-
   u1 highBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
   u1 lowBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
-  u2 index = (highBytes << 8) | lowBytes;  
-  cp_info * fieldRef = frame->methodAreaItem->getConstantPoolItem(index);
-
+  u2 index = (highBytes << 8) | lowBytes;
+  
+  auto [fieldName, valueSize] = getFieldNameAndSize(frame, index);
   u4 objectRef = frame->popOperandStack().data;
-  string classname = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.class_index);
-  string fieldName = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.name_and_type_index);
-  DCOUT << "getfield " << classname << "." << fieldName << endl;
-
-  vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(fieldRef->constant_type_union.Fieldref_info.name_and_type_index, true);
-  string fieldType = argTypes.back();
-  int valueSize = getArgSize(fieldType);
 
   if (valueSize == 1) {
     JvmValue value = jvm->getField(objectRef, fieldName);
@@ -2562,30 +2568,21 @@ void getfield (Frame * frame, JVM * jvm) {
 
 void putfield (Frame * frame, JVM * jvm) {
   DCOUT << "putfield" << endl;
-
   u1 highBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
   u1 lowBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
-  u2 index = (highBytes << 8) | lowBytes;  
-  cp_info * fieldRef = frame->methodAreaItem->getConstantPoolItem(index);
-
-  string classname = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.class_index);
-  string fieldName = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.name_and_type_index);
-
-  DCOUT << "putfield " << classname << "." << fieldName << endl;
-
-  vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(fieldRef->constant_type_union.Fieldref_info.name_and_type_index, true);
-  string fieldType = argTypes.back();
-  int valueSize = getArgSize(fieldType);
+  u2 index = (highBytes << 8) | lowBytes;
+  
+  auto [fieldName, valueSize] = getFieldNameAndSize(frame, index);
 
   if (valueSize == 1) {
     JvmValue value = frame->popOperandStack();
     u4 objectRef = frame->popOperandStack().data;
-    DCOUT << "value " << value.data << endl;
+    DCOUT << "value 0x" << hex << value.data << dec << endl;
     jvm->setField(objectRef, fieldName, value);
   } else {
     auto [low, high] = frame->popWideOperandStack();
     u4 objectRef = frame->popOperandStack().data;
-    DCOUT << "value " << high.data << low.data << endl;
+    DCOUT << "value 0x" << hex << high.data << low.data << dec << endl;
     jvm->setFieldWide(objectRef, fieldName, low, high);
   }
 
@@ -2609,7 +2606,7 @@ void invokevirtual (Frame * frame, JVM * jvm) {
   string methodName = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.name_and_type_index);
   vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(method_ref->constant_type_union.Methodref_info.name_and_type_index);
   
-  DCOUT << "methodName " << methodName << endl;
+  DCOUT << "methodName " << className << '.' << methodName << endl;
 
   if (className == "java/io/PrintStream") {
     javaPrintln(frame, argTypes);
@@ -2644,6 +2641,7 @@ void invokespecial (Frame * frame, JVM * jvm) {
   DCOUT << "initMethod " << classMethodAreaItem->getUtf8(initMethod->name_index) << endl;
   DCOUT << "argTypes " << argTypes.size() << endl;
 
+  // FIXME: acho que a ordem ta errada, ta invertida
   initFrame->localVariables[0] = frame->popOperandStack(); // Objectref será o primeiro argumento
 
   unsigned int localVariableIndex = 1;
@@ -2697,6 +2695,8 @@ void invokestatic (Frame * frame, JVM * jvm) {
   MethodAreaItem * static_class_method_area_item = method_area_ref->getMethodAreaItem(static_class_name);
 
   Method_info * static_class_method =  static_class_method_area_item->getMethodByName(static_method_name);
+
+  // TODO: ainda falta pegar os argumentos, vai ser algo parecido com o invokespecial
 
   Frame * invokedFrame = new Frame(static_class_method, static_class_method_area_item);
   

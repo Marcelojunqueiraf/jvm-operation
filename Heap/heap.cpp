@@ -1,12 +1,7 @@
 #include "heap.hpp"
 
 JvmValue HeapItem::getFieldValue(string fieldName) {
-  if (this->fields.find(fieldName) == this->fields.end()) {
-    // TODO: verificar se o field existe na classe para inicializar
-    this->fields[fieldName] = {JvmValue(), JvmValue()};
-  }
-
-  return this->fields[fieldName].first;
+  return this->getFieldValueWide(fieldName).first;
 }
 
 pair<JvmValue, JvmValue> HeapItem::getFieldValueWide(string fieldName) {
