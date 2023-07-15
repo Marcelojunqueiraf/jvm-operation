@@ -2510,7 +2510,7 @@ void dreturn (Frame * frame, JVM * jvm) {
 
 void areturn (Frame * frame, JVM * jvm) {
   DCOUT << "areturn" << endl;
-  frame->pc += 1;
+  returnValue(frame, jvm);
 }
 
 void _return (Frame * frame, JVM * jvm) {
