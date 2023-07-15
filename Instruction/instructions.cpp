@@ -2031,26 +2031,98 @@ void i2s (Frame * frame, JVM * jvm) {
 
 void lcmp (Frame * frame, JVM * jvm) {
   DCOUT << "lcmp" << endl;
+  pair<JvmValue, JvmValue> first = frame->popWideOperandStack();
+  long firstLong = u4ToLong(first.first.data, first.second.data);
+  pair<JvmValue, JvmValue> second = frame->popWideOperandStack();
+  long secondLong = u4ToLong(second.first.data, second.second.data);
+
+  if (firstLong > secondLong) {
+    frame->pushOperandStack({INT, 1});
+  } else if (firstLong == secondLong) {
+    frame->pushOperandStack({INT, 0});
+  } else {
+    frame->pushOperandStack({INT,  intToU4(-1)});
+  }
   frame->pc += 1;
 }
 
 void fcmpl (Frame * frame, JVM * jvm) {
   DCOUT << "fcmpl" << endl;
+  JvmValue first = frame->popOperandStack();
+  float firstFloat = u4ToFloat(first.data);
+  JvmValue second = frame->popOperandStack();
+  float secondFloat = u4ToFloat(second.data);
+
+  if (isnan(firstFloat) || isnan(secondFloat)) {
+    frame->pushOperandStack({INT, intToU4(-1)});
+  } else if (firstFloat > secondFloat) {
+    frame->pushOperandStack({INT, 1});
+  } else if (firstFloat == secondFloat) {
+    frame->pushOperandStack({INT, 0});
+  } else {
+    frame->pushOperandStack({INT, intToU4(-1)});
+  }
+
   frame->pc += 1;
 }
 
 void fcmpg (Frame * frame, JVM * jvm) {
   DCOUT << "fcmpg" << endl;
+  JvmValue first = frame->popOperandStack();
+  float firstFloat = u4ToFloat(first.data);
+  JvmValue second = frame->popOperandStack();
+  float secondFloat = u4ToFloat(second.data);
+
+  if (isnan(firstFloat) || isnan(secondFloat)) {
+    frame->pushOperandStack({INT, 1});
+  } else if (firstFloat > secondFloat) {
+    frame->pushOperandStack({INT, 1});
+  } else if (firstFloat == secondFloat) {
+    frame->pushOperandStack({INT, 0});
+  } else {
+    frame->pushOperandStack({INT, intToU4(-1)});
+  }
+
   frame->pc += 1;
 }
 
 void dcmpl (Frame * frame, JVM * jvm) {
   DCOUT << "dcmpl" << endl;
+  pair<JvmValue, JvmValue> first = frame->popWideOperandStack();
+  double firstDouble = u4ToDouble(first.first.data, first.second.data);
+  pair<JvmValue, JvmValue> second = frame->popWideOperandStack();
+  double secondDouble = u4ToDouble(second.first.data, second.second.data);
+
+  if (isnan(firstDouble) || isnan(secondDouble)) {
+    frame->pushOperandStack({INT, intToU4(-1)});
+  } else if (firstDouble > secondDouble) {
+    frame->pushOperandStack({INT, 1});
+  } else if (firstDouble == secondDouble) {
+    frame->pushOperandStack({INT, 0});
+  } else {
+    frame->pushOperandStack({INT, intToU4(-1)});
+  }
+
   frame->pc += 1;
 }
 
 void dcmpg (Frame * frame, JVM * jvm) {
   DCOUT << "dcmpg" << endl;
+  pair<JvmValue, JvmValue> first = frame->popWideOperandStack();
+  double firstDouble = u4ToDouble(first.first.data, first.second.data);
+  pair<JvmValue, JvmValue> second = frame->popWideOperandStack();
+  double secondDouble = u4ToDouble(second.first.data, second.second.data);
+
+  if (isnan(firstDouble) || isnan(secondDouble)) {
+    frame->pushOperandStack({INT, intToU4(1)});
+  } else if (firstDouble > secondDouble) {
+    frame->pushOperandStack({INT, 1});
+  } else if (firstDouble == secondDouble) {
+    frame->pushOperandStack({INT, 0});
+  } else {
+    frame->pushOperandStack({INT, intToU4(-1)});
+  }
+
   frame->pc += 1;
 }
 
