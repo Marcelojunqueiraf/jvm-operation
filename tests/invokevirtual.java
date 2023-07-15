@@ -5,7 +5,7 @@ class animal {
   long idade;
 
   animal() {
-    System.out.println("constructor");
+    System.out.println("animal constructor");
   }
   
   public void grito(String nome) {

@@ -4,5 +4,5 @@
 #include "class-file.hpp"
 #include <iostream>
 
-#define DEBUG 1
+#define DEBUG 0
 #define DCOUT if (DEBUG) std::cout

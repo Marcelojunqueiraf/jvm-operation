@@ -2,6 +2,7 @@
 
 JvmValue HeapItem::getFieldValue(string fieldName) {
   if (this->fields.find(fieldName) == this->fields.end()) {
+    // TODO: verificar se o field existe na classe para inicializar
     this->fields[fieldName] = {JvmValue(), JvmValue()};
   }
 
@@ -10,6 +11,7 @@ JvmValue HeapItem::getFieldValue(string fieldName) {
 
 pair<JvmValue, JvmValue> HeapItem::getFieldValueWide(string fieldName) {
   if (this->fields.find(fieldName) == this->fields.end()) {
+    // TODO: verificar se o field existe na classe para inicializar
     this->fields[fieldName] = {JvmValue(), JvmValue()};
   }
 
