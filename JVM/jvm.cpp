@@ -105,11 +105,29 @@ pair<JvmValue, JvmValue> JVM::getFieldWide(u4 heapItemIndex, string fieldName) {
 }
 
 JvmValue JVM::getStaticField(u4 heapItemIndex, string fieldName) {
-  return JvmValue();
+  return JvmValue(); // TODO: implement
 }
 
 pair<JvmValue, JvmValue> JVM::getStaticFieldWide(u4 heapItemIndex, string fieldName) {
-  return pair<JvmValue, JvmValue>();
+  return pair<JvmValue, JvmValue>(); // TODO: implement
+}
+
+void JVM::setField(u4 heapItemIndex, string fieldName, JvmValue value) {
+  HeapItem * heapItem = this->heap.getHeapItem(heapItemIndex);
+  heapItem->setFieldValue(fieldName, value);
+}
+
+void JVM::setFieldWide(u4 heapItemIndex, string fieldName, JvmValue low, JvmValue high) {
+  HeapItem * heapItem = this->heap.getHeapItem(heapItemIndex);
+  heapItem->setFieldValueWide(fieldName, low, high);
+}
+
+void JVM::setStaticField(u4 heapItemIndex, string fieldName, JvmValue value) {
+  // TODO: implement
+}
+
+void JVM::setStaticFieldWide(u4 heapItemIndex, string fieldName, JvmValue low, JvmValue high) {
+  // TODO: implement
 }
 
 JVM::JVM() {

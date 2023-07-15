@@ -8,8 +8,6 @@ class HeapItem {
   private:
     map<string, pair<JvmValue, JvmValue>> fields;
     MethodAreaItem * methodAreaItem;
-
-    void throwIfNotFound(string fieldName);
   public:
     HeapItem(MethodAreaItem * methodAreaItem);
     JvmValue getFieldValue(string fieldName);

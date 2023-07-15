@@ -2469,7 +2469,6 @@ void getfield (Frame * frame, JVM * jvm) {
 
   vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(fieldRef->constant_type_union.Fieldref_info.name_and_type_index, true);
   string fieldType = argTypes.back();
-
   int valueSize = getArgSize(fieldType);
 
   if (valueSize == 1) {
@@ -2485,6 +2484,33 @@ void getfield (Frame * frame, JVM * jvm) {
 
 void putfield (Frame * frame, JVM * jvm) {
   DCOUT << "putfield" << endl;
+
+  u1 highBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 lowBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+  u2 index = (highBytes << 8) | lowBytes;  
+  cp_info * fieldRef = frame->methodAreaItem->getConstantPoolItem(index);
+
+  string classname = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.class_index);
+  string fieldName = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.name_and_type_index);
+
+  DCOUT << "putfield " << classname << "." << fieldName << endl;
+
+  vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(fieldRef->constant_type_union.Fieldref_info.name_and_type_index, true);
+  string fieldType = argTypes.back();
+  int valueSize = getArgSize(fieldType);
+
+  if (valueSize == 1) {
+    JvmValue value = frame->popOperandStack();
+    u4 objectRef = frame->popOperandStack().data;
+    DCOUT << "value " << value.data << endl;
+    jvm->setField(objectRef, fieldName, value);
+  } else {
+    auto [low, high] = frame->popWideOperandStack();
+    u4 objectRef = frame->popOperandStack().data;
+    DCOUT << "value " << high.data << low.data << endl;
+    jvm->setFieldWide(objectRef, fieldName, low, high);
+  }
+
   frame->pc += 3;
 }
 

@@ -1,30 +1,27 @@
 #include "heap.hpp"
 
 JvmValue HeapItem::getFieldValue(string fieldName) {
-  this->throwIfNotFound(fieldName);
+  if (this->fields.find(fieldName) == this->fields.end()) {
+    this->fields[fieldName] = {JvmValue(), JvmValue()};
+  }
+
   return this->fields[fieldName].first;
 }
 
 pair<JvmValue, JvmValue> HeapItem::getFieldValueWide(string fieldName) {
-  this->throwIfNotFound(fieldName);
+  if (this->fields.find(fieldName) == this->fields.end()) {
+    this->fields[fieldName] = {JvmValue(), JvmValue()};
+  }
+
   return this->fields[fieldName];
 }
 
 void HeapItem::setFieldValue(string fieldName, JvmValue value) {
-  this->throwIfNotFound(fieldName);
   this->fields[fieldName] = {value, JvmValue()};
 }
 
 void HeapItem::setFieldValueWide(string fieldName, JvmValue low, JvmValue high) {
-  this->throwIfNotFound(fieldName);
   this->fields[fieldName] = {low, high};
-}
-
-void HeapItem::throwIfNotFound(string fieldName) {
-  if (this->fields.find(fieldName) == this->fields.end()) {
-    string classname = this->methodAreaItem->getClassName();
-    throw std::runtime_error("Campo " + fieldName + " não encontrado numa instância da classe " + classname);
-  }
 }
 
 HeapItem::HeapItem(MethodAreaItem *methodAreaItem) {
