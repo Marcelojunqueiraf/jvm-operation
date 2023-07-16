@@ -2,66 +2,34 @@
 
 JvmValue Object::getFieldValue(string fieldName) {
   if (this->fields.find(fieldName) == this->fields.end()) {
-    throw std::runtime_error("Field não encontrado (" + fieldName + ")");
+    throw std::runtime_error("Field não encontrado (" + this->methodAreaItem->getClassName() + ' ' + fieldName + ")");
   }
   return this->fields[fieldName];
 }
 
 void Object::setFieldValue(string fieldName, JvmValue value) {
   if (this->fields.find(fieldName) == this->fields.end()) {
-    throw std::runtime_error("Field não encontrado (" + fieldName + ")");
+    throw std::runtime_error("Field não encontrado (" + this->methodAreaItem->getClassName() + ' ' + fieldName + ")");
   }
   this->fields[fieldName] = value;
 }
 
-Object::Object(MethodAreaItem *methodAreaItem) {
+Object::Object(MethodAreaItem * methodAreaItem) {
   this->methodAreaItem = methodAreaItem;
   this->fields = map<string, JvmValue>();
 
   // Inicializar fields
   //TODO: e as superclasses?
-  for (auto field : methodAreaItem->getFields()) {
-    if (field.access_flags & 0x0008) { // static
+  for (auto field : methodAreaItem->getFieldInfos()) {
+    if (field.access_flags & 0x0008) { // static, são inicializados no methodAreaItem
       continue;
     }
 
     string fieldName = methodAreaItem->getUtf8(field.name_index);
     vector<string> descriptors = methodAreaItem->getMethodArgTypesByDescriptorIndex(field.descriptor_index, true);
     string descriptor = descriptors[0];
-
-    JvmValue value;
-
-    if (descriptor == "BYTE") {
-      value.type = BYTE;
-      value.data.i = 0;
-    } else if (descriptor == "CHAR") {
-      value.type = CHAR;
-      value.data.i = 0;
-    } else if (descriptor == "FLOAT") {
-      value.type = FLOAT;
-      value.data.f = 0;
-    } else if (descriptor == "INT") {
-      value.type = INT;
-      value.data.i = 0;
-    } else if (descriptor == "LONG") {
-      value.type = LONG;
-      value.data.l = 0;
-    } else if (descriptor == "DOUBLE") {
-      value.type = DOUBLE;
-      value.data.d = 0;
-    } else if (descriptor == "SHORT") {
-      value.type = SHORT;
-      value.data.i = 0;
-    } else if (descriptor == "BOOL") {
-      value.type = BOOL;
-      value.data.i = 0;
-    } else if (descriptor == JAVA_STRING_CLASSNAME) {
-      value.type = REFERENCE;
-      value.data.i = 0;
-    } else {
-      throw std::runtime_error("Tipo de field não suportado (" + descriptor + ")");
-    }
-    this->fields[fieldName] = value;
+    
+    this->fields[fieldName] = createInitialField(descriptor);
   }
 }
 

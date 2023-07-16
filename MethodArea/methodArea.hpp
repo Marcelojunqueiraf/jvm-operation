@@ -19,16 +19,22 @@ class MethodAreaItem {
   MethodArea * methodArea;
   public:
   MethodAreaItem(ClassFile * classfile, MethodArea * methodArea);
+
   string getClassName();
-  vector<field_info> getFields();
+  cp_info * getConstantPoolItem(u2 index); 
+  MethodArea * getMethodArea();
+  vector<field_info> getFieldInfos();
+  string getSuper();
+  string getUtf8(u2 index);
+  
   Method_info * getMainMethod();
   Method_info * getInitMethod();
   Method_info * getStaticBlock();
   Method_info * getMethodByName(string name);
-  cp_info * getConstantPoolItem(u2 index); 
-  string getSuper();
-  string getUtf8(u2 index);
-  MethodArea * getMethodArea();
+
+  JvmValue getStaticField(string fieldName);
+  void setStaticField(string fieldName, JvmValue value);
+
   vector<string> getMethodArgTypesByDescriptorIndex(u2 descriptorIndex, bool isField = false);
   vector<string> getMethodArgTypesByNameAndTypeIndex(u2 index, bool isField = false);
 };
@@ -46,5 +52,6 @@ class MethodArea {
 };
 
 pair<string, int> getArgType(string signature, int index);
+JvmValue createInitialField(string descriptor);
 
 #endif

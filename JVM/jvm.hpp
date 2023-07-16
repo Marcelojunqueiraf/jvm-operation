@@ -42,11 +42,11 @@ class JVM {
     int32_t pushArray(Array * arrayItem);
 
     JvmValue getField(int32_t heapItemIndex, string fieldName);
-    JvmValue getStaticField(int32_t heapItemIndex, string fieldName);
+    JvmValue getStaticField(string classname, string fieldName);
 
     JvmValue getArrayValue(int32_t arrayItemIndex, int32_t index);
     void setArrayValue(int32_t arrayItemIndex, int32_t index, JvmValue value);
 
     void setField(int32_t heapItemIndex, string fieldName, JvmValue value);
-    void setStaticField(int32_t heapItemIndex, string fieldName, JvmValue value);
+    void setStaticField(string classname, string fieldName, JvmValue value);
 };

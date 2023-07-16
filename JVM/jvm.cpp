@@ -105,8 +105,9 @@ void JVM::setArrayValue(int32_t arrayItemIndex, int32_t index, JvmValue value) {
   arrayItem->setArrayValue(index, value);
 }
 
-JvmValue JVM::getStaticField(int32_t heapItemIndex, string fieldName) {
-  return JvmValue(); // TODO: implement
+JvmValue JVM::getStaticField(string classname, string fieldName) {
+  MethodAreaItem * methodAreaItem = this->methodArea.getMethodAreaItem(classname);
+  return methodAreaItem->getStaticField(fieldName);
 }
 
 void JVM::setField(int32_t heapItemIndex, string fieldName, JvmValue value) {
@@ -114,8 +115,9 @@ void JVM::setField(int32_t heapItemIndex, string fieldName, JvmValue value) {
   heapItem->setFieldValue(fieldName, value);
 }
 
-void JVM::setStaticField(int32_t heapItemIndex, string fieldName, JvmValue value) {
-  // TODO: implement
+void JVM::setStaticField(string classname, string fieldName, JvmValue value) {
+  MethodAreaItem * methodAreaItem = this->methodArea.getMethodAreaItem(classname);
+  methodAreaItem->setStaticField(fieldName, value);
 }
 
 JVM::JVM() {

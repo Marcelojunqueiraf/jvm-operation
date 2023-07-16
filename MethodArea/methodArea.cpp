@@ -63,17 +63,28 @@ MethodAreaItem * MethodArea::getMethodAreaItemFromFile(string path) {
 /* Method area Item*/
 ////////////////////
 MethodAreaItem::MethodAreaItem(ClassFile * classfile, MethodArea * methodArea) {
-  // Inicializar staticFields
-  this->staticFields = map <string, JvmValue>();
+  this->staticFields = map<string, JvmValue>();
   this->methodArea = methodArea;
   this->classfile = classfile;
+
+  vector<field_info> fields = this->getFieldInfos();
+  for (field_info field : fields) {
+    if (field.access_flags & 0x0008) { // static, são inicializados no methodAreaItem
+      string fieldName = this->getUtf8(field.name_index);
+      DCOUT << "fieldName: " << fieldName << endl;
+      vector<string> descriptors = this->getMethodArgTypesByDescriptorIndex(field.descriptor_index, true);
+      string descriptor = descriptors[0];
+      
+      this->staticFields[fieldName] = createInitialField(descriptor);
+    }
+  }
 }
 
 string MethodAreaItem::getClassName() {
   return this->getUtf8(this->classfile->this_class);
 }
 
-vector<field_info> MethodAreaItem::getFields() {
+vector<field_info> MethodAreaItem::getFieldInfos() {
   vector<field_info> fields;
   for (int i = 0; i < this->classfile->fields_count; i++) {
     fields.push_back(this->classfile->fields[i]);
@@ -118,6 +129,19 @@ Method_info * MethodAreaItem::getMethodByName(string name) {
   return NULL;
 }
 
+JvmValue MethodAreaItem::getStaticField(string fieldName) {
+  if (this->staticFields.find(fieldName) == this->staticFields.end()) {
+    throw std::runtime_error("Field estático não encontrado (" + this->getClassName() + '.' + fieldName + ")");
+  }
+  return this->staticFields[fieldName];
+}
+
+void MethodAreaItem::setStaticField(string fieldName, JvmValue value) {
+  if (this->staticFields.find(fieldName) == this->staticFields.end()) {
+    throw std::runtime_error("Field estático não encontrado (" + this->getClassName() + '.' + fieldName + ")");
+  }
+  this->staticFields[fieldName] = value;
+}
 
 cp_info * MethodAreaItem::getConstantPoolItem(u2 index) {
   return &this->classfile->constant_pool[index];
@@ -198,4 +222,39 @@ pair<string, int> getArgType(string signature, int index) {
       throw std::runtime_error("Tipo de argumento não reconhecido \"" + string(1, signature[index]) + "\" no tipo " + signature);
       break;
   }
+}
+
+JvmValue createInitialField(string descriptor) {
+  JvmValue value;
+  if (descriptor == "LONG") {
+    value.type = LONG;
+    value.data.l = 0;
+  } else if (descriptor == "DOUBLE") {
+    value.type = DOUBLE;
+    value.data.d = 0;
+  } else if (descriptor == "FLOAT") {
+    value.type = FLOAT;
+    value.data.f = 0;
+  } else if (descriptor == "INT") {
+    value.type = INT;
+    value.data.i = 0;
+  } else if (descriptor == "SHORT") {
+    value.type = SHORT;
+    value.data.i = 0;
+  } else if (descriptor == "BYTE") {
+    value.type = BYTE;
+    value.data.i = 0;
+  } else if (descriptor == "CHAR") {
+    value.type = CHAR;
+    value.data.i = 0;
+  } else if (descriptor == "BOOL") {
+    value.type = BOOL;
+    value.data.i = 0;
+  } else if (descriptor == JAVA_STRING_CLASSNAME) {
+    value.type = REFERENCE;
+    value.data.i = 0;
+  } else {
+    throw std::runtime_error("Tipo de field não suportado (" + descriptor + ")");
+  }
+  return value;
 }

@@ -8,6 +8,7 @@ class Object {
   private:
     map<string, JvmValue> fields;
     MethodAreaItem * methodAreaItem;
+
   public:
     Object(MethodAreaItem * methodAreaItem);
     JvmValue getFieldValue(string fieldName);

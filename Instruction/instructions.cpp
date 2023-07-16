@@ -442,9 +442,6 @@ string getFieldName(Frame * frame, u2 index) {
   string classname = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.class_index);
   string fieldName = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.name_and_type_index);
   DCOUT << "field " << classname << "." << fieldName << endl;
-
-  vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(fieldRef->constant_type_union.Fieldref_info.name_and_type_index, true);
-  string fieldType = argTypes.back();
   
   return fieldName;
 }
@@ -2430,38 +2427,38 @@ void _return (Frame * frame, JVM * jvm) {
 
 void getstatic (Frame * frame, JVM * jvm) {
   DCOUT << "getstatic" << endl;
+  u1 firstBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 secondBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+  u2 index = (firstBytes << 8) | secondBytes;  
 
-  u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
-  u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+  cp_info * fieldRef = frame->methodAreaItem->getConstantPoolItem(index);
+  string classname = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.class_index);
+  string fieldName = getFieldName(frame, index);
 
-  u2 index = (first_bytes << 8) | second_bytes;  
-
-  //pegar o dentro do fieldref o class name
-
-  // DCOUT << index <<endl ;
-  cp_info * field_ref = frame->methodAreaItem->getConstantPoolItem(index);
-  // DCOUT << field_ref->constant_type_union.Fieldref_info.class_index <<endl ;
-  
-  u1 class_index = field_ref->constant_type_union.Fieldref_info.class_index;
-
-
-  //se o class name for <java/lang/System> pular o frame e continuar a vida
-  if(frame->methodAreaItem->getUtf8(class_index) == "java/lang/System"){
-    DCOUT << "é um getstatic para o System.class " << endl;
+  if (classname == JAVA_SYSTEM_CLASSNAME) {
     frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 0})); // valor simbólico que vai ser ignorado
-    // nao fazer nada
-  } else {
-    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 0})); // TODO: trocar pelo valor certo do field
-    // outras classes
-    // Precisa procurar o nome da classe no pool de constantes, se não tiver, loadar a classe
-    // precisa procurar o field estático na classe carregada
-    // precisa colocar o field na pilha de operandos
+    frame->pc += 3;
+    return;
   }
+
+  JvmValue value = jvm->getStaticField(classname, fieldName);
+  frame->pushOperandStack(value);
   frame->pc += 3;
 }
 
 void putstatic (Frame * frame, JVM * jvm) {
   DCOUT << "putstatic" << endl;
+  u1 firstBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 secondBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+  u2 index = (firstBytes << 8) | secondBytes;  
+
+  cp_info * fieldRef = frame->methodAreaItem->getConstantPoolItem(index);
+  string classname = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.class_index);
+  string fieldName = getFieldName(frame, index);
+
+  JvmValue value = frame->popOperandStack();
+  DCOUT << "value 0x" << hex << value.data.u << dec << ' ' << value.type << endl;
+  jvm->setStaticField(classname, fieldName, value);
   frame->pc += 3;
 }
 
@@ -2473,8 +2470,8 @@ void getfield (Frame * frame, JVM * jvm) {
   
   string fieldName = getFieldName(frame, index);
   int32_t objectRef = frame->popOperandStack().data.i;
-
   JvmValue value = jvm->getField(objectRef, fieldName);
+
   frame->pushOperandStack(value);
   DCOUT << "objectRef " << objectRef << ", value 0x" << hex << value.data.u << dec << endl;
 
