@@ -23,7 +23,9 @@ class Array {
   public:
     Array(JVMType type, u4 size);
     JvmValue getArrayValue(u4 index);
+    pair<JvmValue, JvmValue> getArrayValueWide(u4 index);
     void setArrayValue(u4 index, JvmValue value);
+    void setArrayValueWide(u4 index, JvmValue low, JvmValue high);
 };
 
 

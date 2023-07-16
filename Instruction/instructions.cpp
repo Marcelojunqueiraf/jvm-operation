@@ -345,10 +345,6 @@ void iconst(u4 value, Frame * frame) {
   jvmValue.type = INT;
   jvmValue.data = value;
   frame->pushOperandStack(jvmValue);
-  
-  // FIXME: não sei pq isso ta comentado, mas chequem (maycon)
-  //JvmValue jvmValueToPrint = frame->operandStack.top();
-  // cout << "item no topo pilha " << jvmValueToPrint.data << endl;
 }
 
 void lconst(u4 value, Frame * frame){
@@ -394,7 +390,7 @@ void store(int index, Frame * frame, JvmValue jvmValue) {
 
 void storeFromStack(int index, Frame * frame) {
   JvmValue jvmValue = frame->popOperandStack();
-
+  
   store(index, frame, jvmValue);
 }
 
@@ -974,8 +970,28 @@ void aload_3 (Frame * frame, JVM * jvm) {
   frame->pc += 1;
 }
 
+void loadFromArray(Frame * frame, JVM * jvm) {
+  u4 index = frame->popOperandStack().data;
+  u4 arrayref = frame->popOperandStack().data;
+  DCOUT << "loadFrom " << arrayref << " " << index << endl;
+  JvmValue value = jvm->getArrayValue(arrayref, index);
+
+  frame->pushOperandStack(value);
+}
+
+void loadFromArrayWide(Frame * frame, JVM * jvm) {
+  u4 index = frame->popOperandStack().data;
+  u4 arrayref = frame->popOperandStack().data;
+
+  auto [lowValue, highValue] = jvm->getArrayValueWide(arrayref, index);
+
+  frame->pushWideOperandStack(lowValue, highValue);
+}
+
 void iaload (Frame * frame, JVM * jvm) {
   DCOUT << "iaload" << endl;
+  loadFromArray(frame, jvm);
+  DCOUT << frame->operandStack.top().data << endl;
   frame->pc += 1;
 }
 
@@ -986,6 +1002,7 @@ void laload (Frame * frame, JVM * jvm) {
 
 void faload (Frame * frame, JVM * jvm) {
   DCOUT << "faload" << endl;
+  loadFromArray(frame, jvm);
   frame->pc += 1;
 }
 
@@ -996,21 +1013,25 @@ void daload (Frame * frame, JVM * jvm) {
 
 void aaload (Frame * frame, JVM * jvm) {
   DCOUT << "aaload" << endl;
+  loadFromArray(frame, jvm);
   frame->pc += 1;
 }
 
 void baload (Frame * frame, JVM * jvm) {
   DCOUT << "baload" << endl;
+  loadFromArray(frame, jvm);
   frame->pc += 1;
 }
 
 void caload (Frame * frame, JVM * jvm) {
   DCOUT << "caload" << endl;
+  loadFromArray(frame, jvm);
   frame->pc += 1;
 }
 
 void saload (Frame * frame, JVM * jvm) {
   DCOUT << "saload" << endl;
+  loadFromArray(frame, jvm);
   frame->pc += 1;
 }
 
@@ -1202,59 +1223,84 @@ void astore_0 (Frame * frame, JVM * jvm) {
 
 void astore_1 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_1" << endl;
-  storeFromStack(0, frame);
+  storeFromStack(1, frame);
   frame->pc += 1;
 }
 
 void astore_2 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_2" << endl;
-  storeFromStack(0, frame);
+  storeFromStack(2, frame);
   frame->pc += 1;
 }
 
 void astore_3 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_3" << endl;
-  storeFromStack(0, frame);
+  storeFromStack(3, frame);
   frame->pc += 1;
+}
+
+
+void storeOnArray(Frame * frame, JVM * jvm) {
+  JvmValue value = frame->popOperandStack();
+  u4 index = frame->popOperandStack().data;
+  u4 arrayref = frame->popOperandStack().data;
+
+  jvm->setArrayValue(arrayref, index, value);
+}
+
+void storeOnArrayWide(Frame * frame, JVM * jvm) {
+  auto [lowValue, highValue] = frame->popWideOperandStack();
+  u4 index = frame->popOperandStack().data;
+  u4 arrayref = frame->popOperandStack().data;
+
+  jvm->setArrayValueWide(arrayref, index, lowValue, highValue);
 }
 
 void iastore (Frame * frame, JVM * jvm) {
   DCOUT << "iastore" << endl;
+  storeOnArray(frame, jvm);
   frame->pc += 1;
 }
 
 void lastore (Frame * frame, JVM * jvm) {
   DCOUT << "lastore" << endl;
+  storeOnArrayWide(frame, jvm);
   frame->pc += 1;
 }
 
 void fastore (Frame * frame, JVM * jvm) {
   DCOUT << "fastore" << endl;
+  storeOnArray(frame, jvm);
   frame->pc += 1;
 }
 
 void dastore (Frame * frame, JVM * jvm) {
   DCOUT << "dastore" << endl;
+  storeOnArrayWide(frame, jvm);
   frame->pc += 1;
 }
 
 void aastore (Frame * frame, JVM * jvm) {
   DCOUT << "aastore" << endl;
+  storeOnArray(frame, jvm);
   frame->pc += 1;
 }
 
 void bastore (Frame * frame, JVM * jvm) {
   DCOUT << "bastore" << endl;
+  storeOnArray(frame, jvm);
   frame->pc += 1;
 }
 
 void castore (Frame * frame, JVM * jvm) {
   DCOUT << "castore" << endl;
+  storeOnArray(frame, jvm);
   frame->pc += 1;
 }
 
 void sastore (Frame * frame, JVM * jvm) {
   DCOUT << "sastore" << endl;
+  storeOnArray(frame, jvm);
   frame->pc += 1;
 }
 
@@ -2573,19 +2619,20 @@ void getstatic (Frame * frame, JVM * jvm) {
 
   //pegar o dentro do fieldref o class name
 
-  DCOUT << index <<endl ;
+  // DCOUT << index <<endl ;
   cp_info * field_ref = frame->methodAreaItem->getConstantPoolItem(index);
-  DCOUT << field_ref->constant_type_union.Fieldref_info.class_index <<endl ;
+  // DCOUT << field_ref->constant_type_union.Fieldref_info.class_index <<endl ;
   
   u1 class_index = field_ref->constant_type_union.Fieldref_info.class_index;
 
-  frame->pushOperandStack({INT, 0}); // TODO:
 
   //se o class name for <java/lang/System> pular o frame e continuar a vida
   if(frame->methodAreaItem->getUtf8(class_index) == "java/lang/System"){
     DCOUT << "é um getstatic para o System.class " << endl;
+    frame->pushOperandStack({INT, 0}); // valor simbólico que vai ser ignorado
     // nao fazer nada
   } else {
+    frame->pushOperandStack({INT, 1}); // TODO: trocar pelo valor certo do field
     // outras classes
     // Precisa procurar o nome da classe no pool de constantes, se não tiver, loadar a classe
     // precisa procurar o field estático na classe carregada
@@ -2829,6 +2876,7 @@ void newarray (Frame * frame, JVM * jvm) {
   u4 heapIndex = jvm->pushArray(array);
 
   frame->pushOperandStack({REFERENCE, heapIndex});
+
   frame->pc += 2;
   DCOUT << "newarray type: "<< (int) atype  << " size: " << count << " index: " << heapIndex << endl;
 }

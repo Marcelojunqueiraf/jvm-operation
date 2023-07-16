@@ -47,6 +47,11 @@ class JVM {
     JvmValue getStaticField(u4 heapItemIndex, string fieldName);
     pair<JvmValue, JvmValue> getStaticFieldWide(u4 heapItemIndex, string fieldName);
 
+    JvmValue getArrayValue(u4 arrayItemIndex, u4 index);
+    pair<JvmValue, JvmValue> getArrayValueWide(u4 arrayItemIndex, u4 index);
+    void setArrayValue(u4 arrayItemIndex, u4 index, JvmValue value);
+    void setArrayValueWide(u4 arrayItemIndex, u4 index, JvmValue low, JvmValue high);
+
     void setField(u4 heapItemIndex, string fieldName, JvmValue value);
     void setFieldWide(u4 heapItemIndex, string fieldName, JvmValue low, JvmValue high);
     void setStaticField(u4 heapItemIndex, string fieldName, JvmValue value);

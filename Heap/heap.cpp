@@ -32,8 +32,14 @@ Object::Object(MethodAreaItem *methodAreaItem) {
 
 // ARRAY
 Array::Array(JVMType type, u4 size) {
+  int newSize = size;
+
+  if (type == JVMType::LONG || type == JVMType::DOUBLE) {
+    newSize *= 2;
+  }
+
   this->type = type;
-  this->array = vector<JvmValue>(size);
+  this->array = vector<JvmValue>(newSize);
 }
 
 JvmValue Array::getArrayValue(u4 index) {
@@ -44,12 +50,31 @@ JvmValue Array::getArrayValue(u4 index) {
   return this->array[index];
 }
 
+pair<JvmValue, JvmValue> Array::getArrayValueWide(u4 index) {
+  if (index < 0 || index >= this->array.size()) {
+    throw std::runtime_error("ArrayItem não encontrado no index " + to_string(index));
+  }
+  uint64_t newIndex = index * 2;
+
+  return {this->array[newIndex], this->array[newIndex + 1]};
+}
+
 void Array::setArrayValue(u4 index, JvmValue value) {
   if (index < 0 || index >= this->array.size()) {
     throw std::runtime_error("ArrayItem não encontrado no index " + to_string(index));
   }
 
   this->array[index] = value;
+}
+
+void Array::setArrayValueWide(u4 index, JvmValue low, JvmValue high) {
+  if (index < 0 || index >= this->array.size()) {
+    throw std::runtime_error("ArrayItem não encontrado no index " + to_string(index));
+  }
+  uint64_t newIndex = index * 2;
+
+  this->array[newIndex] = low;
+  this->array[newIndex + 1] = high;
 }
 
 // Heap

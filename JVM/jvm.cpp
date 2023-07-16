@@ -39,15 +39,14 @@ void JVM::executeInstruction(u1 * opcode, Frame * frame){
 
 void JVM::executeFrame(Frame * frame) {
   string methodName = frame->methodAreaItem->getUtf8(frame->method_info->name_index);
-  // salvar methodName no frame por performance?
-
-  DCOUT << "executeFrame #" <<  frame->method_info->name_index << ' ' << methodName << " from " << frame->methodAreaItem->getClassName() << ".class" <<endl;
-
+  
   code_attribute * codeAtt = getCode(frame->method_info, frame->methodAreaItem);
-  // salvar ponteiro pro code por performance?
-
-  DCOUT << "code len: " << codeAtt->code_length << endl;
-
+  
+  if(frame->pc == 0) {
+    DCOUT << "executeFrame #" <<  frame->method_info->name_index << ' ' << methodName << " from " << frame->methodAreaItem->getClassName() << ".class" <<endl;
+    DCOUT << "code len: " << codeAtt->code_length << endl;
+  }
+  
   if (frame->pc < codeAtt->code_length) {
     DCOUT << "Executing instruction at pc: " << frame->pc << ", stackSize: " << frame->operandStack.size() << endl;
     
@@ -106,6 +105,25 @@ JvmValue JVM::getField(u4 heapItemIndex, string fieldName) {
 pair<JvmValue, JvmValue> JVM::getFieldWide(u4 heapItemIndex, string fieldName) {
   Object * heapItem = this->heap.getHeapItem(heapItemIndex);
   return heapItem->getFieldValueWide(fieldName);
+}
+
+JvmValue JVM::getArrayValue(u4 arrayItemIndex, u4 index) {
+  Array * arrayItem = this->heap.getArrayItem(arrayItemIndex);
+  return arrayItem->getArrayValue(index);
+}
+
+pair<JvmValue, JvmValue> JVM::getArrayValueWide(u4 arrayItemIndex, u4 index) {
+  Array * arrayItem = this->heap.getArrayItem(arrayItemIndex);
+  return arrayItem->getArrayValueWide(index);
+}
+
+void JVM::setArrayValue(u4 arrayItemIndex, u4 index, JvmValue value) {
+  Array * arrayItem = this->heap.getArrayItem(arrayItemIndex);
+  arrayItem->setArrayValue(index, value);
+}
+void JVM::setArrayValueWide(u4 arrayItemIndex, u4 index, JvmValue low, JvmValue high) {
+  Array * arrayItem = this->heap.getArrayItem(arrayItemIndex);
+  arrayItem->setArrayValueWide(index, low, high);
 }
 
 JvmValue JVM::getStaticField(u4 heapItemIndex, string fieldName) {
