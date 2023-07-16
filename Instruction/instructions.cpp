@@ -2564,52 +2564,25 @@ void invokespecial (Frame * frame, JVM * jvm) {
 
 void invokestatic (Frame * frame, JVM * jvm) {
   DCOUT << "invokestatic" << endl;
-  // 1. fazer a checagem para ver se a classe ja foi carregada com base no nome
-  //     1. foi? então acessa
-  //     2. não foi? então carrega e depois acessa
-  // 2. retira o metodo atual da pilha de frames e coloca o metodo do method_item criado na pilha 
-
-  //pegar o index para o pool
-  u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
-  u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
-
-  u2 index = (high_bytes << 8) | low_bytes;
+  u1 highBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 lowBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+  u2 index = (highBytes << 8) | lowBytes;
   
-  cp_info * method_ref = frame->methodAreaItem->getConstantPoolItem(index);
-
-  //pegar nome da classe
-  string static_class_name = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.class_index);
+  cp_info * methodRef = frame->methodAreaItem->getConstantPoolItem(index);
+  string classname = frame->methodAreaItem->getUtf8(methodRef->constant_type_union.Methodref_info.class_index);
   
-  if(static_class_name == JAVA_OBJ_CLASSNAME){
+  if (classname == JAVA_OBJ_CLASSNAME) {
     // se for java/lang/Object, não fazer nada
-    frame->pc += 3;
     DCOUT << "é um invokestatic para o Object.class IGNORADO!" << endl;
+    frame->pc += 3;
     return;
-  } 
+  }
 
-  //pegar nome do metodo
-  string static_method_name = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.name_and_type_index); 
+  string methodName = frame->methodAreaItem->getUtf8(methodRef->constant_type_union.Methodref_info.name_and_type_index); 
 
-  // checar se a classe ja foi carregada na area de metodos, caso não existir, carregar
-  
-  MethodArea  * method_area_ref = frame->methodAreaItem->getMethodArea();
-
-  MethodAreaItem * static_class_method_area_item = method_area_ref->getMethodAreaItem(static_class_name);
-
-  Method_info * static_class_method =  static_class_method_area_item->getMethodByName(static_method_name);
-
-  // TODO: ainda falta pegar os argumentos, vai ser algo parecido com o invokespecial
-
-  Frame * invokedFrame = new Frame(static_class_method, static_class_method_area_item);
-  
+  auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName);
+  setInvokedLocalVars(frame, invokedFrame, args, true);
   jvm->invoke(*invokedFrame);
-
-  // com o method em maos, criar um frame e depois de readicionar o frame atual na pilha, adicionar o frame em questão...
-
-  //fazer o invoke 
-  // pular o pc desse frame
-  // colocar esse frame devolta na pilha
-  // colocar o novo frame estatico na pilha
 
   frame->pc += 3;
 }
