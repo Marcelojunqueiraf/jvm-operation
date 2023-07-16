@@ -1,33 +1,25 @@
 #include "heap.hpp"
 
-// Object
-
 JvmValue Object::getFieldValue(string fieldName) {
-  return this->getFieldValueWide(fieldName).first;
-}
-
-pair<JvmValue, JvmValue> Object::getFieldValueWide(string fieldName) {
   if (this->fields.find(fieldName) == this->fields.end()) {
-    // TODO: verificar se o field existe na classe para inicializar
-    this->fields[fieldName] = {JvmValue(), JvmValue()};
+    throw std::runtime_error("Field não encontrado (" + fieldName + ")");
   }
-
   return this->fields[fieldName];
 }
 
 void Object::setFieldValue(string fieldName, JvmValue value) {
-  this->setFieldValueWide(fieldName, value, JvmValue());
-}
-
-void Object::setFieldValueWide(string fieldName, JvmValue low, JvmValue high) {
-  this->fields[fieldName] = {low, high};
+  if (this->fields.find(fieldName) == this->fields.end()) {
+    throw std::runtime_error("Field não encontrado (" + fieldName + ")");
+  }
+  this->fields[fieldName] = value;
 }
 
 Object::Object(MethodAreaItem *methodAreaItem) {
   this->methodAreaItem = methodAreaItem;
-  this->fields = map<string, pair<JvmValue, JvmValue>>();
+  this->fields = map<string, JvmValue>();
 
   // Inicializar fields
+  //TODO: e as superclasses?
   for (auto field : methodAreaItem->getFields()) {
     if (field.access_flags & 0x0008) { // static
       continue;
@@ -37,35 +29,39 @@ Object::Object(MethodAreaItem *methodAreaItem) {
     vector<string> descriptors = methodAreaItem->getMethodArgTypesByDescriptorIndex(field.descriptor_index, true);
     string descriptor = descriptors[0];
 
-    JvmValue lowValue, highValue;
-    lowValue.data = 0;
-    highValue.data = 0;
+    JvmValue value;
 
     if (descriptor == "BYTE") {
-      lowValue = {BYTE, 0};
+      value.type = BYTE;
+      value.data.i = 0;
     } else if (descriptor == "CHAR") {
-      lowValue = {CHAR, 0};
+      value.type = CHAR;
+      value.data.i = 0;
     } else if (descriptor == "FLOAT") {
-      lowValue = {FLOAT, 0};
+      value.type = FLOAT;
+      value.data.f = 0;
     } else if (descriptor == "INT") {
-      lowValue = {INT, 0};
+      value.type = INT;
+      value.data.i = 0;
     } else if (descriptor == "LONG") {
-      lowValue = {LONG, 0};
-      highValue = {LONG, 0};
+      value.type = LONG;
+      value.data.l = 0;
     } else if (descriptor == "DOUBLE") {
-      lowValue = {DOUBLE, 0};
-      highValue = {DOUBLE, 0};
+      value.type = DOUBLE;
+      value.data.d = 0;
     } else if (descriptor == "SHORT") {
-      lowValue = {SHORT, 0};
+      value.type = SHORT;
+      value.data.i = 0;
     } else if (descriptor == "BOOL") {
-      lowValue = {BOOL, 0};
+      value.type = BOOL;
+      value.data.i = 0;
     } else if (descriptor == JAVA_STRING_CLASSNAME) {
-      lowValue = {REFERENCE, 0};
+      value.type = REFERENCE;
+      value.data.i = 0;
     } else {
       throw std::runtime_error("Tipo de field não suportado (" + descriptor + ")");
     }
-
-    this->fields[fieldName] = {lowValue, highValue};
+    this->fields[fieldName] = value;
   }
 }
 
@@ -89,15 +85,6 @@ JvmValue Array::getArrayValue(u4 index) {
   return this->array[index];
 }
 
-pair<JvmValue, JvmValue> Array::getArrayValueWide(u4 index) {
-  if (index < 0 || index >= this->array.size()) {
-    throw std::runtime_error("ArrayItem não encontrado no index " + to_string(index));
-  }
-  uint64_t newIndex = index * 2;
-
-  return {this->array[newIndex], this->array[newIndex + 1]};
-}
-
 void Array::setArrayValue(u4 index, JvmValue value) {
   if (index < 0 || index >= this->array.size()) {
     throw std::runtime_error("ArrayItem não encontrado no index " + to_string(index));
@@ -105,17 +92,6 @@ void Array::setArrayValue(u4 index, JvmValue value) {
 
   this->array[index] = value;
 }
-
-void Array::setArrayValueWide(u4 index, JvmValue low, JvmValue high) {
-  if (index < 0 || index >= this->array.size()) {
-    throw std::runtime_error("ArrayItem não encontrado no index " + to_string(index));
-  }
-  uint64_t newIndex = index * 2;
-
-  this->array[newIndex] = low;
-  this->array[newIndex + 1] = high;
-}
-
 // Heap
 
 Object * Heap::getHeapItem(u4 index) {

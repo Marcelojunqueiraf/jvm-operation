@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
     cout << "Correct use: ./jvm <class-path>" << endl;
     return 1;
   }
-  
+
   JVM * jvm = new JVM();
   DCOUT << "----- Initializing JVM -----" << endl;
   jvm->initialize(argv[1]);

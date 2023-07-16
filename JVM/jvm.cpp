@@ -75,13 +75,6 @@ void JVM::returnValue(JvmValue value) {
   nextFrame->pushOperandStack(value);
 }
 
-void JVM::returnValueWide(JvmValue low, JvmValue high) {
-  DCOUT << "return wide value" << endl;
-  this->frameStack.pop();
-  Frame * nextFrame = this->frameStack.top();
-  nextFrame->pushWideOperandStack(low, high);
-}
-
 void JVM::run() {
   while (this->frameStack.getStackSize() > 0) {
     Frame * frame = this->frameStack.top();
@@ -89,66 +82,39 @@ void JVM::run() {
   }
 }
 
-u4 JVM::pushObject(Object *heapItem) {
+int32_t JVM::pushObject(Object *heapItem) {
   return this->heap.pushHeapItem(heapItem);
 }
 
-u4 JVM::pushArray(Array *arrayItem) {
+int32_t JVM::pushArray(Array *arrayItem) {
   return this->heap.pushArrayItem(arrayItem);
 }
 
-JvmValue JVM::getField(u4 heapItemIndex, string fieldName) {
+JvmValue JVM::getField(int32_t heapItemIndex, string fieldName) {
   Object * heapItem = this->heap.getHeapItem(heapItemIndex);
   return heapItem->getFieldValue(fieldName);
 }
 
-pair<JvmValue, JvmValue> JVM::getFieldWide(u4 heapItemIndex, string fieldName) {
-  Object * heapItem = this->heap.getHeapItem(heapItemIndex);
-  return heapItem->getFieldValueWide(fieldName);
-}
-
-JvmValue JVM::getArrayValue(u4 arrayItemIndex, u4 index) {
+JvmValue JVM::getArrayValue(int32_t arrayItemIndex, int32_t index) {
   Array * arrayItem = this->heap.getArrayItem(arrayItemIndex);
   return arrayItem->getArrayValue(index);
 }
 
-pair<JvmValue, JvmValue> JVM::getArrayValueWide(u4 arrayItemIndex, u4 index) {
-  Array * arrayItem = this->heap.getArrayItem(arrayItemIndex);
-  return arrayItem->getArrayValueWide(index);
-}
-
-void JVM::setArrayValue(u4 arrayItemIndex, u4 index, JvmValue value) {
+void JVM::setArrayValue(int32_t arrayItemIndex, int32_t index, JvmValue value) {
   Array * arrayItem = this->heap.getArrayItem(arrayItemIndex);
   arrayItem->setArrayValue(index, value);
 }
-void JVM::setArrayValueWide(u4 arrayItemIndex, u4 index, JvmValue low, JvmValue high) {
-  Array * arrayItem = this->heap.getArrayItem(arrayItemIndex);
-  arrayItem->setArrayValueWide(index, low, high);
-}
 
-JvmValue JVM::getStaticField(u4 heapItemIndex, string fieldName) {
+JvmValue JVM::getStaticField(int32_t heapItemIndex, string fieldName) {
   return JvmValue(); // TODO: implement
 }
 
-pair<JvmValue, JvmValue> JVM::getStaticFieldWide(u4 heapItemIndex, string fieldName) {
-  return pair<JvmValue, JvmValue>(); // TODO: implement
-}
-
-void JVM::setField(u4 heapItemIndex, string fieldName, JvmValue value) {
+void JVM::setField(int32_t heapItemIndex, string fieldName, JvmValue value) {
   Object * heapItem = this->heap.getHeapItem(heapItemIndex);
   heapItem->setFieldValue(fieldName, value);
 }
 
-void JVM::setFieldWide(u4 heapItemIndex, string fieldName, JvmValue low, JvmValue high) {
-  Object * heapItem = this->heap.getHeapItem(heapItemIndex);
-  heapItem->setFieldValueWide(fieldName, low, high);
-}
-
-void JVM::setStaticField(u4 heapItemIndex, string fieldName, JvmValue value) {
-  // TODO: implement
-}
-
-void JVM::setStaticFieldWide(u4 heapItemIndex, string fieldName, JvmValue low, JvmValue high) {
+void JVM::setStaticField(int32_t heapItemIndex, string fieldName, JvmValue value) {
   // TODO: implement
 }
 

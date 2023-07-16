@@ -37,23 +37,16 @@ class JVM {
     void invoke(Frame frame);
     void returnVoid();
     void returnValue(JvmValue);
-    void returnValueWide(JvmValue low, JvmValue high);
     
-    u4 pushObject(Object * heapItem);
-    u4 pushArray(Array * arrayItem);
+    int32_t pushObject(Object * heapItem);
+    int32_t pushArray(Array * arrayItem);
 
-    JvmValue getField(u4 heapItemIndex, string fieldName);
-    pair<JvmValue, JvmValue> getFieldWide(u4 heapItemIndex, string fieldName);
-    JvmValue getStaticField(u4 heapItemIndex, string fieldName);
-    pair<JvmValue, JvmValue> getStaticFieldWide(u4 heapItemIndex, string fieldName);
+    JvmValue getField(int32_t heapItemIndex, string fieldName);
+    JvmValue getStaticField(int32_t heapItemIndex, string fieldName);
 
-    JvmValue getArrayValue(u4 arrayItemIndex, u4 index);
-    pair<JvmValue, JvmValue> getArrayValueWide(u4 arrayItemIndex, u4 index);
-    void setArrayValue(u4 arrayItemIndex, u4 index, JvmValue value);
-    void setArrayValueWide(u4 arrayItemIndex, u4 index, JvmValue low, JvmValue high);
+    JvmValue getArrayValue(int32_t arrayItemIndex, int32_t index);
+    void setArrayValue(int32_t arrayItemIndex, int32_t index, JvmValue value);
 
-    void setField(u4 heapItemIndex, string fieldName, JvmValue value);
-    void setFieldWide(u4 heapItemIndex, string fieldName, JvmValue low, JvmValue high);
-    void setStaticField(u4 heapItemIndex, string fieldName, JvmValue value);
-    void setStaticFieldWide(u4 heapItemIndex, string fieldName, JvmValue low, JvmValue high);
+    void setField(int32_t heapItemIndex, string fieldName, JvmValue value);
+    void setStaticField(int32_t heapItemIndex, string fieldName, JvmValue value);
 };

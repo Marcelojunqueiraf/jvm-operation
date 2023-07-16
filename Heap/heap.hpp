@@ -6,14 +6,12 @@
 
 class Object {
   private:
-    map<string, pair<JvmValue, JvmValue>> fields;
+    map<string, JvmValue> fields;
     MethodAreaItem * methodAreaItem;
   public:
     Object(MethodAreaItem * methodAreaItem);
     JvmValue getFieldValue(string fieldName);
-    pair<JvmValue, JvmValue> getFieldValueWide(string fieldName);
     void setFieldValue(string fieldName, JvmValue value);
-    void setFieldValueWide(string fieldName, JvmValue low, JvmValue high);
 };
 
 class Array {
@@ -23,9 +21,7 @@ class Array {
   public:
     Array(JVMType type, u4 size);
     JvmValue getArrayValue(u4 index);
-    pair<JvmValue, JvmValue> getArrayValueWide(u4 index);
     void setArrayValue(u4 index, JvmValue value);
-    void setArrayValueWide(u4 index, JvmValue low, JvmValue high);
 };
 
 

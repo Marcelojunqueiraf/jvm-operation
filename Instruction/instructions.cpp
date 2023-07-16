@@ -340,65 +340,32 @@ pair<u4,u4> doubleToU8(double value) {
 #pragma endregion
 
 void iconst(u4 value, Frame * frame) {
-  
-  JvmValue jvmValue;
-  jvmValue.type = INT;
-  jvmValue.data = value;
-  frame->pushOperandStack(jvmValue);
+  int32_t integer = u4ToInt(value);
+  frame->pushOperandStack(JvmValue(INT, {.i = integer}));
 }
 
-void lconst(u4 value, Frame * frame){
-
-  JvmValue jvmValue;
-  jvmValue.type = LONG;
-  jvmValue.data = value;
-  frame->pushOperandStack(jvmValue);
-
+void lconst(u4 value, Frame * frame) {
+  long _long = u4ToLong(value, value);
+  frame->pushOperandStack(JvmValue(INT, {.l = _long}));
 }
 
-void fconst(u4 value, Frame * frame){
-
-  JvmValue jvmValue;
-  jvmValue.type = FLOAT;
-  jvmValue.data = value;
-  frame->pushOperandStack(jvmValue);
-
+void fconst(u4 value, Frame * frame) {
+  float _float = u4ToFloat(value);
+  frame->pushOperandStack(JvmValue(INT, {.f = _float}));
 }
 
 void dconst(u4 value, Frame * frame){
-
-  JvmValue jvmValue;
-  jvmValue.type = DOUBLE;
-  jvmValue.data = value;
-  frame->pushOperandStack(jvmValue);
-
+  double _double = u4ToDouble(value, value);
+  frame->pushOperandStack(JvmValue(INT, {.d = _double}));
 }
 
-void load(int index, Frame * frame) {
+void load(u2 index, Frame * frame) {
   frame->pushOperandStack(frame->localVariables[index]);
 }
 
-void loadWide(int index, Frame * frame) {
-  JvmValue jvmValueHighBytes = frame->localVariables[index];
-  JvmValue jvmValueLowBytes = frame->localVariables[index + 1];
-  frame->pushWideOperandStack(jvmValueLowBytes, jvmValueHighBytes);
-}
-
-void store(int index, Frame * frame, JvmValue jvmValue) {
-    frame->localVariables[index] = jvmValue;
-}
-
-void storeFromStack(int index, Frame * frame) {
+void store(u2 index, Frame * frame) {
   JvmValue jvmValue = frame->popOperandStack();
-  
-  store(index, frame, jvmValue);
-}
-
-void storeFromStackWide(int index, Frame * frame) {
-  auto [jvmValueLowBytes, jvmValueHighBytes] = frame->popWideOperandStack();
-
-  store(index, frame, jvmValueHighBytes);
-  store(index + 1, frame, jvmValueLowBytes);
+  frame->localVariables[index] = jvmValue;
 }
 
 int getCategory(JVMType type) {
@@ -410,57 +377,59 @@ int getCategory(JVMType type) {
 }
 
 void javaPrintln(Frame * frame, vector<string> args) {
-  string argType = args[0];
+  string argType = args.size() == 0 ? "VOID" : args[0];
+
+  DCOUT << "argType: " << argType << endl;
 
   if (argType == "INT")
   {
     // + "BYTE" jvm interpreta byte como int no print, não sei se em outros casos é assim
     // + "SHORT" jvm interpreta short como int no print, não sei se em outros casos é assim
     JvmValue value = frame->popOperandStack();
-    int32_t integer = u4ToInt(value.data);
+    int32_t integer = value.data.i;
     cout << integer << endl;
   }
   else if (argType == "FLOAT")
   {
     JvmValue value = frame->popOperandStack();
-    float _float = u4ToFloat(value.data);
+    float _float = value.data.f;
     cout << fixed << setprecision(7) << _float << endl;
   }
   else if (argType == "LONG")
   {
-    auto [low, high] = frame->popWideOperandStack();
-    int64_t _long = u4ToLong(low.data, high.data);
+    JvmValue value = frame->popOperandStack();
+    int64_t _long = value.data.l;
     cout << _long << endl;
   }
   else if (argType == "DOUBLE")
   {
-    auto [low, high] = frame->popWideOperandStack();
-    double _double = u4ToDouble(low.data, high.data);
+    JvmValue value = frame->popOperandStack();
+    double _double = value.data.d;
     cout << fixed << setprecision(15) << _double << endl;
   }
   else if (argType == JAVA_STRING_CLASSNAME)
   { // STRING
     JvmValue value = frame->popOperandStack();
-    DCOUT << "string index: " << value.data << endl;
+    DCOUT << "ValueType: " << value.type << endl;
+    DCOUT << "string: " << value.s << endl;
 
-    if (value.data == 0) {
+    if (value.type == REFERENCE) {
       cout << "null" << endl;
       return;
     }
 
-    string _string = frame->methodAreaItem->getUtf8(value.data);
-    cout << _string << endl;
+    cout << value.s << endl;
   }
   else if (argType == "CHAR")
   {
     JvmValue value = frame->popOperandStack();
-    char _char = value.data;
+    char _char = value.data.u;
     cout << _char << endl;
   }
   else if (argType == "BOOL")
   {
     JvmValue value = frame->popOperandStack();
-    bool _bool = value.data;
+    bool _bool = value.data.u;
     cout << (_bool ? "true" : "false") << endl;
   }
   else if (argType == "VOID")
@@ -489,7 +458,7 @@ pair<string, int> getFieldNameAndSize(Frame * frame, u2 index) {
   return {fieldName, valueSize};
 }
 
-pair<Frame *, vector<pair<string, int>>> createInvokedFrame(Frame * frame, u2 index, string methodName) {
+pair<Frame *, vector<string>> createInvokedFrame(Frame * frame, u2 index, string methodName) {
   cp_info * classRef = frame->methodAreaItem->getConstantPoolItem(index);
   string classname = frame->methodAreaItem->getUtf8(classRef->constant_type_union.Class_info.name_index);
 
@@ -502,31 +471,36 @@ pair<Frame *, vector<pair<string, int>>> createInvokedFrame(Frame * frame, u2 in
   vector<string> argTypes = classMethodAreaItem->getMethodArgTypesByDescriptorIndex(invokedMethod->descriptor_index);
   // string returnType = argTypes.back(); caso precise, é assim que pega o tipo do retorno
   argTypes.pop_back(); // tira o tipo do retorno
-
-  reverse(argTypes.begin(), argTypes.end()); // pra ficar de acordo com a pilha
-
-  vector<pair<string, int>> args;
-  for (string argType : argTypes) args.push_back({argType, getArgSize(argType)});
-
+  
   DCOUT << "method " << classname << '.' << methodName << ", nargs " << argTypes.size() << endl;
+  for (string argType : argTypes) DCOUT << "argType " << argType << endl;
 
   Frame * invokedFrame = new Frame(invokedMethod, classMethodAreaItem);
 
-  return {invokedFrame, args};
+  return {invokedFrame, argTypes};
 }
 
-void setInvokedLocalVars(Frame * actualFrame, Frame * invokedFrame, vector<pair<string, int>> args) {
-  int localVariableIndex = 1;
-  for (auto [argType, argSize] : args) {
-    if (argSize == 1) {
-      invokedFrame->localVariables[localVariableIndex++] = actualFrame->popOperandStack();
-    } else if (argSize == 2) {
-      auto [lowValue, highValue] = actualFrame->popWideOperandStack();
-      invokedFrame->localVariables[localVariableIndex++] = highValue; // na mesma ordem que o storeFromStackWide
-      invokedFrame->localVariables[localVariableIndex++] = lowValue;
-    }
+void setInvokedLocalVars(Frame * actualFrame, Frame * invokedFrame, vector<string> args, bool isStatic = false) {
+  int localVariableIndex = isStatic ? 0 : 1;
+  reverse(args.begin(), args.end());
+
+  vector<JvmValue> argsValues;
+
+  for (string argType : args) {
+    JvmValue value = actualFrame->popOperandStack();
+    argsValues.push_back(value);
+
+    DCOUT << "pop argType: " << argType << ' ' << value.type << endl;
   }
-  invokedFrame->localVariables[0] = actualFrame->popOperandStack(); // Objectref
+
+  reverse(argsValues.begin(), argsValues.end());
+
+  for (JvmValue argsValue : argsValues) {
+    invokedFrame->localVariables[localVariableIndex++] = argsValue;
+
+    if (argsValue.type == LONG || argsValue.type == DOUBLE) localVariableIndex++;
+  }
+  if (!isStatic) invokedFrame->localVariables[0] = actualFrame->popOperandStack(); // Objectref
 }
 
 #pragma endregion
@@ -682,8 +656,7 @@ void bipush (Frame * frame, JVM * jvm) {
   u1 bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   int8_t bytesSigned = bytes;
 
-  JvmValue value = {INT, intToU4(bytesSigned)};
-  frame->pushOperandStack(value);
+  frame->pushOperandStack(JvmValue(INT, {.i = bytesSigned}));
   DCOUT << "valor empilhado: " << bytesSigned << endl;
   frame->pc += 2;
 }
@@ -696,8 +669,7 @@ void sipush (Frame * frame, JVM * jvm) {
   u2 bytes = (bytes1 << 8) | bytes2;
   int16_t bytesSigned = (int16_t) bytes;
 
-  JvmValue value = {INT, intToU4(bytesSigned)};
-  frame->pushOperandStack(value);
+  frame->pushOperandStack(JvmValue(INT, {.i = bytesSigned}));
   DCOUT << "valor empilhado: " << bytesSigned << endl;
   frame->pc += 3;
 }
@@ -706,72 +678,68 @@ void sipush (Frame * frame, JVM * jvm) {
 
 #pragma region ldc
 
-void ldc (Frame * frame, JVM * jvm) {
-  DCOUT << "ldc" << endl;
-  u1 id = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+void ldcGeneric(Frame * frame, JVM * jvm, u2 id) {
   cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
   DCOUT << "tipo da constante: " << (int) c->tag << endl;
-
   JvmValue value;
   switch (c->tag) {
     case 3:
       DCOUT << "int" << endl;
       value.type = INT;
-      value.data = c->constant_type_union.Integer.bytes;
+      value.data.i =  u4ToInt(c->constant_type_union.Integer.bytes);
       break;
     case 4:
       DCOUT << "float" << endl;
       value.type = FLOAT;
-      value.data = c->constant_type_union.Float.bytes;
+      value.data.f = u4ToFloat(c->constant_type_union.Float.bytes);
       break;
     case 8:
+    {
       DCOUT << "string" << endl;
       value.type = STRING;
-      value.data = c->constant_type_union.String.string_index;
+      string s = frame->methodAreaItem->getUtf8(c->constant_type_union.String.string_index);
+      value.s = s;
+      break;
+    }
+    case 6:
+      DCOUT << "double" << endl;
+      value.type = DOUBLE;
+      value.data.d = u4ToDouble(c->constant_type_union.Double.low_bytes, c->constant_type_union.Double.high_bytes);
+      break;
+    case 5:
+      DCOUT << "long" << endl;
+      value.type = LONG;
+      value.data.l = u4ToLong(c->constant_type_union.Long.low_bytes, c->constant_type_union.Long.high_bytes);
       break;
     default:
       throw std::runtime_error("tipo não reconhecido");
   }
   frame->pushOperandStack(value);
-  DCOUT << "valor empilhado: " << frame->operandStack.top().data << endl;
+
+  if (value.type == STRING)
+ {
+    DCOUT << "valor empilhado: " << value.s << endl;
+  }
+  else {
+    DCOUT << "valor empilhado: " << value.data.i << endl;
+  }
+}
+
+void ldc (Frame * frame, JVM * jvm) {
+  DCOUT << "ldc" << endl;
+  u1 id = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  ldcGeneric(frame, jvm, id);
   frame->pc += 2;
 }
 
 void ldc_w (Frame * frame, JVM * jvm) {
-  // esse é wide e só é usado para indice de constant pool grande
   DCOUT << "ldc_w" << endl;
 
   u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
-
   u2 id = (high_bytes << 8) | low_bytes;
 
-  cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
-  DCOUT << "tipo da constante: " << c->tag << endl;
-
-  JvmValue value;
-  switch (c->tag) {
-    case 3:
-      DCOUT << "int" << endl;
-      value.type = INT;
-      value.data = c->constant_type_union.Integer.bytes;
-      break;
-    case 4:
-      DCOUT << "float" << endl;
-      value.type = FLOAT;
-      value.data = c->constant_type_union.Float.bytes;
-      break;
-    case 8:
-      DCOUT << "string" << endl;
-      value.type = STRING;
-      value.data = c->constant_type_union.String.string_index;
-      break;
-    default:
-      throw std::runtime_error("tipo não reconhecido");
-      break;
-  }
-  frame->pushOperandStack(value);
-  DCOUT << "valor empilhado: " << frame->operandStack.top().data << endl;
+  ldcGeneric(frame, jvm, id);
 
   frame->pc += 3;
 }
@@ -781,37 +749,9 @@ void ldc2_w (Frame * frame, JVM * jvm) {
 
   u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
-
   u2 id = (high_bytes << 8) | low_bytes;
-
-  cp_info * c = frame->methodAreaItem->getConstantPoolItem(id);
-  DCOUT << "tipo da constante: " << c->tag << endl;
-
-  JvmValue high_value;
-  JvmValue low_value;
-
-  switch (c->tag) {
-    case 6:
-      DCOUT << "double" << endl;
-      high_value.type = DOUBLE;
-      low_value.type = DOUBLE;
-      high_value.data = c->constant_type_union.Double.high_bytes;
-      low_value.data = c->constant_type_union.Double.low_bytes;
-      break;
-    case 5:
-      DCOUT << "long" << endl;
-      high_value.type = LONG;
-      low_value.type = LONG;
-      high_value.data = c->constant_type_union.Long.high_bytes;
-      low_value.data = c->constant_type_union.Long.low_bytes;
-      break;
-    default:
-      throw std::runtime_error("tipo não reconhecido");
-      break;
-  }
-
-  frame->pushWideOperandStack(low_value, high_value);
-  DCOUT << "valor empilhado: 0x" << hex << high_value.data << low_value.data << dec << endl;
+  
+  ldcGeneric(frame, jvm, id);
 
   frame->pc += 3;
 }
@@ -830,7 +770,7 @@ void iload (Frame * frame, JVM * jvm) {
 void lload (Frame * frame, JVM * jvm) {
   DCOUT << "lload" << endl;
   u1 index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
-  loadWide(index, frame);
+  load(index, frame);
   frame->pc += 2;
 }
 
@@ -844,7 +784,7 @@ void fload (Frame * frame, JVM * jvm) {
 void dload (Frame * frame, JVM * jvm) {
   DCOUT << "dload" << endl;
   u1 immediate = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
-  loadWide(immediate, frame);
+  load(immediate, frame);
   frame->pc += 2;
 }
 
@@ -864,7 +804,7 @@ void iload_0 (Frame * frame, JVM * jvm) {
 void iload_1 (Frame * frame, JVM * jvm) {
   DCOUT << "iload_1" << endl;
   load(1, frame);
-  DCOUT << "topo da pilha é " << frame->operandStack.top().data << endl;
+  DCOUT << "topo da pilha é " << frame->operandStack.top().data.i << endl;
   frame->pc += 1;
 }
 
@@ -882,25 +822,25 @@ void iload_3 (Frame * frame, JVM * jvm) {
 
 void lload_0 (Frame * frame, JVM * jvm) {
   DCOUT << "lload_0" << endl;
-  loadWide(0, frame);
+  load(0, frame);
   frame->pc += 1;
 }
 
 void lload_1 (Frame * frame, JVM * jvm) {
   DCOUT << "lload_1" << endl;
-  loadWide(1, frame);
+  load(1, frame);
   frame->pc += 1;
 }
 
 void lload_2 (Frame * frame, JVM * jvm) {
   DCOUT << "lload_2" << endl;
-  loadWide(2, frame);
+  load(2, frame);
   frame->pc += 1;
 }
 
 void lload_3 (Frame * frame, JVM * jvm) {
   DCOUT << "lload_3" << endl;
-  loadWide(3, frame);
+  load(3, frame);
   frame->pc += 1;
 }
 
@@ -930,25 +870,25 @@ void fload_3 (Frame * frame, JVM * jvm) {
 
 void dload_0 (Frame * frame, JVM * jvm) {
   DCOUT << "dload_0" << endl;
-  loadWide(0, frame);
+  load(0, frame);
   frame->pc += 1;
 }
 
 void dload_1 (Frame * frame, JVM * jvm) {
   DCOUT << "dload_1" << endl;
-  loadWide(1, frame);
+  load(1, frame);
   frame->pc += 1;
 }
 
 void dload_2 (Frame * frame, JVM * jvm) {
   DCOUT << "dload_2" << endl;
-  loadWide(2, frame);
+  load(2, frame);
   frame->pc += 1;
 }
 
 void dload_3 (Frame * frame, JVM * jvm) {
   DCOUT << "dload_3" << endl;
-  loadWide(3, frame);
+  load(3, frame);
   frame->pc += 1;
 }
 
@@ -977,27 +917,18 @@ void aload_3 (Frame * frame, JVM * jvm) {
 }
 
 void loadFromArray(Frame * frame, JVM * jvm) {
-  u4 index = frame->popOperandStack().data;
-  u4 arrayref = frame->popOperandStack().data;
+  int32_t index = frame->popOperandStack().data.i;
+  int32_t arrayref = frame->popOperandStack().data.i;
   DCOUT << "loadFrom " << arrayref << " " << index << endl;
   JvmValue value = jvm->getArrayValue(arrayref, index);
 
   frame->pushOperandStack(value);
 }
 
-void loadFromArrayWide(Frame * frame, JVM * jvm) {
-  u4 index = frame->popOperandStack().data;
-  u4 arrayref = frame->popOperandStack().data;
-
-  auto [lowValue, highValue] = jvm->getArrayValueWide(arrayref, index);
-
-  frame->pushWideOperandStack(lowValue, highValue);
-}
-
 void iaload (Frame * frame, JVM * jvm) {
   DCOUT << "iaload" << endl;
   loadFromArray(frame, jvm);
-  DCOUT << frame->operandStack.top().data << endl;
+  DCOUT << frame->operandStack.top().data.i << endl;
   frame->pc += 1;
 }
 
@@ -1050,7 +981,7 @@ void istore (Frame * frame, JVM * jvm) {
   
   u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   
-  storeFromStack(local_vector_index, frame);
+  store(local_vector_index, frame);
 
   frame->pc += 2;
 }
@@ -1060,7 +991,7 @@ void lstore (Frame * frame, JVM * jvm) {
 
   u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
 
-  storeFromStackWide(local_vector_index, frame);
+  store(local_vector_index, frame);
 
   frame->pc += 2;
 }
@@ -1070,7 +1001,7 @@ void fstore (Frame * frame, JVM * jvm) {
 
   u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
 
-  storeFromStack(local_vector_index, frame);
+  store(local_vector_index, frame);
 
   frame->pc += 2;
 }
@@ -1080,7 +1011,7 @@ void dstore (Frame * frame, JVM * jvm) {
 
   u1 local_vector_index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
 
-  storeFromStackWide(local_vector_index, frame);
+  store(local_vector_index, frame);
 
   frame->pc += 2;
 }
@@ -1089,7 +1020,7 @@ void astore (Frame * frame, JVM * jvm) {
   DCOUT << "astore" << endl;
   u1 index = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
 
-  storeFromStack(index, frame);
+  store(index, frame);
 
   frame->pc += 2;
 }
@@ -1097,7 +1028,7 @@ void astore (Frame * frame, JVM * jvm) {
 void istore_0 (Frame * frame, JVM * jvm) {
   DCOUT << "istore_0" << endl;
 
-  storeFromStack(0, frame);
+  store(0, frame);
 
   frame->pc += 1;
 }
@@ -1105,30 +1036,30 @@ void istore_0 (Frame * frame, JVM * jvm) {
 void istore_1 (Frame * frame, JVM * jvm) {
   DCOUT << "istore_1" << endl;
 
-  storeFromStack(1, frame);
+  store(1, frame);
 
   frame->pc += 1;
-  DCOUT << "vetor de variaveis de indice = 1 " << frame->localVariables[1].data << endl;  
+  DCOUT << "vetor de variaveis de indice = 1 " << frame->localVariables[1].data.i << endl;  
 }
 
 void istore_2 (Frame * frame, JVM * jvm) {
   DCOUT << "istore_2" << endl;
   
-  storeFromStack(2, frame);
+  store(2, frame);
   
   frame->pc += 1;
 }
 
 void istore_3 (Frame * frame, JVM * jvm) {
   DCOUT << "istore_3" << endl;
-  storeFromStack(3, frame);
+  store(3, frame);
   frame->pc += 1;
 }
 
 void lstore_0 (Frame * frame, JVM * jvm) {
   DCOUT << "lstore_0" << endl;
 
-  storeFromStackWide(0, frame);
+  store(0, frame);
 
   frame->pc += 1;
 }
@@ -1136,7 +1067,7 @@ void lstore_0 (Frame * frame, JVM * jvm) {
 void lstore_1 (Frame * frame, JVM * jvm) {
   DCOUT << "lstore_1" << endl;
 
-  storeFromStackWide(1, frame);
+  store(1, frame);
 
   frame->pc += 1;
 }
@@ -1144,7 +1075,7 @@ void lstore_1 (Frame * frame, JVM * jvm) {
 void lstore_2 (Frame * frame, JVM * jvm) {
   DCOUT << "lstore_2" << endl;
 
-  storeFromStackWide(2, frame);
+  store(2, frame);
 
   frame->pc += 1;
 }
@@ -1152,7 +1083,7 @@ void lstore_2 (Frame * frame, JVM * jvm) {
 void lstore_3 (Frame * frame, JVM * jvm) {
   DCOUT << "lstore_3" << endl;
 
-  storeFromStackWide(3, frame);
+  store(3, frame);
 
   frame->pc += 1;
 }
@@ -1160,7 +1091,7 @@ void lstore_3 (Frame * frame, JVM * jvm) {
 void fstore_0 (Frame * frame, JVM * jvm) {
   DCOUT << "fstore_0" << endl;
 
-  storeFromStack(0, frame);
+  store(0, frame);
 
   frame->pc += 1;
 }
@@ -1168,7 +1099,7 @@ void fstore_0 (Frame * frame, JVM * jvm) {
 void fstore_1 (Frame * frame, JVM * jvm) {
   DCOUT << "fstore_1" << endl;
 
-  storeFromStack(1, frame);
+  store(1, frame);
 
   frame->pc += 1;
 }
@@ -1176,7 +1107,7 @@ void fstore_1 (Frame * frame, JVM * jvm) {
 void fstore_2 (Frame * frame, JVM * jvm) {
   DCOUT << "fstore_2" << endl;
 
-  storeFromStack(2, frame);
+  store(2, frame);
 
   frame->pc += 1;
 }
@@ -1184,7 +1115,7 @@ void fstore_2 (Frame * frame, JVM * jvm) {
 void fstore_3 (Frame * frame, JVM * jvm) {
   DCOUT << "fstore_3" << endl;
 
-  storeFromStack(3, frame);
+  store(3, frame);
 
   frame->pc += 1;
 }
@@ -1192,7 +1123,7 @@ void fstore_3 (Frame * frame, JVM * jvm) {
 void dstore_0 (Frame * frame, JVM * jvm) {
   DCOUT << "dstore_0" << endl;
 
-  storeFromStackWide(0, frame);
+  store(0, frame);
 
   frame->pc += 1;
 }
@@ -1200,7 +1131,7 @@ void dstore_0 (Frame * frame, JVM * jvm) {
 void dstore_1 (Frame * frame, JVM * jvm) {
   DCOUT << "dstore_1" << endl;
 
-  storeFromStackWide(1, frame);
+  store(1, frame);
 
   frame->pc += 1;
 }
@@ -1208,7 +1139,7 @@ void dstore_1 (Frame * frame, JVM * jvm) {
 void dstore_2 (Frame * frame, JVM * jvm) {
   DCOUT << "dstore_2" << endl;
 
-  storeFromStackWide(2, frame);
+  store(2, frame);
 
   frame->pc += 1;
 }
@@ -1216,50 +1147,42 @@ void dstore_2 (Frame * frame, JVM * jvm) {
 void dstore_3 (Frame * frame, JVM * jvm) {
   DCOUT << "dstore_3" << endl;
 
-  storeFromStackWide(3, frame);
+  store(3, frame);
 
   frame->pc += 1;
 }
 
 void astore_0 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_0" << endl;
-  storeFromStack(0, frame);
+  store(0, frame);
   frame->pc += 1;
 }
 
 void astore_1 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_1" << endl;
-  storeFromStack(1, frame);
+  store(1, frame);
   frame->pc += 1;
 }
 
 void astore_2 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_2" << endl;
-  storeFromStack(2, frame);
+  store(2, frame);
   frame->pc += 1;
 }
 
 void astore_3 (Frame * frame, JVM * jvm) {
   DCOUT << "astore_3" << endl;
-  storeFromStack(3, frame);
+  store(3, frame);
   frame->pc += 1;
 }
 
 
 void storeOnArray(Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
-  u4 index = frame->popOperandStack().data;
-  u4 arrayref = frame->popOperandStack().data;
+  int32_t index = frame->popOperandStack().data.i;
+  int32_t arrayref = frame->popOperandStack().data.i;
 
   jvm->setArrayValue(arrayref, index, value);
-}
-
-void storeOnArrayWide(Frame * frame, JVM * jvm) {
-  auto [lowValue, highValue] = frame->popWideOperandStack();
-  u4 index = frame->popOperandStack().data;
-  u4 arrayref = frame->popOperandStack().data;
-
-  jvm->setArrayValueWide(arrayref, index, lowValue, highValue);
 }
 
 void iastore (Frame * frame, JVM * jvm) {
@@ -1270,7 +1193,7 @@ void iastore (Frame * frame, JVM * jvm) {
 
 void lastore (Frame * frame, JVM * jvm) {
   DCOUT << "lastore" << endl;
-  storeOnArrayWide(frame, jvm);
+  storeOnArray(frame, jvm);
   frame->pc += 1;
 }
 
@@ -1282,7 +1205,7 @@ void fastore (Frame * frame, JVM * jvm) {
 
 void dastore (Frame * frame, JVM * jvm) {
   DCOUT << "dastore" << endl;
-  storeOnArrayWide(frame, jvm);
+  storeOnArray(frame, jvm);
   frame->pc += 1;
 }
 
@@ -1447,60 +1370,45 @@ T calculate(T first, T second, Operation op) {
 
 
 void operate(Frame * frame, Operation op, JVMType type) {
-  auto [second, first] = frame->popWideOperandStack();
+  JvmValue second = frame->popOperandStack();
+  JvmValue first = frame->popOperandStack();
 
-  u4 result = 0;
+  JvmValue resultValue;
+  resultValue.type = type;
   switch (type) {
     case INT:
     {
-      int32_t calc = calculate<int32_t>(u4ToInt(first.data), u4ToInt(second.data), op);
+      int32_t calc = calculate<int32_t>(first.data.i, second.data.i, op);
+      resultValue.data.i = calc;
       DCOUT << "int result: " << calc << endl;
-      result = intToU4(calc);
       break;
     }
     case FLOAT:
     {
-      float calc = calculate<float>(u4ToFloat(first.data), u4ToFloat(second.data), op);
+      float calc = calculate<float>(first.data.f, second.data.f, op);
+      resultValue.data.f = calc;
       DCOUT << "float result: " << calc << endl;
-      result = floatToU4(calc);
       break;
     }
-    default:
-      throw std::runtime_error("tipo nao implementado");
-  }
-
-  JvmValue resultValue = {type, result};
-  frame->pushOperandStack(resultValue);
-}
-
-void operateW(Frame * frame, Operation op, JVMType type) {
-  auto [secondLower, secondUpper] = frame->popWideOperandStack();
-  auto [firstLower, firstUpper] = frame->popWideOperandStack();
-
-  pair<u4, u4> result = {0,0};
-  switch (type) {
     case LONG:
     {
-      int64_t calc = calculate<int64_t>(u4ToLong(firstLower.data, firstUpper.data), u4ToLong(secondLower.data, secondUpper.data), op);
+      int64_t calc = calculate<int64_t>(first.data.l, second.data.l, op);
+      resultValue.data.l = calc;
       DCOUT << "long result:" << calc << endl;
-      result = longToU8(calc);
       break;
     }
     case DOUBLE:
     {
-      double calc = calculate<double>(u4ToDouble(firstLower.data, firstUpper.data), u4ToDouble(secondLower.data, secondUpper.data), op);
+      double calc = calculate<double>(first.data.d, second.data.d, op);
+      resultValue.data.d = calc;
       DCOUT << "double result:" << calc << endl;
-      result = doubleToU8(calc);
       break;
     }
     default:
       throw std::runtime_error("tipo nao implementado");
   }
 
-  JvmValue resultLower = {type, result.first};
-  JvmValue resultUpper = {type, result.second};
-
-  frame->pushWideOperandStack(resultLower, resultUpper);
+  frame->pushOperandStack(resultValue);
 }
 
 
@@ -1514,7 +1422,7 @@ void iadd (Frame * frame, JVM * jvm) {
 
 void ladd (Frame * frame, JVM * jvm) {
   DCOUT << "ladd" << endl;
-  operateW(frame, ADD, LONG);
+  operate(frame, ADD, LONG);
   frame->pc += 1;
 }
 
@@ -1526,7 +1434,7 @@ void fadd (Frame * frame, JVM * jvm) {
 
 void dadd (Frame * frame, JVM * jvm) {
   DCOUT << "dadd" << endl;
-  operateW(frame, ADD, DOUBLE);
+  operate(frame, ADD, DOUBLE);
   frame->pc += 1;
 }
 
@@ -1542,7 +1450,7 @@ void isub (Frame * frame, JVM * jvm) {
 
 void lsub (Frame * frame, JVM * jvm) {
   DCOUT << "lsub" << endl;
-  operateW(frame, SUB, LONG);
+  operate(frame, SUB, LONG);
   frame->pc += 1;
 }
 
@@ -1554,7 +1462,7 @@ void fsub (Frame * frame, JVM * jvm) {
 
 void dsub (Frame * frame, JVM * jvm) {
   DCOUT << "dsub" << endl;
-  operateW(frame, SUB, DOUBLE);
+  operate(frame, SUB, DOUBLE);
   frame->pc += 1;
 }
 
@@ -1570,7 +1478,7 @@ void imul (Frame * frame, JVM * jvm) {
 
 void lmul (Frame * frame, JVM * jvm) {
   DCOUT << "lmul" << endl;
-  operateW(frame, MUL, LONG);
+  operate(frame, MUL, LONG);
   frame->pc += 1;
 }
 
@@ -1582,7 +1490,7 @@ void fmul (Frame * frame, JVM * jvm) {
 
 void dmul (Frame * frame, JVM * jvm) {
   DCOUT << "dmul" << endl;
-  operateW(frame, MUL, DOUBLE);
+  operate(frame, MUL, DOUBLE);
   frame->pc += 1;
 }
 
@@ -1598,7 +1506,7 @@ void idiv (Frame * frame, JVM * jvm) {
 
 void ldiv (Frame * frame, JVM * jvm) {
   DCOUT << "ldiv" << endl;
-  operateW(frame, DIV, LONG);
+  operate(frame, DIV, LONG);
   frame->pc += 1;
 }
 
@@ -1610,7 +1518,7 @@ void fdiv (Frame * frame, JVM * jvm) {
 
 void ddiv (Frame * frame, JVM * jvm) {
   DCOUT << "ddiv" << endl;
-  operateW(frame, DIV, DOUBLE);
+  operate(frame, DIV, DOUBLE);
   frame->pc += 1;
 }
 
@@ -1647,9 +1555,9 @@ void ineg (Frame * frame, JVM * jvm) {
   JvmValue value = frame->operandStack.top();
   if (value.type == INT) {
     frame->operandStack.pop();
-    int32_t neg = u4ToInt(value.data);
+    int32_t neg = u4ToInt(value.data.u);
     neg *= -1;
-    value.data = neg;
+    value.data.i = neg;
     frame->operandStack.push(value);
     DCOUT << "valor empilhado: " << neg << endl;
   } else {
@@ -1660,61 +1568,43 @@ void ineg (Frame * frame, JVM * jvm) {
 
 void lneg (Frame * frame, JVM * jvm) {
   cout << "lneg" << endl;
-  JvmValue value2 = frame->operandStack.top();
+  JvmValue value = frame->operandStack.top();
+
   frame->operandStack.pop();
-  JvmValue value1 = frame->operandStack.top();
-  if (value1.type == LONG && value2.type == LONG) {
-    frame->operandStack.pop();
-    int64_t neg = u4ToLong(value2.data, value1.data);
-    neg *= -1;
-    pair<u4, u4> result = longToU8(neg);
-    value1.data = result.first;
-    value2.data = result.second;
-    frame->operandStack.push(value1);
-    frame->operandStack.push(value2);
-    DCOUT << "valor empilhado: " << neg << endl;
-  } else {
-    frame->operandStack.push(value2);
-    DCOUT << "falha na operação" << endl;
-  }
+  int64_t neg = value.data.l;
+  neg *= -1;
+  value.data.l = neg;
+  frame->operandStack.push(value);
+  DCOUT << "valor empilhado: " << neg << endl;
+  
   frame->pc += 1;
 }
 
 void fneg (Frame * frame, JVM * jvm) {
   cout << "fneg" << endl;
   JvmValue value = frame->operandStack.top();
-  if (value.type == FLOAT) {
-    frame->operandStack.pop();
-    float neg = u4ToFloat(value.data);
-    neg *= -1;
-    value.data = floatToU4(neg);
-    frame->operandStack.push(value);
-    DCOUT << "valor empilhado: " << neg << endl;
-  } else {
-    DCOUT << "falha na operação" << endl;
-  }
+
+  frame->operandStack.pop();
+  float neg = value.data.f;
+  neg *= -1;
+  value.data.f = neg;
+  frame->operandStack.push(value);
+  DCOUT << "valor empilhado: " << neg << endl;
+  
   frame->pc += 1;
 }
 
 void dneg (Frame * frame, JVM * jvm) {
   cout << "dneg" << endl;
-  JvmValue value2 = frame->operandStack.top();
+  JvmValue value = frame->operandStack.top();
+
   frame->operandStack.pop();
-  JvmValue value1 = frame->operandStack.top();
-  if (value1.type == DOUBLE && value2.type == DOUBLE) {
-    frame->operandStack.pop();
-    int64_t neg = u4ToDouble(value2.data, value1.data);
-    neg *= -1;
-    pair<u4, u4> result = doubleToU8(neg);
-    value1.data = result.first;
-    value2.data = result.second;
-    frame->operandStack.push(value1);
-    frame->operandStack.push(value2);
-    DCOUT << "valor empilhado: " << neg << endl;
-  } else {
-    frame->operandStack.push(value2);
-    DCOUT << "falha na operação" << endl;
-  }
+  double neg = value.data.d;
+  neg *= -1;
+  value.data.d = neg;
+  frame->operandStack.push(value);
+  DCOUT << "valor empilhado: " << neg << endl;
+
   frame->pc += 1;
 }
 
@@ -1724,137 +1614,100 @@ void dneg (Frame * frame, JVM * jvm) {
 
 void ishl (Frame * frame, JVM * jvm) {
   cout << "ishl" << endl;
-  JvmValue stack2 = frame->operandStack.top();
+  JvmValue shift = frame->operandStack.top();
   frame->operandStack.pop();
-  JvmValue stack1 = frame->operandStack.top();
-  if (stack1.type == INT && stack2.type == INT) {
-    frame->operandStack.pop();
-    int32_t value = u4ToInt(stack1.data);
-    int32_t shiftby = u4ToInt(stack2.data);
-    DCOUT << "Value:" << value << endl;
-    DCOUT << "Shiftby: " << shiftby << endl;
-    value <<= shiftby;
-    stack1.data = value;
-    frame->operandStack.push(stack1);
-    DCOUT << "valor empilhado: " << value << endl;
-  } else {
-    frame->operandStack.push(stack2);
-    DCOUT << "falha na operação" << endl;
-  }
+  JvmValue value = frame->operandStack.top();
+  frame->operandStack.pop();
+
+
+  DCOUT << "Valor: " << value.data.i << " shift para a esquerda de: " << shift.data.i << endl;
+  value.data.i <<= shift.data.i;
+  
+  frame->operandStack.push(value);
+  DCOUT << "valor empilhado: " << value.data.i << endl;
+
   frame->pc += 1;
 }
 
 void lshl (Frame * frame, JVM * jvm) {
   cout << "lshl" << endl;
-  JvmValue stack3 = frame->operandStack.top();
+  JvmValue shift = frame->operandStack.top();
   frame->operandStack.pop();
-  JvmValue stack2 = frame->operandStack.top();
+  JvmValue value = frame->operandStack.top();
   frame->operandStack.pop();
-  JvmValue stack1 = frame->operandStack.top();
-  if (stack1.type == LONG && stack2.type == LONG && stack3.type == INT) {
-    frame->operandStack.pop();
-    int64_t value = u4ToLong(stack2.data, stack1.data);
-    int32_t shiftby = u4ToInt(stack3.data);
-    DCOUT << "Value:" << value << endl;
-    DCOUT << "Shiftby: " << shiftby << endl;
-    value <<= shiftby;
-    pair<u4, u4> result = longToU8(value);
-    stack1.data = result.first;
-    stack2.data = result.second;
-    frame->operandStack.push(stack1);
-    frame->operandStack.push(stack2);
-    DCOUT << "valor empilhado: " << value << endl;
-  } else {
-    frame->operandStack.push(stack2);
-    frame->operandStack.push(stack3);
-    DCOUT << "falha na operação" << endl;
-  }
+
+
+  DCOUT << "Valor: " << value.data.l << " shift para a esquerda de: " << shift.data.i << endl;
+  value.data.l <<= shift.data.i;
+  
+  frame->operandStack.push(value);
+  DCOUT << "valor empilhado: " << value.data.l << endl;
   frame->pc += 1;
 }
 
 void ishr (Frame * frame, JVM * jvm) {
   cout << "ishr" << endl;
-  JvmValue stack2 = frame->operandStack.top();
+  JvmValue shift = frame->operandStack.top();
   frame->operandStack.pop();
-  JvmValue stack1 = frame->operandStack.top();
-  if (stack1.type == INT && stack2.type == INT) {
-    frame->operandStack.pop();
-    int32_t value = u4ToInt(stack1.data);
-    int32_t shiftby = u4ToInt(stack2.data);
-    DCOUT << "Value:" << value << endl;
-    DCOUT << "Shiftby: " << shiftby << endl;    
-    value >>= shiftby;
-    stack1.data = value;
-    frame->operandStack.push(stack1);
-    DCOUT << "valor empilhado: " << value << endl;
-  } else {
-    frame->operandStack.push(stack2);
-    DCOUT << "falha na operação" << endl;
-  }
+  JvmValue value = frame->operandStack.top();
+  frame->operandStack.pop();
+
+
+  DCOUT << "Valor: " << value.data.i << " shift para a direita de: " << shift.data.i << endl;
+  value.data.i >>= shift.data.i;
+  
+  frame->operandStack.push(value);
+  DCOUT << "valor empilhado: " << value.data.i << endl;
+
   frame->pc += 1;
 }
 
 void lshr (Frame * frame, JVM * jvm) {
   cout << "lshr" << endl;
-  JvmValue stack3 = frame->operandStack.top();
+  JvmValue shift = frame->operandStack.top();
   frame->operandStack.pop();
-  JvmValue stack2 = frame->operandStack.top();
+  JvmValue value = frame->operandStack.top();
   frame->operandStack.pop();
-  JvmValue stack1 = frame->operandStack.top();
-  if (stack1.type == LONG && stack2.type == LONG && stack3.type == INT) {
-    frame->operandStack.pop();
-    int64_t value = u4ToLong(stack2.data, stack1.data);
-    int32_t shiftby = u4ToInt(stack3.data);
-    DCOUT << "Value:" << value << endl;
-    DCOUT << "Shiftby: " << shiftby << endl;    
-    value >>= shiftby;
-    pair<u4, u4> result = longToU8(value);
-    stack1.data = result.first;
-    stack2.data = result.second;
-    frame->operandStack.push(stack1);
-    frame->operandStack.push(stack2);
-    DCOUT << "valor empilhado: " << value << endl;
-  } else {
-    frame->operandStack.push(stack2);
-    frame->operandStack.push(stack3);
-    DCOUT << "falha na operação" << endl;
-  }
+
+
+  DCOUT << "Valor: " << value.data.l << " shift para a direita de: " << shift.data.i << endl;
+  value.data.l >>= shift.data.i;
+  
+  frame->operandStack.push(value);
+  DCOUT << "valor empilhado: " << value.data.l << endl;
   frame->pc += 1;
 }
 
 void iushr (Frame * frame, JVM * jvm) {
   cout << "iushr" << endl;
-  JvmValue stack2 = frame->operandStack.top();
+  JvmValue shift = frame->operandStack.top();
   frame->operandStack.pop();
-  JvmValue stack1 = frame->operandStack.top();
-  if (stack1.type == INT && stack2.type == INT) {
-    frame->operandStack.pop();
-    DCOUT << "Value:" << stack1.data << endl;
-    DCOUT << "Shiftby: " << stack2.data << endl;
-    stack1.data >>= stack2.data;
-    frame->operandStack.push(stack1);
-    DCOUT << "valor empilhado: " << frame->operandStack.top().data << endl;
-  } else {
-    frame->operandStack.push(stack2);
-    DCOUT << "falha na operação" << endl;
-  }
+  JvmValue value = frame->operandStack.top();
+  frame->operandStack.pop();
+
+
+  DCOUT << "Valor: " << value.data.i << " shift logico para a direita de: " << shift.data.i << endl;
+  // TODO: aplicar lógica de (value1 >> s) + (2L << ~s) se for negativo
+  value.data.i >>= shift.data.i;
+  
+  frame->operandStack.push(value);
+  DCOUT << "valor empilhado: " << value.data.i << endl;
   frame->pc += 1;
 }
 
 void lushr (Frame * frame, JVM * jvm) {
   cout << "lushr" << endl;
-
-  // pop long
-  pair<JvmValue, JvmValue> longValue = frame->popWideOperandStack();
-  JvmValue shiftValue = frame->popOperandStack();
-
-  int32_t shift = u4ToInt(shiftValue.data);
-
-  JvmValue resultLower = {LONG, longValue.first.data >> shift};
-  JvmValue resultUpper = {LONG, longValue.second.data >> shift};
-  frame->pushWideOperandStack(resultLower, resultUpper);
-
-  DCOUT << "valor empilhado: " << u4ToLong(longValue.first.data, longValue.second.data) << endl;
+  JvmValue shift = frame->operandStack.top();
+  frame->operandStack.pop();
+  JvmValue value = frame->operandStack.top();
+  frame->operandStack.pop();
+  
+  // TODO: aplicar lógica de (value1 >> s) + (2L << ~s) se for negativo
+  DCOUT << "Valor: " << value.data.l << " shift para a direita de: " << shift.data.i << endl;
+  value.data.l >>= shift.data.i;
+  
+  frame->operandStack.push(value);
+  DCOUT << "valor empilhado: " << value.data.l << endl;
   frame->pc += 1;
 }
 
@@ -1870,7 +1723,7 @@ void iand (Frame * frame, JVM * jvm) {
 
 void land (Frame * frame, JVM * jvm) {
   DCOUT << "land" << endl;
-  operateW(frame, AND, LONG);
+  operate(frame, AND, LONG);
   frame->pc += 1;
 }
 
@@ -1886,7 +1739,7 @@ void ior (Frame * frame, JVM * jvm) {
 
 void lor (Frame * frame, JVM * jvm) {
   DCOUT << "lor" << endl;
-  operateW(frame, OR, LONG);
+  operate(frame, OR, LONG);
   frame->pc += 1;
 }
 
@@ -1902,7 +1755,7 @@ void ixor (Frame * frame, JVM * jvm) {
 
 void lxor (Frame * frame, JVM * jvm) {
   DCOUT << "lxor" << endl;
-  operateW(frame, XOR, LONG);
+  operate(frame, XOR, LONG);
   frame->pc += 1;
 }
 
@@ -1913,8 +1766,8 @@ void iinc (Frame * frame, JVM * jvm) {
   u1 _const = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
 
   int32_t _const_signed = (int8_t) _const;
-  DCOUT << "iinc " << u4ToInt(frame->localVariables[index].data) << " += " << _const_signed << endl;
-  frame->localVariables[index].data += _const_signed;
+  DCOUT << "iinc " << frame->localVariables[index].data.i << " += " << _const_signed << endl;
+  frame->localVariables[index].data.i += _const_signed;
   
   frame->pc += 3;
 }
@@ -1924,15 +1777,13 @@ void iinc (Frame * frame, JVM * jvm) {
 void i2l (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
   
-  int32_t integer = u4ToInt(value.data);
+  int32_t integer = value.data.i;
   int64_t longInteger = integer;
   DCOUT << "i2l " << integer << " -> " << longInteger << endl;
 
-  auto [low, high] = longToU8(longInteger);
-  JvmValue highValue = {LONG, high};
-  JvmValue lowValue = {LONG, low};
-
-  frame->pushWideOperandStack(lowValue, highValue);
+  value.type = LONG;
+  value.data.l = longInteger;
+  frame->pushOperandStack(value);
   
   frame->pc += 1;
 }
@@ -1940,13 +1791,13 @@ void i2l (Frame * frame, JVM * jvm) {
 void i2f (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
-  int32_t integer = u4ToInt(value.data);
+  int32_t integer = value.data.i;
   float _float = integer;
-  u4 floatBits = floatToU4(_float);
-  DCOUT << "i2f " << integer << " -> " << _float << " (0x" << hex << floatBits << dec << ')' << endl;
+  DCOUT << "i2f " << integer << " -> " << _float << endl;
 
-  JvmValue new_value = {FLOAT, floatBits};
-  frame->pushOperandStack(new_value);
+  value.type = FLOAT;
+  value.data.f = _float;
+  frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
@@ -1954,58 +1805,55 @@ void i2f (Frame * frame, JVM * jvm) {
 void i2d (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
-  int32_t integer = u4ToInt(value.data);
+  int32_t integer = value.data.i;
   double _double = integer;
-  auto [low, high] = doubleToU8(_double);
-  DCOUT << "i2d " << integer << " -> " << _double << " (0x" << hex << high << low << dec << ")" << endl;
+  DCOUT << "i2d " << integer << " -> " << _double << endl;
 
-  JvmValue highValue = {DOUBLE, high};
-  JvmValue lowValue = {DOUBLE, low};
-
-  frame->pushWideOperandStack(lowValue, highValue);
+  value.type = DOUBLE;
+  value.data.d = _double;
+  frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
 
 void l2i (Frame * frame, JVM * jvm) {
-  auto [lowValue, highValue] = frame->popWideOperandStack();
+  JvmValue value = frame->popOperandStack();
 
-  int64_t longInteger = u4ToLong(lowValue.data, highValue.data);
+  int64_t longInteger = value.data.l;
   int32_t integer = longInteger;
   DCOUT << "l2i " << longInteger << " -> " << integer << endl;
 
-  JvmValue new_value = {INT, intToU4(integer)};
-  frame->pushOperandStack(new_value);
+  value.type = INT;
+  value.data.i = integer;
+  frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
 
 void l2f (Frame * frame, JVM * jvm) {
-  auto [lowValue, highValue] = frame->popWideOperandStack();
+  JvmValue value = frame->popOperandStack();
 
-  int64_t longInteger = u4ToLong(lowValue.data, highValue.data);
+  int64_t longInteger = value.data.l;
   float _float = longInteger;
-  u4 floatBits = floatToU4(_float);
-  DCOUT << "l2f " << longInteger << " -> " << _float << " (0x" << hex << floatBits << dec << ')' << endl;
+  DCOUT << "l2f " << longInteger << " -> " << _float << endl;
 
-  JvmValue value = {FLOAT, floatBits};
+  value.type = FLOAT;
+  value.data.f = _float;
   frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
 
 void l2d (Frame * frame, JVM * jvm) {
-  auto [lowValue, highValue] = frame->popWideOperandStack();
+  JvmValue value = frame->popOperandStack();
 
-  int64_t longInteger = u4ToLong(lowValue.data, highValue.data);
+  int64_t longInteger = value.data.l;
   double _double = longInteger;
-  auto [low, high] = doubleToU8(_double);
-  DCOUT << "l2d " << longInteger << " -> " << _double << " (0x" << hex << high << low << dec << ")" << endl;
+  DCOUT << "l2d " << longInteger << " -> " << _double << endl;
 
-  JvmValue new_highValue = {DOUBLE, high};
-  JvmValue new_lowValue = {DOUBLE, low};
-
-  frame->pushWideOperandStack(new_lowValue, new_highValue);
+  value.type = DOUBLE;
+  value.data.d = _double;
+  frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
@@ -2013,12 +1861,13 @@ void l2d (Frame * frame, JVM * jvm) {
 void f2i (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
-  float _float = u4ToFloat(value.data);
+  float _float = value.data.f;
   int32_t integer = _float;
   DCOUT << "f2i " << ' ' << _float << " -> " << integer << endl;
 
-  JvmValue new_value = {INT, intToU4(integer)};
-  frame->pushOperandStack(new_value);
+  value.type = INT;
+  value.data.i = integer;
+  frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
@@ -2026,15 +1875,13 @@ void f2i (Frame * frame, JVM * jvm) {
 void f2l (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
-  float _float = u4ToFloat(value.data);
+  float _float = value.data.f;
   int64_t longInteger = _float;
   DCOUT << "f2l " << ' ' << _float << " -> " << longInteger << endl;
 
-  auto [low, high] = longToU8(longInteger);
-  JvmValue highValue = {LONG, high};
-  JvmValue lowValue = {LONG, low};
-
-  frame->pushWideOperandStack(lowValue, highValue);
+  value.type = LONG;
+  value.data.l = longInteger;
+  frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
@@ -2042,58 +1889,54 @@ void f2l (Frame * frame, JVM * jvm) {
 void f2d (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
-  float _float = u4ToFloat(value.data);
+  float _float = value.data.f;
   double _double = _float;
-  auto [low, high] = doubleToU8(_double);
-  DCOUT << "f2d " << _float << " (0x" << hex << value.data << dec << ") -> " << _double << " (0x" << hex << high << low << dec << ")" << endl;
+  DCOUT << "f2d " << _float << " (0x" << hex << value.data.f << dec << ") -> " << _double << " (0x" << hex << _double << dec << ")" << endl;
 
-  JvmValue highValue = {DOUBLE, high};
-  JvmValue lowValue = {DOUBLE, low};
-
-  frame->pushWideOperandStack(lowValue, highValue);
+  value.type = DOUBLE;
+  value.data.d = _double;
+  frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
 
 void d2i (Frame * frame, JVM * jvm) {
-  auto [lowValue, highValue] = frame->popWideOperandStack();
+  JvmValue value = frame->popOperandStack();
 
-  DCOUT << "d2i 0x" << hex << highValue.data << lowValue.data << dec << endl;
-  double _double = u4ToDouble(lowValue.data, highValue.data);
+  double _double = value.data.d;
   int32_t integer = _double;
   DCOUT << "d2i " << fixed << setprecision(10) << _double << " -> " << integer << endl;
 
-  JvmValue new_value = {INT, intToU4(integer)};
-  frame->pushOperandStack(new_value);
+  value.type = INT;
+  value.data.i = integer;
+  frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
 
 void d2l (Frame * frame, JVM * jvm) {
-  auto [lowValue, highValue] = frame->popWideOperandStack();
+  JvmValue value = frame->popOperandStack();
 
-  double _double = u4ToDouble(lowValue.data, highValue.data);
+  double _double = value.data.d;
   int64_t longInteger = _double;
   DCOUT << "d2l " << _double << " -> " << longInteger << endl;
 
-  auto [low, high] = longToU8(longInteger);
-  JvmValue new_highValue = {LONG, high};
-  JvmValue new_lowValue = {LONG, low};
-
-  frame->pushWideOperandStack(new_lowValue, new_highValue);
+  value.type = LONG;
+  value.data.l = longInteger;
+  frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
 
 void d2f (Frame * frame, JVM * jvm) {
-  auto [lowValue, highValue] = frame->popWideOperandStack();
+  JvmValue value = frame->popOperandStack();
 
-  double _double = u4ToDouble(lowValue.data, highValue.data);
+  double _double = value.data.d;
   float _float = _double;
-  u4 floatBits = floatToU4(_float);
-  DCOUT << "d2f " << _double << " -> " << _float << " (0x" << hex << floatBits << dec << ')' << endl;
+  DCOUT << "d2f " << _double << " -> " << _float << endl;
 
-  JvmValue value = {FLOAT, floatBits};
+  value.type = FLOAT;
+  value.data.f = _float;
   frame->pushOperandStack(value);
 
   frame->pc += 1;
@@ -2102,12 +1945,13 @@ void d2f (Frame * frame, JVM * jvm) {
 void i2b (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
-  int32_t integer = u4ToInt(value.data);
+  int32_t integer = value.data.i;
   int8_t byte = integer; // truncate and sign extension to u4
   DCOUT << "i2b " << integer << " -> 0x" << hex << (int) byte << dec << endl;
 
-  JvmValue new_value = {BYTE, (u4) byte};
-  frame->pushOperandStack(new_value);
+  value.type = BYTE;
+  value.data.i = byte;
+  frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
@@ -2115,12 +1959,13 @@ void i2b (Frame * frame, JVM * jvm) {
 void i2c (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
-  int32_t integer = u4ToInt(value.data);
+  int32_t integer = value.data.i;
   uint16_t _char = integer; // truncate and zero extension to u4
   DCOUT << "i2c " << integer << " -> '" << (char) _char << "'" << endl;
 
-  JvmValue new_value = {CHAR, (u4) _char};
-  frame->pushOperandStack(new_value);
+  value.type = CHAR;
+  value.data.u = _char;
+  frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
@@ -2128,12 +1973,13 @@ void i2c (Frame * frame, JVM * jvm) {
 void i2s (Frame * frame, JVM * jvm) {
   JvmValue value = frame->popOperandStack();
 
-  int32_t integer = value.data;
+  int32_t integer = value.data.i;
   int16_t _short = integer; // truncate and sign extension to u4
   DCOUT << "i2s " << integer << " -> " << _short << endl;
 
-  JvmValue new_value = {SHORT, (u4) _short};
-  frame->pushOperandStack(new_value);
+  value.type = SHORT;
+  value.data.i = _short;
+  frame->pushOperandStack(value);
 
   frame->pc += 1;
 }
@@ -2144,17 +1990,15 @@ void i2s (Frame * frame, JVM * jvm) {
 
 void lcmp (Frame * frame, JVM * jvm) {
   DCOUT << "lcmp" << endl;
-  pair<JvmValue, JvmValue> first = frame->popWideOperandStack();
-  long firstLong = u4ToLong(first.first.data, first.second.data);
-  pair<JvmValue, JvmValue> second = frame->popWideOperandStack();
-  long secondLong = u4ToLong(second.first.data, second.second.data);
+  JvmValue first = frame->popOperandStack();
+  JvmValue second = frame->popOperandStack();
 
-  if (firstLong > secondLong) {
-    frame->pushOperandStack({INT, 1});
-  } else if (firstLong == secondLong) {
-    frame->pushOperandStack({INT, 0});
+  if (first.data.l > second.data.l) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 1}));
+  } else if (first.data.l == second.data.l) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 0}));
   } else {
-    frame->pushOperandStack({INT,  intToU4(-1)});
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = -1}));
   }
   frame->pc += 1;
 }
@@ -2162,19 +2006,17 @@ void lcmp (Frame * frame, JVM * jvm) {
 void fcmpl (Frame * frame, JVM * jvm) {
   DCOUT << "fcmpl" << endl;
   JvmValue first = frame->popOperandStack();
-  float firstFloat = u4ToFloat(first.data);
   JvmValue second = frame->popOperandStack();
-  float secondFloat = u4ToFloat(second.data);
 
-  if (isnan(firstFloat) || isnan(secondFloat)) {
-    frame->pushOperandStack({INT, intToU4(-1)});
-  } else if (firstFloat > secondFloat) {
-    frame->pushOperandStack({INT, 1});
-  } else if (firstFloat == secondFloat) {
-    frame->pushOperandStack({INT, 0});
+  if(isnan(first.data.f) || isnan(second.data.f)) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = -1}));
+  } else if (first.data.f > second.data.f) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 1}));
+  } else if (first.data.f == second.data.f) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 0}));
   } else {
-    frame->pushOperandStack({INT, intToU4(-1)});
-  }
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = -1}));
+  } 
 
   frame->pc += 1;
 }
@@ -2182,59 +2024,51 @@ void fcmpl (Frame * frame, JVM * jvm) {
 void fcmpg (Frame * frame, JVM * jvm) {
   DCOUT << "fcmpg" << endl;
   JvmValue first = frame->popOperandStack();
-  float firstFloat = u4ToFloat(first.data);
   JvmValue second = frame->popOperandStack();
-  float secondFloat = u4ToFloat(second.data);
 
-  if (isnan(firstFloat) || isnan(secondFloat)) {
-    frame->pushOperandStack({INT, 1});
-  } else if (firstFloat > secondFloat) {
-    frame->pushOperandStack({INT, 1});
-  } else if (firstFloat == secondFloat) {
-    frame->pushOperandStack({INT, 0});
+  if(isnan(first.data.f) || isnan(second.data.f)) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 1}));
+  } else if (first.data.f > second.data.f) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 1}));
+  } else if (first.data.f == second.data.f) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 0}));
   } else {
-    frame->pushOperandStack({INT, intToU4(-1)});
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = -1}));
   }
-
-  frame->pc += 1;
 }
 
 void dcmpl (Frame * frame, JVM * jvm) {
   DCOUT << "dcmpl" << endl;
-  pair<JvmValue, JvmValue> first = frame->popWideOperandStack();
-  double firstDouble = u4ToDouble(first.first.data, first.second.data);
-  pair<JvmValue, JvmValue> second = frame->popWideOperandStack();
-  double secondDouble = u4ToDouble(second.first.data, second.second.data);
+  JvmValue first = frame->popOperandStack();
+  JvmValue second = frame->popOperandStack();
 
-  if (isnan(firstDouble) || isnan(secondDouble)) {
-    frame->pushOperandStack({INT, intToU4(-1)});
-  } else if (firstDouble > secondDouble) {
-    frame->pushOperandStack({INT, 1});
-  } else if (firstDouble == secondDouble) {
-    frame->pushOperandStack({INT, 0});
+  if(isnan(first.data.d) || isnan(second.data.d)) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = -1}));
+  } else if (first.data.d > second.data.d) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 1}));
+  } else if (first.data.d == second.data.d) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 0}));
   } else {
-    frame->pushOperandStack({INT, intToU4(-1)});
-  }
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = -1}));
+  } 
 
   frame->pc += 1;
 }
 
 void dcmpg (Frame * frame, JVM * jvm) {
   DCOUT << "dcmpg" << endl;
-  pair<JvmValue, JvmValue> first = frame->popWideOperandStack();
-  double firstDouble = u4ToDouble(first.first.data, first.second.data);
-  pair<JvmValue, JvmValue> second = frame->popWideOperandStack();
-  double secondDouble = u4ToDouble(second.first.data, second.second.data);
+  JvmValue first = frame->popOperandStack();
+  JvmValue second = frame->popOperandStack();
 
-  if (isnan(firstDouble) || isnan(secondDouble)) {
-    frame->pushOperandStack({INT, intToU4(1)});
-  } else if (firstDouble > secondDouble) {
-    frame->pushOperandStack({INT, 1});
-  } else if (firstDouble == secondDouble) {
-    frame->pushOperandStack({INT, 0});
+  if(isnan(first.data.d) || isnan(second.data.d)) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 1}));
+  } else if (first.data.d > second.data.d) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 1}));
+  } else if (first.data.d == second.data.d) {
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 0}));
   } else {
-    frame->pushOperandStack({INT, intToU4(-1)});
-  }
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = -1}));
+  } 
 
   frame->pc += 1;
 }
@@ -2257,8 +2091,8 @@ void ifeq (Frame * frame, JVM * jvm) {
     throw std::runtime_error("operand is not an integer");
   }
   
-  DCOUT << "ifeq " << u4ToInt(value.data) << " == " << 0 << endl;
-  if (u4ToInt(value.data) == 0) branch(frame);
+  DCOUT << "ifeq " << value.data.i << " == " << 0 << endl;
+  if (value.data.i == 0) branch(frame);
   else frame->pc += 3;
 }
 
@@ -2269,8 +2103,8 @@ void ifne (Frame * frame, JVM * jvm) {
     throw std::runtime_error("operand is not an integer");
   }
   
-  DCOUT << "ifne " << u4ToInt(value.data) << " != " << 0 << endl;
-  if (u4ToInt(value.data) != 0) branch(frame);
+  DCOUT << "ifne " << value.data.i << " != " << 0 << endl;
+  if (value.data.i != 0) branch(frame);
   else frame->pc += 3;
 }
 
@@ -2281,8 +2115,8 @@ void iflt (Frame * frame, JVM * jvm) {
     throw std::runtime_error("operand is not an integer");
   }
   
-  DCOUT << "iflt " << u4ToInt(value.data) << " < " << 0 << endl;
-  if (u4ToInt(value.data) < 0) branch(frame);
+  DCOUT << "iflt " << value.data.i << " < " << 0 << endl;
+  if (value.data.i < 0) branch(frame);
   else frame->pc += 3;
 }
 
@@ -2293,8 +2127,8 @@ void ifge (Frame * frame, JVM * jvm) {
     throw std::runtime_error("operand is not an integer");
   }
   
-  DCOUT << "ifge " << u4ToInt(value.data) << " >= " << 0 << endl;
-  if (u4ToInt(value.data) >= 0) branch(frame);
+  DCOUT << "ifge " << value.data.i << " >= " << 0 << endl;
+  if (value.data.i >= 0) branch(frame);
   else frame->pc += 3;
 }
 
@@ -2305,8 +2139,8 @@ void ifgt (Frame * frame, JVM * jvm) {
     throw std::runtime_error("operand is not an integer");
   }
   
-  DCOUT << "ifgt " << u4ToInt(value.data) << " > " << 0 << endl;
-  if (u4ToInt(value.data) > 0) branch(frame);
+  DCOUT << "ifgt " << value.data.i << " > " << 0 << endl;
+  if (value.data.i > 0) branch(frame);
   else frame->pc += 3;
 }
 
@@ -2317,19 +2151,20 @@ void ifle (Frame * frame, JVM * jvm) {
     throw std::runtime_error("operand is not an integer");
   }
   
-  DCOUT << "ifle " << u4ToInt(value.data) << " <= " << 0 << endl;
-  if (u4ToInt(value.data) <= 0) branch(frame);
+  DCOUT << "ifle " << value.data.i << " <= " << 0 << endl;
+  if (value.data.i <= 0) branch(frame);
   else frame->pc += 3;
 }
 
 void if_icmpeq (Frame * frame, JVM * jvm) {
-  auto [second, first] = frame->popWideOperandStack();
+  JvmValue second = frame->popOperandStack();
+  JvmValue first = frame->popOperandStack();
 
   if (first.type != INT || second.type != INT) {
     throw std::runtime_error("operand is not an integer");
   }
 
-  int32_t v1 = u4ToInt(first.data), v2 = u4ToInt(second.data);
+  int32_t v1 = first.data.i, v2 = second.data.i;
   DCOUT << "if_icmpeq " << v1 << " == " << v2 << endl;
 
   if (v1 == v2) branch(frame);
@@ -2337,13 +2172,14 @@ void if_icmpeq (Frame * frame, JVM * jvm) {
 }
 
 void if_icmpne (Frame * frame, JVM * jvm) {
-  auto [second, first] = frame->popWideOperandStack();
+  JvmValue second = frame->popOperandStack();
+  JvmValue first = frame->popOperandStack();
 
   if (first.type != INT || second.type != INT) {
     throw std::runtime_error("operand is not an integer");
   }
 
-  int32_t v1 = u4ToInt(first.data), v2 = u4ToInt(second.data);
+  int32_t v1 = first.data.i, v2 = second.data.i;
   DCOUT << "if_icmpne " << v1 << " != " << v2 << endl;
 
   if (v1 != v2) branch(frame);
@@ -2351,13 +2187,14 @@ void if_icmpne (Frame * frame, JVM * jvm) {
 }
 
 void if_icmplt (Frame * frame, JVM * jvm) {
-  auto [second, first] = frame->popWideOperandStack();
+  JvmValue second = frame->popOperandStack();
+  JvmValue first = frame->popOperandStack();
 
   if (first.type != INT || second.type != INT) {
     throw std::runtime_error("operand is not an integer");
   }
 
-  int32_t v1 = u4ToInt(first.data), v2 = u4ToInt(second.data);
+  int32_t v1 = first.data.i, v2 = second.data.i;
   DCOUT << "if_icmplt " << v1 << " < " << v2 << endl;
 
   if (v1 < v2) branch(frame);
@@ -2365,13 +2202,14 @@ void if_icmplt (Frame * frame, JVM * jvm) {
 }
 
 void if_icmpge (Frame * frame, JVM * jvm) {
-  auto [second, first] = frame->popWideOperandStack();
+  JvmValue second = frame->popOperandStack();
+  JvmValue first = frame->popOperandStack();
 
   if (first.type != INT || second.type != INT) {
     throw std::runtime_error("operand is not an integer");
   }
 
-  int32_t v1 = u4ToInt(first.data), v2 = u4ToInt(second.data);
+  int32_t v1 = first.data.i, v2 = second.data.i;
   DCOUT << "if_icmpge " << v1 << " >= " << v2 << endl;
 
   if (v1 >= v2) branch(frame);
@@ -2379,13 +2217,14 @@ void if_icmpge (Frame * frame, JVM * jvm) {
 }
 
 void if_icmpgt (Frame * frame, JVM * jvm) {
-  auto [second, first] = frame->popWideOperandStack();
+  JvmValue second = frame->popOperandStack();
+  JvmValue first = frame->popOperandStack();
 
   if (first.type != INT || second.type != INT) {
     throw std::runtime_error("operand is not an integer");
   }
 
-  int32_t v1 = u4ToInt(first.data), v2 = u4ToInt(second.data);
+  int32_t v1 = first.data.i, v2 = second.data.i;
   DCOUT << "if_icmpgt " << v1 << " > " << v2 << endl;
 
   if (v1 > v2) branch(frame);
@@ -2393,13 +2232,14 @@ void if_icmpgt (Frame * frame, JVM * jvm) {
 }
 
 void if_icmple (Frame * frame, JVM * jvm) {
-  auto [second, first] = frame->popWideOperandStack();
+  JvmValue second = frame->popOperandStack();
+  JvmValue first = frame->popOperandStack();
 
   if (first.type != INT || second.type != INT) {
     throw std::runtime_error("operand is not an integer");
   }
 
-  int32_t v1 = u4ToInt(first.data), v2 = u4ToInt(second.data);
+  int32_t v1 = first.data.i, v2 = second.data.i;
   DCOUT << "if_icmple " << v1 << " <= " << v2 << endl;
 
   if (v1 <= v2) branch(frame);
@@ -2410,23 +2250,19 @@ void if_acmpeq (Frame * frame, JVM * jvm) {
   DCOUT << "if_acmpeq" << endl;
   JvmValue value1 = frame->popOperandStack();
   JvmValue value2 = frame->popOperandStack();
-  if (value1.data == value2.data) {
-    branch(frame);
-  } else {
-    frame->pc += 3;
-  }
+
+  if (value1.data.i == value2.data.i) branch(frame);
+  else frame->pc += 3;
 }
 
 void if_acmpne (Frame * frame, JVM * jvm) {
   DCOUT << "if_acmpne" << endl;
   JvmValue value1 = frame->popOperandStack();
   JvmValue value2 = frame->popOperandStack();
-  if (value1.data != value2.data) {
-    branch(frame);
-  } else {
-    frame->pc += 3;
-  }
-  }
+  
+  if (value1.data.i != value2.data.i) branch(frame);
+  else frame->pc += 3;
+}
 
 #pragma endregion
 
@@ -2576,11 +2412,6 @@ void returnValue(Frame * frame, JVM * jvm) {
   jvm->returnValue(value);
 }
 
-void returnValueWide(Frame * frame, JVM * jvm) {
-  auto [lowerValue, upperValue] = frame->popWideOperandStack();
-  jvm->returnValueWide(lowerValue, upperValue);
-}
-
 void ireturn (Frame * frame, JVM * jvm) {
   DCOUT << "ireturn" << endl;
   returnValue(frame, jvm);
@@ -2588,7 +2419,7 @@ void ireturn (Frame * frame, JVM * jvm) {
 
 void lreturn (Frame * frame, JVM * jvm) {
   DCOUT << "lreturn" << endl;
-  returnValueWide(frame, jvm);
+  returnValue(frame, jvm);
 }
 
 void freturn (Frame * frame, JVM * jvm) {
@@ -2598,7 +2429,7 @@ void freturn (Frame * frame, JVM * jvm) {
 
 void dreturn (Frame * frame, JVM * jvm) {
   DCOUT << "dreturn" << endl;
-  returnValueWide(frame, jvm);
+  returnValue(frame, jvm);
 }
 
 void areturn (Frame * frame, JVM * jvm) {
@@ -2635,10 +2466,10 @@ void getstatic (Frame * frame, JVM * jvm) {
   //se o class name for <java/lang/System> pular o frame e continuar a vida
   if(frame->methodAreaItem->getUtf8(class_index) == "java/lang/System"){
     DCOUT << "é um getstatic para o System.class " << endl;
-    frame->pushOperandStack({INT, 0}); // valor simbólico que vai ser ignorado
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 0})); // valor simbólico que vai ser ignorado
     // nao fazer nada
   } else {
-    frame->pushOperandStack({INT, 1}); // TODO: trocar pelo valor certo do field
+    frame->pushOperandStack(JvmValue(INT, DataUnion {.i = 0})); // TODO: trocar pelo valor certo do field
     // outras classes
     // Precisa procurar o nome da classe no pool de constantes, se não tiver, loadar a classe
     // precisa procurar o field estático na classe carregada
@@ -2659,17 +2490,11 @@ void getfield (Frame * frame, JVM * jvm) {
   u2 index = (highBytes << 8) | lowBytes;
   
   auto [fieldName, valueSize] = getFieldNameAndSize(frame, index);
-  u4 objectRef = frame->popOperandStack().data;
+  int32_t objectRef = frame->popOperandStack().data.i;
 
-  if (valueSize == 1) {
-    JvmValue value = jvm->getField(objectRef, fieldName);
-    frame->pushOperandStack(value);
-    DCOUT << "value 0x" << hex << value.data << dec << endl;
-  } else {
-    auto [low, high] = jvm->getFieldWide(objectRef, fieldName);
-    frame->pushWideOperandStack(low, high);
-    DCOUT << "value 0x" << hex << high.data << low.data << dec << endl;
-  }
+  JvmValue value = jvm->getField(objectRef, fieldName);
+  frame->pushOperandStack(value);
+  DCOUT << "value 0x" << hex << value.data.u << dec << endl;
 
   frame->pc += 3;
 }
@@ -2682,17 +2507,10 @@ void putfield (Frame * frame, JVM * jvm) {
   
   auto [fieldName, valueSize] = getFieldNameAndSize(frame, index);
 
-  if (valueSize == 1) {
-    JvmValue value = frame->popOperandStack();
-    u4 objectRef = frame->popOperandStack().data;
-    DCOUT << "objectRef " << objectRef << ", value 0x" << hex << value.data << dec << endl;
-    jvm->setField(objectRef, fieldName, value);
-  } else {
-    auto [low, high] = frame->popWideOperandStack();
-    u4 objectRef = frame->popOperandStack().data;
-    DCOUT << "objectRef " << objectRef << ", value 0x" << hex << high.data << low.data << dec << endl;
-    jvm->setFieldWide(objectRef, fieldName, low, high);
-  }
+  JvmValue value = frame->popOperandStack();
+  int32_t objectRef = frame->popOperandStack().data.i;
+  DCOUT << "objectRef " << objectRef << ", value 0x" << hex << value.data.u << dec << endl;
+  jvm->setField(objectRef, fieldName, value);
 
   frame->pc += 3;
 }
@@ -2715,7 +2533,7 @@ void invokevirtual (Frame * frame, JVM * jvm) {
     DCOUT << className << "." << methodName << endl;
 
     vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(method_ref->constant_type_union.Methodref_info.name_and_type_index);
-    argTypes.pop_back(); // remove o tipo de retorno
+    // argTypes.pop_back(); // remove o tipo de retorno
     for (auto arg : argTypes) DCOUT << "arg " << arg << ' ';
     DCOUT << endl;
     javaPrintln(frame, argTypes);
@@ -2826,10 +2644,9 @@ void _new (Frame * frame, JVM * jvm) {
 
   // iniciar fields com os valores default, acontecerá no init
   Object * heapItem = new Object(classMethodAreaItem);
-  u4 heapIndex = jvm->pushObject(heapItem);
+  int32_t heapIndex = jvm->pushObject(heapItem);
 
-  JvmValue value = {INT, intToU4(heapIndex)};
-  frame->pushOperandStack(value); // Objectref será o índice da instância na heap
+  frame->pushOperandStack(JvmValue(REFERENCE, {.i = heapIndex})); // Objectref será o índice da instância na heap
   DCOUT << "new " << classname << " -> " << heapIndex << endl;
 
   frame->pc += 3;
@@ -2838,7 +2655,7 @@ void _new (Frame * frame, JVM * jvm) {
 void newarray (Frame * frame, JVM * jvm) {
   DCOUT << "newarray" << endl;
   u1 atype = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
-  int32_t count = u4ToInt(frame->popOperandStack().data);
+  int32_t count = frame->popOperandStack().data.i;
 
   if (count < 0) {
     throw std::runtime_error("NegativeArraySizeException");
@@ -2877,12 +2694,11 @@ void newarray (Frame * frame, JVM * jvm) {
 
   Array * array = new Array(type, count);
 
-  u4 heapIndex = jvm->pushArray(array);
-
-  frame->pushOperandStack({REFERENCE, heapIndex});
+  int32_t heapIndex = jvm->pushArray(array);
+  frame->pushOperandStack(JvmValue(REFERENCE, {.i = heapIndex}));
 
   frame->pc += 2;
-  DCOUT << "newarray type: "<< (int) atype  << " size: " << count << " index: " << heapIndex << endl;
+  DCOUT << "newarray type: "<< (int32_t) atype  << " size: " << count << " index: " << heapIndex << endl;
 }
 
 void anewarray (Frame * frame, JVM * jvm) {
@@ -2946,14 +2762,14 @@ void multianewarray (Frame * frame, JVM * jvm) {
 void ifnull (Frame * frame, JVM * jvm) {
   DCOUT << "ifnull" << endl;
   JvmValue value = frame->popOperandStack();
-  if (value.data == 0) branch(frame);
+  if (value.data.i == 0) branch(frame);
   else frame->pc += 3;
 }
 
 void ifnonnull (Frame * frame, JVM * jvm) {
   DCOUT << "ifnonnull" << endl;
   JvmValue value = frame->popOperandStack();
-  if (value.data != 0) branch(frame);
+  if (value.data.i != 0) branch(frame);
   else frame->pc += 3;
   frame->pc += 3;
 }

@@ -17,8 +17,6 @@ struct Frame {
   Frame(Method_info * method_info, MethodAreaItem * methodAreaItem);
   JvmValue popOperandStack();
   void pushOperandStack(JvmValue value);
-  pair<JvmValue, JvmValue> popWideOperandStack();
-  void pushWideOperandStack(JvmValue low, JvmValue high);
 };
 
 class FrameStack
