@@ -199,14 +199,3 @@ pair<string, int> getArgType(string signature, int index) {
       break;
   }
 }
-
-int getArgSize(JVMType argType) {
-  if (argType == DOUBLE || argType == LONG) return 2;
-  return 1;
-}
-
-int getArgSize(string argType) {
-  if (argType == "VOID") return 0;
-  if (argType == "DOUBLE" || argType == "LONG") return 2;
-  return 1;
-}

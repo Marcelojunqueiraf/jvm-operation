@@ -46,8 +46,5 @@ class MethodArea {
 };
 
 pair<string, int> getArgType(string signature, int index);
-int getArgSize(JVMType argType);
-int getArgSize(string argType);
-
 
 #endif

@@ -444,7 +444,7 @@ void javaPrintln(Frame * frame, vector<string> args) {
   }
 }
 
-pair<string, int> getFieldNameAndSize(Frame * frame, u2 index) {
+string getFieldName(Frame * frame, u2 index) {
   cp_info * fieldRef = frame->methodAreaItem->getConstantPoolItem(index);
 
   string classname = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.class_index);
@@ -453,9 +453,8 @@ pair<string, int> getFieldNameAndSize(Frame * frame, u2 index) {
 
   vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(fieldRef->constant_type_union.Fieldref_info.name_and_type_index, true);
   string fieldType = argTypes.back();
-  int valueSize = getArgSize(fieldType);
   
-  return {fieldName, valueSize};
+  return fieldName;
 }
 
 pair<Frame *, vector<string>> createInvokedFrame(Frame * frame, u2 index, string methodName) {
@@ -2489,12 +2488,12 @@ void getfield (Frame * frame, JVM * jvm) {
   u1 lowBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
   u2 index = (highBytes << 8) | lowBytes;
   
-  auto [fieldName, valueSize] = getFieldNameAndSize(frame, index);
+  string fieldName = getFieldName(frame, index);
   int32_t objectRef = frame->popOperandStack().data.i;
 
   JvmValue value = jvm->getField(objectRef, fieldName);
   frame->pushOperandStack(value);
-  DCOUT << "value 0x" << hex << value.data.u << dec << endl;
+  DCOUT << "objectRef " << objectRef << ", value 0x" << hex << value.data.u << dec << endl;
 
   frame->pc += 3;
 }
@@ -2505,12 +2504,12 @@ void putfield (Frame * frame, JVM * jvm) {
   u1 lowBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
   u2 index = (highBytes << 8) | lowBytes;
   
-  auto [fieldName, valueSize] = getFieldNameAndSize(frame, index);
-
+  string fieldName = getFieldName(frame, index);
   JvmValue value = frame->popOperandStack();
   int32_t objectRef = frame->popOperandStack().data.i;
-  DCOUT << "objectRef " << objectRef << ", value 0x" << hex << value.data.u << dec << endl;
+
   jvm->setField(objectRef, fieldName, value);
+  DCOUT << "objectRef " << objectRef << ", value 0x" << hex << value.data.u << dec << endl;
 
   frame->pc += 3;
 }
