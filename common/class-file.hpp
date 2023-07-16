@@ -23,6 +23,7 @@ typedef uint64_t u8;
 struct Attribute_info;
 
 const string JAVA_OBJ_CLASSNAME = "java/lang/Object";
+const string JAVA_PRINT_CLASSNAME = "java/io/PrintStream";
 
 
 // ---------------------------- LOCAL VARIABLE TABLE STRUCTURE ----------------------------- //

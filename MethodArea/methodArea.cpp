@@ -181,7 +181,7 @@ pair<string, int> getArgType(string signature, int index) {
     {
       int asize = index;
       while (signature[asize] != ';') asize++;
-      return {signature.substr(index, asize), asize+1};
+      return {signature.substr(index, asize), asize};
     }
     case '[':
       // TODO: array
