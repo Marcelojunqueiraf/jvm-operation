@@ -413,8 +413,8 @@ int getCategory(JVMType type) {
   }
 }
 
-void javaPrintln(Frame * frame, vector<string> argTypes) {
-  string argType = argTypes[0];
+void javaPrintln(Frame * frame, vector<string> args) {
+  string argType = args[0];
 
   if (argType == "INT")
   {
@@ -484,6 +484,47 @@ pair<string, u4> getFieldNameAndSize(Frame * frame, u2 index) {
   int valueSize = getArgSize(fieldType);
   
   return {fieldName, valueSize};
+}
+
+pair<Frame *, vector<pair<string, int>>> createInvokedFrame(Frame * frame, u2 index, string methodName) {
+  cp_info * classRef = frame->methodAreaItem->getConstantPoolItem(index);
+  string classname = frame->methodAreaItem->getUtf8(classRef->constant_type_union.Class_info.name_index);
+
+  MethodArea  * methodAreaRef = frame->methodAreaItem->getMethodArea();
+  MethodAreaItem * classMethodAreaItem = methodAreaRef->getMethodAreaItem(classname);
+  Method_info * invokedMethod = classMethodAreaItem->getMethodByName(methodName);
+
+  // TODO: lidar com as exceções que a especificação diz que podem acontecer
+
+  vector<string> argTypes = classMethodAreaItem->getMethodArgTypesByDescriptorIndex(invokedMethod->descriptor_index);
+  // string returnType = argTypes.back(); caso precise, é assim que pega o tipo do retorno
+  argTypes.pop_back(); // tira o tipo do retorno
+
+  reverse(argTypes.begin(), argTypes.end()); // pra ficar de acordo com a pilha
+
+  vector<pair<string, int>> args;
+  for (string argType : argTypes) args.push_back({argType, getArgSize(argType)});
+
+  DCOUT << "method " << classname << '.' << methodName;
+  DCOUT << ", nargs " << argTypes.size() << endl;
+
+  Frame * invokedFrame = new Frame(invokedMethod, classMethodAreaItem);
+
+  return {invokedFrame, args};
+}
+
+void setInvokedLocalVars(Frame * actualFrame, Frame * invokedFrame, vector<pair<string, int>> args) {
+  int localVariableIndex = 1;
+  for (auto [argType, argSize] : args) {
+    if (argSize == 1) {
+      invokedFrame->localVariables[localVariableIndex++] = actualFrame->popOperandStack();
+    } else if (argSize == 2) {
+      auto [lowValue, highValue] = actualFrame->popWideOperandStack();
+      invokedFrame->localVariables[localVariableIndex++] = highValue; // na mesma ordem que o storeFromStackWide
+      invokedFrame->localVariables[localVariableIndex++] = lowValue;
+    }
+  }
+  invokedFrame->localVariables[0] = actualFrame->popOperandStack(); // Objectref
 }
 
 #pragma endregion
@@ -2538,13 +2579,13 @@ void getstatic (Frame * frame, JVM * jvm) {
   
   u1 class_index = field_ref->constant_type_union.Fieldref_info.class_index;
 
+  frame->pushOperandStack({INT, 0}); // TODO:
 
   //se o class name for <java/lang/System> pular o frame e continuar a vida
   if(frame->methodAreaItem->getUtf8(class_index) == "java/lang/System"){
     DCOUT << "é um getstatic para o System.class " << endl;
     // nao fazer nada
-  }
-  else {
+  } else {
     // outras classes
     // Precisa procurar o nome da classe no pool de constantes, se não tiver, loadar a classe
     // precisa procurar o field estático na classe carregada
@@ -2607,24 +2648,34 @@ void putfield (Frame * frame, JVM * jvm) {
 
 void invokevirtual (Frame * frame, JVM * jvm) {
   DCOUT << "invokevirtual" << endl;
-
   u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
   u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
-
-  u2 index = (first_bytes << 8) | second_bytes;  
+  u2 index = (first_bytes << 8) | second_bytes;
 
   cp_info * method_ref = frame->methodAreaItem->getConstantPoolItem(index);
   string className = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.class_index);
   string methodName = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.name_and_type_index);
-  vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(method_ref->constant_type_union.Methodref_info.name_and_type_index);
-  
-  DCOUT << "methodName " << className << '.' << methodName << endl;
 
-  if (className == "java/io/PrintStream") {
+  if (className == JAVA_PRINT_CLASSNAME) {
+    DCOUT << className << "." << methodName << endl;
+
+    vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(method_ref->constant_type_union.Methodref_info.name_and_type_index);
     javaPrintln(frame, argTypes);
-  } else {
-    throw std::runtime_error("invokevirtual not implemented for " + className + "." + methodName);
+
+    frame->pc += 3;
+    return;
   }
+  
+  throw std::runtime_error("invokevirtual not implemented for " + className + "." + methodName);
+  // FIXME: ainda não funciona
+
+  auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName);
+  for (auto arg : args) {
+    DCOUT << "arg " << arg.first << ' ';
+  }
+  DCOUT << endl;
+  setInvokedLocalVars(frame, invokedFrame, args);
+  jvm->invoke(*invokedFrame);
 
   frame->pc += 3;
 }
@@ -2635,40 +2686,10 @@ void invokespecial (Frame * frame, JVM * jvm) {
   u4 index = (high_bytes << 8) | low_bytes;
   DCOUT << "invokespecial #" << index << endl;
 
-  cp_info * classRef = frame->methodAreaItem->getConstantPoolItem(index);
-  string classname = frame->methodAreaItem->getUtf8(classRef->constant_type_union.Class_info.name_index);
-
-  MethodArea  * methodAreaRef = frame->methodAreaItem->getMethodArea();
-  MethodAreaItem * classMethodAreaItem = methodAreaRef->getMethodAreaItem(classname);
-
-  // TODO: lidar com as exceções que a especificação diz que podem acontecer
-  
-  Method_info * initMethod = classMethodAreaItem->getInitMethod();
-  Frame * initFrame = new Frame(initMethod, classMethodAreaItem);
-
-  vector<string> argTypes = classMethodAreaItem->getMethodArgTypesByDescriptorIndex(initMethod->descriptor_index);
-  string returnType = argTypes.back();
-  argTypes.pop_back();
-
-  DCOUT << "initMethod " << classMethodAreaItem->getUtf8(initMethod->name_index) << endl;
-  DCOUT << "argTypes " << argTypes.size() << endl;
-
-  // FIXME: acho que a ordem ta errada, ta invertida
-  initFrame->localVariables[0] = frame->popOperandStack(); // Objectref será o primeiro argumento
-
-  unsigned int localVariableIndex = 1;
-  while (localVariableIndex < argTypes.size()) {
-    int argSize = getArgSize(argTypes[localVariableIndex]);
-    if (argSize == 1) {
-      initFrame->localVariables[localVariableIndex++] = frame->popOperandStack();
-    } else if (argSize == 2) {
-      auto [lowValue, highValue] = frame->popWideOperandStack();
-      initFrame->localVariables[localVariableIndex++] = highValue; // na mesma ordem que o storeFromStackWide
-      initFrame->localVariables[localVariableIndex++] = lowValue;
-    }
-  }
-
+  auto [initFrame, args] = createInvokedFrame(frame, index, "<init>");
+  setInvokedLocalVars(frame, initFrame, args);
   jvm->invoke(*initFrame);
+
   frame->pc += 3;
 }
 
