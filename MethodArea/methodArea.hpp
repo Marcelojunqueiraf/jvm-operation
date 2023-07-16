@@ -20,6 +20,7 @@ class MethodAreaItem {
   public:
   MethodAreaItem(ClassFile * classfile, MethodArea * methodArea);
   string getClassName();
+  vector<field_info> getFields();
   Method_info * getMainMethod();
   Method_info * getInitMethod();
   Method_info * getStaticBlock();

@@ -438,9 +438,16 @@ void javaPrintln(Frame * frame, vector<string> args) {
     double _double = u4ToDouble(low.data, high.data);
     cout << fixed << setprecision(15) << _double << endl;
   }
-  else if (argType == "Ljava/lang/String;")
+  else if (argType == JAVA_STRING_CLASSNAME)
   { // STRING
     JvmValue value = frame->popOperandStack();
+    DCOUT << "string index: " << value.data << endl;
+
+    if (value.data == 0) {
+      cout << "null" << endl;
+      return;
+    }
+
     string _string = frame->methodAreaItem->getUtf8(value.data);
     cout << _string << endl;
   }
@@ -468,7 +475,7 @@ void javaPrintln(Frame * frame, vector<string> args) {
   }
 }
 
-pair<string, u4> getFieldNameAndSize(Frame * frame, u2 index) {
+pair<string, int> getFieldNameAndSize(Frame * frame, u2 index) {
   cp_info * fieldRef = frame->methodAreaItem->getConstantPoolItem(index);
 
   string classname = frame->methodAreaItem->getUtf8(fieldRef->constant_type_union.Fieldref_info.class_index);
@@ -501,8 +508,7 @@ pair<Frame *, vector<pair<string, int>>> createInvokedFrame(Frame * frame, u2 in
   vector<pair<string, int>> args;
   for (string argType : argTypes) args.push_back({argType, getArgSize(argType)});
 
-  DCOUT << "method " << classname << '.' << methodName;
-  DCOUT << ", nargs " << argTypes.size() << endl;
+  DCOUT << "method " << classname << '.' << methodName << ", nargs " << argTypes.size() << endl;
 
   Frame * invokedFrame = new Frame(invokedMethod, classMethodAreaItem);
 
@@ -805,7 +811,7 @@ void ldc2_w (Frame * frame, JVM * jvm) {
   }
 
   frame->pushWideOperandStack(low_value, high_value);
-  DCOUT << "valor empilhado: " << frame->operandStack.top().data << endl;
+  DCOUT << "valor empilhado: 0x" << hex << high_value.data << low_value.data << dec << endl;
 
   frame->pc += 3;
 }
@@ -2658,9 +2664,11 @@ void getfield (Frame * frame, JVM * jvm) {
   if (valueSize == 1) {
     JvmValue value = jvm->getField(objectRef, fieldName);
     frame->pushOperandStack(value);
+    DCOUT << "value 0x" << hex << value.data << dec << endl;
   } else {
     auto [low, high] = jvm->getFieldWide(objectRef, fieldName);
     frame->pushWideOperandStack(low, high);
+    DCOUT << "value 0x" << hex << high.data << low.data << dec << endl;
   }
 
   frame->pc += 3;
@@ -2677,12 +2685,12 @@ void putfield (Frame * frame, JVM * jvm) {
   if (valueSize == 1) {
     JvmValue value = frame->popOperandStack();
     u4 objectRef = frame->popOperandStack().data;
-    DCOUT << "value 0x" << hex << value.data << dec << endl;
+    DCOUT << "objectRef " << objectRef << ", value 0x" << hex << value.data << dec << endl;
     jvm->setField(objectRef, fieldName, value);
   } else {
     auto [low, high] = frame->popWideOperandStack();
     u4 objectRef = frame->popOperandStack().data;
-    DCOUT << "value 0x" << hex << high.data << low.data << dec << endl;
+    DCOUT << "objectRef " << objectRef << ", value 0x" << hex << high.data << low.data << dec << endl;
     jvm->setFieldWide(objectRef, fieldName, low, high);
   }
 
@@ -2707,20 +2715,16 @@ void invokevirtual (Frame * frame, JVM * jvm) {
     DCOUT << className << "." << methodName << endl;
 
     vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(method_ref->constant_type_union.Methodref_info.name_and_type_index);
+    argTypes.pop_back(); // remove o tipo de retorno
+    for (auto arg : argTypes) DCOUT << "arg " << arg << ' ';
+    DCOUT << endl;
     javaPrintln(frame, argTypes);
 
     frame->pc += 3;
     return;
   }
   
-  throw std::runtime_error("invokevirtual not implemented for " + className + "." + methodName);
-  // FIXME: ainda não funciona
-
   auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName);
-  for (auto arg : args) {
-    DCOUT << "arg " << arg.first << ' ';
-  }
-  DCOUT << endl;
   setInvokedLocalVars(frame, invokedFrame, args);
   jvm->invoke(*invokedFrame);
 

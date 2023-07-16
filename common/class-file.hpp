@@ -24,6 +24,7 @@ struct Attribute_info;
 
 const string JAVA_OBJ_CLASSNAME = "java/lang/Object";
 const string JAVA_PRINT_CLASSNAME = "java/io/PrintStream";
+const string JAVA_STRING_CLASSNAME = "Ljava/lang/String;";
 
 
 // ---------------------------- LOCAL VARIABLE TABLE STRUCTURE ----------------------------- //

@@ -16,7 +16,7 @@ pair<JvmValue, JvmValue> Object::getFieldValueWide(string fieldName) {
 }
 
 void Object::setFieldValue(string fieldName, JvmValue value) {
-  this->fields[fieldName] = {value, JvmValue()};
+  this->setFieldValueWide(fieldName, value, JvmValue());
 }
 
 void Object::setFieldValueWide(string fieldName, JvmValue low, JvmValue high) {
@@ -27,7 +27,46 @@ Object::Object(MethodAreaItem *methodAreaItem) {
   this->methodAreaItem = methodAreaItem;
   this->fields = map<string, pair<JvmValue, JvmValue>>();
 
-  // TODO: iniciar fields como null
+  // Inicializar fields
+  for (auto field : methodAreaItem->getFields()) {
+    if (field.access_flags & 0x0008) { // static
+      continue;
+    }
+
+    string fieldName = methodAreaItem->getUtf8(field.name_index);
+    vector<string> descriptors = methodAreaItem->getMethodArgTypesByDescriptorIndex(field.descriptor_index, true);
+    string descriptor = descriptors[0];
+
+    JvmValue lowValue, highValue;
+    lowValue.data = 0;
+    highValue.data = 0;
+
+    if (descriptor == "BYTE") {
+      lowValue = {BYTE, 0};
+    } else if (descriptor == "CHAR") {
+      lowValue = {CHAR, 0};
+    } else if (descriptor == "FLOAT") {
+      lowValue = {FLOAT, 0};
+    } else if (descriptor == "INT") {
+      lowValue = {INT, 0};
+    } else if (descriptor == "LONG") {
+      lowValue = {LONG, 0};
+      highValue = {LONG, 0};
+    } else if (descriptor == "DOUBLE") {
+      lowValue = {DOUBLE, 0};
+      highValue = {DOUBLE, 0};
+    } else if (descriptor == "SHORT") {
+      lowValue = {SHORT, 0};
+    } else if (descriptor == "BOOL") {
+      lowValue = {BOOL, 0};
+    } else if (descriptor == JAVA_STRING_CLASSNAME) {
+      lowValue = {REFERENCE, 0};
+    } else {
+      throw std::runtime_error("Tipo de field não suportado (" + descriptor + ")");
+    }
+
+    this->fields[fieldName] = {lowValue, highValue};
+  }
 }
 
 // ARRAY

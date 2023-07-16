@@ -73,6 +73,15 @@ string MethodAreaItem::getClassName() {
   return this->getUtf8(this->classfile->this_class);
 }
 
+vector<field_info> MethodAreaItem::getFields() {
+  vector<field_info> fields;
+  for (int i = 0; i < this->classfile->fields_count; i++) {
+    fields.push_back(this->classfile->fields[i]);
+  }
+
+  return fields;
+}
+
 string MethodAreaItem::getSuper() {
   return this->getUtf8(this->classfile->super_class);
 }
