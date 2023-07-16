@@ -368,14 +368,6 @@ void store(u2 index, Frame * frame) {
   frame->localVariables[index] = jvmValue;
 }
 
-int getCategory(JVMType type) {
-  if (type == LONG || type == DOUBLE) {
-    return 2;
-  } else {
-    return 1;
-  }
-}
-
 void javaPrintln(Frame * frame, vector<string> args) {
   string argType = args.size() == 0 ? "VOID" : args[0];
 
@@ -1238,26 +1230,17 @@ void sastore (Frame * frame, JVM * jvm) {
 
 void pop (Frame * frame, JVM * jvm) {
   DCOUT << "pop" << endl;
-  JvmValue value = frame->operandStack.top();
-  if (getCategory(value.type) == 1) {
-    frame->operandStack.pop();
-  } else {
-      throw std::runtime_error("pop não aconteceu");
-  }
+  frame->popOperandStack();
   frame->pc += 1;
 }
 
 void pop2 (Frame * frame, JVM * jvm) {
   DCOUT << "pop2" << endl;
-  JvmValue value1 = frame->operandStack.top();
-  frame->operandStack.pop();
-  JvmValue value2 = frame->operandStack.top();
-  if ( (getCategory(value1.type) == 1 && getCategory(value2.type) == 1) || (getCategory(value1.type) == 2 && getCategory(value2.type) == 2) ) {
-    frame->operandStack.pop();
-  } else {
-    frame->operandStack.push(value1);
-    throw std::runtime_error("pop não aconteceu");
-  }
+  frame->popOperandStack();
+  // talvez tenha que fazer isso aqui, não sei
+  // if (value.type == LONG || value.type == DOUBLE)
+  //   frame->popOperandStack();
+
   frame->pc += 1;
 }
 
