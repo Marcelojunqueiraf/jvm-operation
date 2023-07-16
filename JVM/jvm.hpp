@@ -39,7 +39,8 @@ class JVM {
     void returnValue(JvmValue);
     void returnValueWide(JvmValue low, JvmValue high);
     
-    u4 pushHeapItem(HeapItem * heapItem);
+    u4 pushObject(Object * heapItem);
+    u4 pushArray(Array * arrayItem);
 
     JvmValue getField(u4 heapItemIndex, string fieldName);
     pair<JvmValue, JvmValue> getFieldWide(u4 heapItemIndex, string fieldName);

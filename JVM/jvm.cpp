@@ -90,17 +90,21 @@ void JVM::run() {
   }
 }
 
-u4 JVM::pushHeapItem(HeapItem *heapItem) {
+u4 JVM::pushObject(Object *heapItem) {
   return this->heap.pushHeapItem(heapItem);
 }
 
+u4 JVM::pushArray(Array *arrayItem) {
+  return this->heap.pushArrayItem(arrayItem);
+}
+
 JvmValue JVM::getField(u4 heapItemIndex, string fieldName) {
-  HeapItem * heapItem = this->heap.getHeapItem(heapItemIndex);
+  Object * heapItem = this->heap.getHeapItem(heapItemIndex);
   return heapItem->getFieldValue(fieldName);
 }
 
 pair<JvmValue, JvmValue> JVM::getFieldWide(u4 heapItemIndex, string fieldName) {
-  HeapItem * heapItem = this->heap.getHeapItem(heapItemIndex);
+  Object * heapItem = this->heap.getHeapItem(heapItemIndex);
   return heapItem->getFieldValueWide(fieldName);
 }
 
@@ -113,12 +117,12 @@ pair<JvmValue, JvmValue> JVM::getStaticFieldWide(u4 heapItemIndex, string fieldN
 }
 
 void JVM::setField(u4 heapItemIndex, string fieldName, JvmValue value) {
-  HeapItem * heapItem = this->heap.getHeapItem(heapItemIndex);
+  Object * heapItem = this->heap.getHeapItem(heapItemIndex);
   heapItem->setFieldValue(fieldName, value);
 }
 
 void JVM::setFieldWide(u4 heapItemIndex, string fieldName, JvmValue low, JvmValue high) {
-  HeapItem * heapItem = this->heap.getHeapItem(heapItemIndex);
+  Object * heapItem = this->heap.getHeapItem(heapItemIndex);
   heapItem->setFieldValueWide(fieldName, low, high);
 }
 

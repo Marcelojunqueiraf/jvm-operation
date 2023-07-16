@@ -2753,8 +2753,8 @@ void _new (Frame * frame, JVM * jvm) {
   // TODO: lidar com as exceções que a especificação diz que podem acontecer
 
   // iniciar fields com os valores default, acontecerá no init
-  HeapItem * heapItem = new HeapItem(classMethodAreaItem);
-  u4 heapIndex = jvm->pushHeapItem(heapItem);
+  Object * heapItem = new Object(classMethodAreaItem);
+  u4 heapIndex = jvm->pushObject(heapItem);
 
   JvmValue value = {INT, intToU4(heapIndex)};
   frame->pushOperandStack(value); // Objectref será o índice da instância na heap
@@ -2765,7 +2765,51 @@ void _new (Frame * frame, JVM * jvm) {
 
 void newarray (Frame * frame, JVM * jvm) {
   DCOUT << "newarray" << endl;
+  u1 atype = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  int32_t count = u4ToInt(frame->popOperandStack().data);
+
+  if (count < 0) {
+    throw std::runtime_error("NegativeArraySizeException");
+  }
+
+  JVMType type;
+
+  switch (atype) {
+    case 4: // T_BOOLEAN
+      type = BOOL;
+      break;
+    case 5: // T_CHAR
+      type = CHAR;
+      break;
+    case 6: // T_FLOAT
+      type = FLOAT;
+      break;  
+    case 7: // T_DOUBLE
+      type = DOUBLE;
+      break;
+    case 8: // T_BYTE
+      type = BYTE;
+      break;
+    case 9: // T_SHORT
+      type = SHORT;
+      break;
+    case 10: // T_INT
+      type = INT;
+      break;
+    case 11: // T_LONG
+      type = LONG;
+      break;
+    default:
+      throw std::runtime_error("Invalid array type");
+  }
+
+  Array * array = new Array(type, count);
+
+  u4 heapIndex = jvm->pushArray(array);
+
+  frame->pushOperandStack({REFERENCE, heapIndex});
   frame->pc += 2;
+  DCOUT << "newarray type: "<< (int) atype  << " size: " << count << " index: " << heapIndex << endl;
 }
 
 void anewarray (Frame * frame, JVM * jvm) {
