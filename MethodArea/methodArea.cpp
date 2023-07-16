@@ -131,6 +131,11 @@ Method_info * MethodAreaItem::getMethodByName(string name) {
 
 JvmValue MethodAreaItem::getStaticField(string fieldName) {
   if (this->staticFields.find(fieldName) == this->staticFields.end()) {
+    if (this->getClassName() != JAVA_OBJ_CLASSNAME) {
+      MethodAreaItem * superClass = this->methodArea->getMethodAreaItem(this->getSuper());
+      return superClass->getStaticField(fieldName);
+    }
+
     throw std::runtime_error("Field estático não encontrado (" + this->getClassName() + '.' + fieldName + ")");
   }
   return this->staticFields[fieldName];
@@ -138,6 +143,12 @@ JvmValue MethodAreaItem::getStaticField(string fieldName) {
 
 void MethodAreaItem::setStaticField(string fieldName, JvmValue value) {
   if (this->staticFields.find(fieldName) == this->staticFields.end()) {
+    if (this->getClassName() != JAVA_OBJ_CLASSNAME) {
+      MethodAreaItem * superClass = this->methodArea->getMethodAreaItem(this->getSuper());
+      superClass->setStaticField(fieldName, value);
+      return;
+    }
+
     throw std::runtime_error("Field estático não encontrado (" + this->getClassName() + '.' + fieldName + ")");
   }
   this->staticFields[fieldName] = value;

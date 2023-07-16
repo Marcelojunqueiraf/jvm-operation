@@ -10,7 +10,8 @@ interface animals_actions {
 };  
 
 abstract class animal {
-    public String cor_pelo;    
+    public String cor_pelo;
+    public static String planeta = "terra";
 
 };  
 
@@ -78,19 +79,21 @@ public class zoo implements control{
 
 
     public static void main(String[] args){
-        zoo zoologico = new zoo();
-        zoologico.end_alert();
+        zoo zoologico = new zoo(); // Dentro do bloco estático animal!
+        zoologico.end_alert(); // zooooooo
         String cor_pelo_gatinho = "azul";
         String cor_pelo_leao = "preto";
 
         cat gatinho = new cat(cor_pelo_gatinho);
         lion leao = new lion(cor_pelo_leao);
+        
+        System.out.println(gatinho.planeta); // terra
 
-        gatinho.animal_sound();
-        leao.animal_sound();
+        gatinho.animal_sound(); // MIAUUUU!
+        leao.animal_sound(); // ROAARRR!
 
-        System.out.println("cor pelo leao = " + leao.cor_pelo);
-        System.out.println("cor pelo gato = " + gatinho.cor_pelo);
+        // System.out.println("cor pelo leao = " + leao.cor_pelo); // cor pelo leao = preto
+        // System.out.println("cor pelo gato = " + gatinho.cor_pelo);  // cor pelo gato = azul
     };
 
 }
