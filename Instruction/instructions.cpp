@@ -1530,7 +1530,7 @@ void drem (Frame * frame, JVM * jvm) {
 #pragma region neg
 
 void ineg (Frame * frame, JVM * jvm) {
-  cout << "ineg" << endl;
+  DCOUT << "ineg" << endl;
   JvmValue value = frame->operandStack.top();
   if (value.type == INT) {
     frame->operandStack.pop();
@@ -1546,7 +1546,7 @@ void ineg (Frame * frame, JVM * jvm) {
 }
 
 void lneg (Frame * frame, JVM * jvm) {
-  cout << "lneg" << endl;
+  DCOUT << "lneg" << endl;
   JvmValue value = frame->operandStack.top();
 
   frame->operandStack.pop();
@@ -1560,7 +1560,7 @@ void lneg (Frame * frame, JVM * jvm) {
 }
 
 void fneg (Frame * frame, JVM * jvm) {
-  cout << "fneg" << endl;
+  DCOUT << "fneg" << endl;
   JvmValue value = frame->operandStack.top();
 
   frame->operandStack.pop();
@@ -1574,7 +1574,7 @@ void fneg (Frame * frame, JVM * jvm) {
 }
 
 void dneg (Frame * frame, JVM * jvm) {
-  cout << "dneg" << endl;
+  DCOUT << "dneg" << endl;
   JvmValue value = frame->operandStack.top();
 
   frame->operandStack.pop();
@@ -1592,7 +1592,7 @@ void dneg (Frame * frame, JVM * jvm) {
 #pragma region shift
 
 void ishl (Frame * frame, JVM * jvm) {
-  cout << "ishl" << endl;
+  DCOUT << "ishl" << endl;
   JvmValue shift = frame->operandStack.top();
   frame->operandStack.pop();
   JvmValue value = frame->operandStack.top();
@@ -1609,7 +1609,7 @@ void ishl (Frame * frame, JVM * jvm) {
 }
 
 void lshl (Frame * frame, JVM * jvm) {
-  cout << "lshl" << endl;
+  DCOUT << "lshl" << endl;
   JvmValue shift = frame->operandStack.top();
   frame->operandStack.pop();
   JvmValue value = frame->operandStack.top();
@@ -1625,7 +1625,7 @@ void lshl (Frame * frame, JVM * jvm) {
 }
 
 void ishr (Frame * frame, JVM * jvm) {
-  cout << "ishr" << endl;
+  DCOUT << "ishr" << endl;
   JvmValue shift = frame->operandStack.top();
   frame->operandStack.pop();
   JvmValue value = frame->operandStack.top();
@@ -1642,7 +1642,7 @@ void ishr (Frame * frame, JVM * jvm) {
 }
 
 void lshr (Frame * frame, JVM * jvm) {
-  cout << "lshr" << endl;
+  DCOUT << "lshr" << endl;
   JvmValue shift = frame->operandStack.top();
   frame->operandStack.pop();
   JvmValue value = frame->operandStack.top();
@@ -1658,7 +1658,7 @@ void lshr (Frame * frame, JVM * jvm) {
 }
 
 void iushr (Frame * frame, JVM * jvm) {
-  cout << "iushr" << endl;
+  DCOUT << "iushr" << endl;
   JvmValue shift = frame->operandStack.top();
   frame->operandStack.pop();
   JvmValue value = frame->operandStack.top();
@@ -1675,7 +1675,7 @@ void iushr (Frame * frame, JVM * jvm) {
 }
 
 void lushr (Frame * frame, JVM * jvm) {
-  cout << "lushr" << endl;
+  DCOUT << "lushr" << endl;
   JvmValue shift = frame->operandStack.top();
   frame->operandStack.pop();
   JvmValue value = frame->operandStack.top();
@@ -2264,12 +2264,19 @@ void _goto (Frame * frame, JVM * jvm) {
 
 void jsr (Frame * frame, JVM * jvm) {
   DCOUT << "jsr" << endl;
-  frame->pc += 3;
+  u1 branchbyte1 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  u1 branchbyte2 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
+  int16_t jump = (int16_t) (branchbyte1 << 8) | branchbyte2;
+  JvmValue returnAddress = JvmValue(RETURNADDRESS, DataUnion {.i = frame->pc + 3});
+  frame->operandStack.push(returnAddress);
+  frame->pc += jump;
 }
 
 void ret (Frame * frame, JVM * jvm) {
   DCOUT << "ret" << endl;
-  frame->pc += 2;
+  u1 localIndex = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  JvmValue ret = frame->localVariables[localIndex];
+  frame->pc = ret.data.u;
 }
 
 #pragma endregion
@@ -2737,7 +2744,14 @@ void goto_w (Frame * frame, JVM * jvm) {
 
 void jsr_w (Frame * frame, JVM * jvm) {
   DCOUT << "jsr_w" << endl;
-  frame->pc += 5;
+  u1 branchbyte1 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  u1 branchbyte2 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
+  u1 branchbyte3= frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 3];
+  u1 branchbyte4 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 4];
+  int32_t jump = (int32_t) (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4;
+  JvmValue returnAddress = JvmValue(RETURNADDRESS, DataUnion {.i = frame->pc + 5});
+  frame->operandStack.push(returnAddress);
+  frame->pc += jump;
 }
 
 #pragma endregion
