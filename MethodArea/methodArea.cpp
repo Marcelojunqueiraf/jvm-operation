@@ -37,6 +37,12 @@ void MethodArea::insert (MethodAreaItem * methodAreaItem) {
   this->methodItems.push_back(methodAreaItem);
 }
 
+MethodArea::MethodArea() {}
+
+MethodArea::MethodArea(FrameStack *frameStack) {
+  this->frameStack = frameStack;
+}
+
 MethodAreaItem * MethodArea::getMethodAreaItem (string className) {
   // check if class is already loaded
   for (auto methodAreaItem : this->methodItems) {
@@ -45,11 +51,18 @@ MethodAreaItem * MethodArea::getMethodAreaItem (string className) {
     }
   }
 
-  // E se der erro no load?
   ClassFile * classfile = this->loadClass(className);
   MethodAreaItem * newClass = new MethodAreaItem(classfile, this);
   this->insert(newClass);
+
+  // TODO: colocar o bloco estático no framestack
+  Method_info * staticBlock = newClass->getStaticBlock();
+  if (staticBlock != NULL) {
+    Frame * frame = new Frame(staticBlock, newClass);
+    this->frameStack->push(*frame);
+  }
   DCOUT << "Classe " << className << ".class" <<" carregada na method area" <<endl;
+
   return newClass;
 }
 

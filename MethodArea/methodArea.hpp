@@ -3,6 +3,7 @@
 
 #include "../common/index.hpp"
 #include "../leitor/index.hpp"
+#include "../FrameStack/frameStack.hpp"
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -11,6 +12,7 @@
 using namespace std;
 
 class MethodArea;
+class FrameStack;
 
 class MethodAreaItem {
   private:
@@ -41,12 +43,16 @@ class MethodAreaItem {
 
 class MethodArea {
   private:
+    FrameStack * frameStack;
     vector<MethodAreaItem *> methodItems;
     // tabela de nomes e paths aqui
     ClassFile * loadClass(string className);
     ClassFile * loadClassFromPath(string className);
     void insert (MethodAreaItem * methodAreaItem);
   public:
+    MethodArea();
+    MethodArea(FrameStack * frameStack);
+
     MethodAreaItem * getMethodAreaItem (string className);
     MethodAreaItem * getMethodAreaItemFromFile(string path);
 };

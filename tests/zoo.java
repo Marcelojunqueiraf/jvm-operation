@@ -87,6 +87,7 @@ public class zoo implements control{
         cat gatinho = new cat(cor_pelo_gatinho);
         lion leao = new lion(cor_pelo_leao);
         
+        System.out.println(cat.planeta); // terra
         System.out.println(gatinho.planeta); // terra
 
         gatinho.animal_sound(); // MIAUUUU!
