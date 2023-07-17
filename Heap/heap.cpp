@@ -2,6 +2,7 @@
 
 JvmValue Object::getFieldValue(string fieldName) {
   if (this->fields.find(fieldName) == this->fields.end()) {
+    if (this->super != nullptr) return this->super->getFieldValue(fieldName);
     throw std::runtime_error("Field não encontrado (" + this->methodAreaItem->getClassName() + ' ' + fieldName + ")");
   }
   return this->fields[fieldName];
@@ -9,6 +10,7 @@ JvmValue Object::getFieldValue(string fieldName) {
 
 void Object::setFieldValue(string fieldName, JvmValue value) {
   if (this->fields.find(fieldName) == this->fields.end()) {
+    if (this->super != nullptr) return this->super->setFieldValue(fieldName, value);
     throw std::runtime_error("Field não encontrado (" + this->methodAreaItem->getClassName() + ' ' + fieldName + ")");
   }
   this->fields[fieldName] = value;
@@ -19,7 +21,6 @@ Object::Object(MethodAreaItem * methodAreaItem) {
   this->fields = map<string, JvmValue>();
 
   // Inicializar fields
-  //TODO: e as superclasses?
   for (auto field : methodAreaItem->getFieldInfos()) {
     if (field.access_flags & 0x0008) { // static, são inicializados no methodAreaItem
       continue;
@@ -31,6 +32,16 @@ Object::Object(MethodAreaItem * methodAreaItem) {
     
     this->fields[fieldName] = createInitialField(descriptor);
   }
+
+  // Inicializar super
+  string supername = methodAreaItem->getSuper();
+  if (supername != JAVA_OBJ_CLASSNAME) {
+    MethodAreaItem * super = methodAreaItem->getMethodArea()->getMethodAreaItem(supername);
+    this->super = new Object(super);
+  } else {
+    this->super = nullptr;
+  }
+
 }
 
 // ARRAY
