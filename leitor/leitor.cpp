@@ -69,7 +69,8 @@ void read_attribute_code(FILE *fd, Attribute_info *attr_info, cp_info *cp)
 
     // alocar na memória o array de byte/up codes
     size_t code_size = attr_info->attribute_info_union.code_attribute.code_length * sizeof(u1);
-    attr_info->attribute_info_union.code_attribute.code = (u1 *)malloc(code_size);
+    attr_info->attribute_info_union.code_attribute.code = new u1 [code_size];
+    attr_info->attribute_info_union.code_attribute.code = new u1 [code_size];
 
     // alocando os bytecodes no code[code_length]
     for (int i = 0; i < attr_info->attribute_info_union.code_attribute.code_length; i++)
@@ -82,7 +83,7 @@ void read_attribute_code(FILE *fd, Attribute_info *attr_info, cp_info *cp)
 
     // alocando espaço para as tabelas de excessão
     size_t exception_table_size = attr_info->attribute_info_union.code_attribute.exception_table_length * sizeof(Exception_table);
-    attr_info->attribute_info_union.code_attribute.exception_table = (Exception_table *)malloc(exception_table_size);
+    attr_info->attribute_info_union.code_attribute.exception_table = new Exception_table [exception_table_size];
 
     // preenchendo -> passar o endereço para array e o seu tamanho
     read_attribute_code_exception_table(fd, attr_info->attribute_info_union.code_attribute.exception_table, attr_info->attribute_info_union.code_attribute.exception_table_length);
@@ -92,7 +93,7 @@ void read_attribute_code(FILE *fd, Attribute_info *attr_info, cp_info *cp)
 
     // alocando espaço para os attributes
     size_t attributes_size = attr_info->attribute_info_union.code_attribute.attribute_count * sizeof(Attribute_info);
-    attr_info->attribute_info_union.code_attribute.attributes = (Attribute_info *) malloc(attributes_size);
+    attr_info->attribute_info_union.code_attribute.attributes = new Attribute_info [attributes_size];
 
     read_attributes(fd, attr_info->attribute_info_union.code_attribute.attributes, attr_info->attribute_info_union.code_attribute.attribute_count, cp);
 }
@@ -103,7 +104,7 @@ void read_attribute_exceptions(FILE *fd, Attribute_info *attr_info)
 {
     attr_info->attribute_info_union.exceptions_attribute.number_of_exceptions = u2Read(fd);
     size_t exception_index_table_size = attr_info->attribute_info_union.exceptions_attribute.number_of_exceptions * sizeof(u2);
-    attr_info->attribute_info_union.exceptions_attribute.exception_index_table = (u2 *)malloc(exception_index_table_size);
+    attr_info->attribute_info_union.exceptions_attribute.exception_index_table = new u2 [exception_index_table_size];
     for (int i = 0; i < attr_info->attribute_info_union.exceptions_attribute.number_of_exceptions; i++)
     {
         attr_info->attribute_info_union.exceptions_attribute.exception_index_table[i] = u2Read(fd);
@@ -116,7 +117,7 @@ void read_attribute_innerClasses(FILE *fd, Attribute_info *attr_info)
 {
     attr_info->attribute_info_union.innerClasses_attribute.number_of_classes = u2Read(fd);
     size_t inner_classes_size = attr_info->attribute_info_union.innerClasses_attribute.number_of_classes * sizeof(inner_classes);
-    attr_info->attribute_info_union.innerClasses_attribute.inner_classes = (inner_classes *)malloc(inner_classes_size);
+    attr_info->attribute_info_union.innerClasses_attribute.inner_classes = new inner_classes [inner_classes_size];
     
     // lendo o number of classes do innerclass
     for (int i = 0; i < attr_info->attribute_info_union.innerClasses_attribute.number_of_classes; i++)
@@ -134,7 +135,7 @@ void read_attribute_lineNumberTable(FILE *fd, Attribute_info *attr_info)
 {
     attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table_length = u2Read(fd);
     size_t line_number_table_size = attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table_length * sizeof(line_number_table);
-    attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table = (line_number_table *)malloc(line_number_table_size);
+    attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table = new line_number_table [line_number_table_size];
     for (int i = 0; i < attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table_length; i++)
     {
         attr_info->attribute_info_union.lineNumberTable_attribute.line_number_table[i].start_pc = u2Read(fd);
@@ -148,7 +149,7 @@ void read_attribute_localVariableTable(FILE *fd, Attribute_info *attr_info)
 {
     attr_info->attribute_info_union.localVariableTable_attribute.local_variable_table_length = u2Read(fd);
     size_t local_variable_table_size = attr_info->attribute_info_union.localVariableTable_attribute.local_variable_table_length * sizeof(Local_variable_table);
-    attr_info->attribute_info_union.localVariableTable_attribute.local_variable_table = (Local_variable_table *)malloc(local_variable_table_size);
+    attr_info->attribute_info_union.localVariableTable_attribute.local_variable_table = new Local_variable_table [local_variable_table_size];
     for (int i = 0; i < attr_info->attribute_info_union.localVariableTable_attribute.local_variable_table_length; i++)
     {
         attr_info->attribute_info_union.localVariableTable_attribute.local_variable_table[i].start_pc = u2Read(fd);
@@ -220,7 +221,7 @@ void read_methods(FILE *fd, ClassFile *cf)
 
     // alocando dinamicamente os methdos com base no contador
     size_t methods_size = cf->methods_count * sizeof(Method_info);
-    cf->methods = (Method_info *)malloc(methods_size);
+    cf->methods = new Method_info [methods_size];
 
     // iterar e ir lendo os methods...
     for (int i = 0; i < cf->methods_count; i++)
@@ -236,7 +237,7 @@ void read_methods(FILE *fd, ClassFile *cf)
 
         // alocando o espaço para os attributes do field
         size_t attributes_size = cf->methods[i].attributes_count * sizeof(Attribute_info);
-        cf->methods[i].attributes = (Attribute_info *)malloc(attributes_size);
+        cf->methods[i].attributes = new Attribute_info [attributes_size];
 
         // lendo os attributes
         if(cf->methods[i].attributes_count){
@@ -252,7 +253,7 @@ void read_fields(FILE *fd, ClassFile *cf)
 {
     // alocando ESPAÇO para o cp_info
     size_t fields_size = cf->fields_count * sizeof(field_info);
-    cf->fields = (field_info *)malloc(fields_size);
+    cf->fields = new field_info [fields_size];
 
 
     // alocar em memória os fields
@@ -274,7 +275,7 @@ void read_fields(FILE *fd, ClassFile *cf)
 
         // alocando o espaço para os attributes do field
         size_t attributes_size = cf->fields[i].attributes_count * sizeof(Attribute_info);
-        cf->fields[i].attributes = (Attribute_info *)malloc(attributes_size);
+        cf->fields[i].attributes = new Attribute_info [attributes_size];
         // printf("attr_count: %d \n", cf->fields[i].attributes_count);
 
         // lendo field attributes
@@ -308,7 +309,7 @@ void read_cp_info(FILE *fd, ClassFile *cf)
 
     // alocando ESPAÇO para o cp_info na memória e endereçando no ponteiro constant_pool.
     size_t cp_size = cf->constant_pool_count * sizeof(cp_info);
-    cf->constant_pool = (cp_info *)malloc(cp_size);
+    cf->constant_pool = new cp_info [cp_size];
 
     for (int cp_index = 1; cp_index < cf->constant_pool_count; cp_index++)
     {
@@ -390,7 +391,7 @@ void read_cp_info(FILE *fd, ClassFile *cf)
             u2 length = cp_info->constant_type_union.Utf8.length;
 
             // bytes é um ponteiro para um array de length bytes -> alocando espaco e memoria para os bytes
-            cp_info->constant_type_union.Utf8.bytes = (u1 *)malloc(length * sizeof(u1));
+            cp_info->constant_type_union.Utf8.bytes = new u1 [length * sizeof(u1)];
 
             // iterar dentro do do (0 até length - 1)
             for (int i = 0; i < length; i++){
@@ -451,7 +452,7 @@ void class_reader(FILE *fd, ClassFile *cf)
     cf->interfaces_count = u2Read(fd);
 
     // alocando em memória o interfaces count
-    cf->interfaces = (u2 *)malloc(cf->interfaces_count * sizeof(u2));
+    cf->interfaces = new u2 [cf->interfaces_count * sizeof(u2)];
 
     // preenchendo o vetor de interfaces
     for (int i = 0; i < cf->interfaces_count; i++)
@@ -475,7 +476,7 @@ void class_reader(FILE *fd, ClassFile *cf)
     cf->attributes_count = u2Read(fd);
     
     // alocar os attributes do .class
-    cf->attributes = (Attribute_info *) malloc(cf->attributes_count * sizeof(Attribute_info));
+    cf->attributes = new Attribute_info [cf->attributes_count * sizeof(Attribute_info)];
 
     // lendo os Attributes
     read_attributes(fd, cf->attributes, cf->attributes_count, cf->constant_pool);
