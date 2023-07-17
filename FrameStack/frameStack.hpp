@@ -7,6 +7,7 @@
 #include <vector>
 
 using namespace std;
+class MethodAreaItem;
 
 struct Frame {
   stack<JvmValue> operandStack;

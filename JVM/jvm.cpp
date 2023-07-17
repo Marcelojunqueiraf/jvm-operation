@@ -1,10 +1,6 @@
 #include "jvm.hpp"
 
 void JVM::initClass(MethodAreaItem * methodAreaItem) {
-  Method_info * staticBlock = methodAreaItem->getStaticBlock();
-  Frame * frame = new Frame(staticBlock, methodAreaItem);
-  if (staticBlock != NULL) this->frameStack.push(*frame);
-
   if (methodAreaItem->getClassName() == JAVA_OBJ_CLASSNAME) return;
   MethodAreaItem * superClass = this->methodArea.getMethodAreaItem(methodAreaItem->getSuper());
 
@@ -120,6 +116,8 @@ void JVM::setStaticField(string classname, string fieldName, JvmValue value) {
 }
 
 JVM::JVM() {
+  this->frameStack = FrameStack();
+  this->methodArea = MethodArea(&this->frameStack);
   this->instructionsMap = InstructionsMap(256);
   loadInstructions(&this->instructionsMap);
 }
