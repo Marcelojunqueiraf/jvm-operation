@@ -46,6 +46,7 @@ class JVM {
 
     JvmValue getArrayValue(int32_t arrayItemIndex, int32_t index);
     void setArrayValue(int32_t arrayItemIndex, int32_t index, JvmValue value);
+    int32_t getArraySize(int32_t arrayItemIndex);
 
     void setField(int32_t heapItemIndex, string fieldName, JvmValue value);
     void setStaticField(string classname, string fieldName, JvmValue value);

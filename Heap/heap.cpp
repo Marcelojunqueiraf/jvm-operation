@@ -46,14 +46,61 @@ Object::Object(MethodAreaItem * methodAreaItem) {
 
 // ARRAY
 Array::Array(JVMType type, u4 size) {
-  int newSize = size;
+  JvmValue value;
 
-  if (type == JVMType::LONG || type == JVMType::DOUBLE) {
-    newSize *= 2;
+  for(u4 i = 0; i < size; i++) {
+    switch (type){
+      case BYTE:
+        value.type = BYTE;
+        value.data.u = 0;
+        break;
+      case SHORT:
+        value.type = SHORT;
+        value.data.u = 0;
+        break; 
+      case INT:
+        value.type = INT;
+        value.data.u = 0;
+        break;
+      case LONG:
+        value.type = LONG;
+        value.data.u = 0;
+        break;
+      case CHAR:
+        value.type = CHAR;
+        value.data.u = 0;
+        break;
+      case FLOAT:
+        value.type = FLOAT;
+        value.data.u = 0;
+        break;
+      case DOUBLE:
+        value.type = DOUBLE;
+        value.data.u = 0;
+        break;
+      case BOOL:
+        value.type = BOOL;
+        value.data.u = 0;
+        break;
+      case REFERENCE:
+        value.type = REFERENCE;
+        value.data.u = 0;
+        break;
+      case STRING:
+        value.type = STRING;
+        value.data.u = 0;
+        break;
+      case RETURNADDRESS:
+        value.type = RETURNADDRESS;
+        value.data.u = 0;
+        break;
+      default:
+        throw std::runtime_error("Tipo de array não encontrado");
+    }
+
+    this->type = type;
+    this->array = vector<JvmValue>(size, value);
   }
-
-  this->type = type;
-  this->array = vector<JvmValue>(newSize);
 }
 
 JvmValue Array::getArrayValue(u4 index) {
@@ -70,6 +117,10 @@ void Array::setArrayValue(u4 index, JvmValue value) {
   }
 
   this->array[index] = value;
+}
+
+int32_t Array::getArraySize() {
+  return this->array.size();
 }
 // Heap
 

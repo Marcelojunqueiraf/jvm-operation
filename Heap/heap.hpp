@@ -22,6 +22,7 @@ class Array {
   public:
     Array(JVMType type, u4 size);
     JvmValue getArrayValue(u4 index);
+    int32_t getArraySize();
     void setArrayValue(u4 index, JvmValue value);
 };
 

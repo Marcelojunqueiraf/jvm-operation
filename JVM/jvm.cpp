@@ -105,6 +105,11 @@ void JVM::setArrayValue(int32_t arrayItemIndex, int32_t index, JvmValue value) {
   arrayItem->setArrayValue(index, value);
 }
 
+int32_t JVM::getArraySize(int32_t arrayItemIndex) {
+  Array * arrayItem = this->heap.getArrayItem(arrayItemIndex);
+  return arrayItem->getArraySize();
+}
+
 JvmValue JVM::getStaticField(string classname, string fieldName) {
   MethodAreaItem * methodAreaItem = this->methodArea.getMethodAreaItem(classname);
   return methodAreaItem->getStaticField(fieldName);

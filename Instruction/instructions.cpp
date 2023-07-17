@@ -2662,6 +2662,31 @@ void newarray (Frame * frame, JVM * jvm) {
 
 void anewarray (Frame * frame, JVM * jvm) {
   DCOUT << "anewarray" << endl;
+  // u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  // u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+  // u2 index = (high_bytes << 8) | low_bytes;
+
+  // cp_info * classRef = frame->methodAreaItem->getConstantPoolItem(index);
+
+  // string classname = frame->methodAreaItem->getUtf8(classRef->constant_type_union.Class_info.name_index);
+
+  // MethodArea  * methodAreaRef = frame->methodAreaItem->getMethodArea();
+  // MethodAreaItem * classMethodAreaItem = methodAreaRef->getMethodAreaItem(classname);
+  // não estamos fazendo nada com a classe
+
+
+  int32_t count = frame->popOperandStack().data.i;
+
+  if (count < 0) {
+    throw std::runtime_error("NegativeArraySizeException");
+  }
+
+  Array * array = new Array(REFERENCE, count);
+
+  int32_t heapIndex = jvm->pushArray(array);
+  frame->pushOperandStack(JvmValue(REFERENCE, {.i = heapIndex}));
+
+  DCOUT << "anewarray  " << " size: " << count << " index: " << heapIndex << endl;
   frame->pc += 3;
 }
 
@@ -2671,6 +2696,16 @@ void anewarray (Frame * frame, JVM * jvm) {
 
 void arraylength (Frame * frame, JVM * jvm) {
   DCOUT << "arraylength" << endl;
+  JvmValue arrayref = frame->popOperandStack();
+  if (arrayref.type != REFERENCE) {
+    throw std::runtime_error("arrayref is not a reference");
+  }
+  if(arrayref.data.i == 0){
+    throw std::runtime_error("NullPointerException");
+  }
+
+  int32_t size = jvm->getArraySize(arrayref.data.i);
+  frame->pushOperandStack(JvmValue(INT, {.i = size}));
   frame->pc += 1;
 }
 
