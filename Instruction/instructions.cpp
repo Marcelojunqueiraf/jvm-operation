@@ -2303,13 +2303,13 @@ void tableswitch (Frame * frame, JVM * jvm) {
   int32_t highbytes = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
   aux_pc += 4;
 
-  DCOUT << "table index: " << index.data.u << endl;
+  DCOUT << "table index: " << index.data.i << endl;
   DCOUT << "defaultbytes: " << defaultbytes << endl;
   DCOUT << "lowbytes: " << lowbytes << endl;
   DCOUT << "highbytes: " << highbytes << endl;
 
   if (index.data.i < lowbytes || index.data.i > highbytes) {
-    DCOUT << "index fora do range, pulando para o endereço " << frame->pc + defaultbytes << endl;
+    DCOUT << "index " << index.data.i << " fora do range, pulando para o endereço " << frame->pc + defaultbytes << endl;
     frame->pc += defaultbytes;
     return;
   }
@@ -2321,7 +2321,7 @@ void tableswitch (Frame * frame, JVM * jvm) {
 
     DCOUT << "\t" << i << ": " << frame->pc + offset << " (+" << offset << ")" << endl;
     if (index.data.i == i) {
-      DCOUT << "table index == " << i << " pulando para o endereço " << frame->pc + offset <<endl;
+      DCOUT << "index == " << i << " pulando para o endereço " << frame->pc + offset <<endl;
       frame->pc += offset;
       return;
     }
@@ -2330,12 +2330,40 @@ void tableswitch (Frame * frame, JVM * jvm) {
 
 void lookupswitch (Frame * frame, JVM * jvm) {
   DCOUT << "lookupswitch" << endl;
-  // FIXME: consertar os pulos
-  frame->pc += 4;
-  frame->pc += 4;
-  frame->pc += 4;
-  frame->pc += 4;
-  frame->pc += 4;
+  
+  u1* code_arr = frame->method_info->attributes->attribute_info_union.code_attribute.code;
+  JvmValue key = frame->popOperandStack();
+
+  int32_t aux_pc = frame->pc;
+  int32_t padding = 4 - (aux_pc + 1) % 4;
+  if (padding == 4) padding = 0;
+  aux_pc += padding;
+  
+  int32_t defaultbytes = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
+  aux_pc += 4;
+  int32_t npairs = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
+  aux_pc += 4;
+
+  DCOUT << "key: " << key.data.i << endl;
+  DCOUT << "defaultbytes: " << defaultbytes << endl;
+  DCOUT << "npairs: " << npairs << endl;
+
+  for (int32_t i = 0; i < npairs; i++) {
+    int32_t match = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
+    aux_pc += 4;
+    int32_t offset = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
+    aux_pc += 4;
+
+    DCOUT << "\t" << match << ": " << frame->pc + offset << " (+" << offset << ")" << endl;
+    if (key.data.i == match) {
+      DCOUT << "key == " << match << " pulando para o endereço " << frame->pc + offset <<endl;
+      frame->pc += offset;
+      return;
+    }
+  };
+
+  DCOUT << "key " << key.data.i << " não encontrada, pulando para o endereço " << frame->pc + defaultbytes << endl;
+  frame->pc += defaultbytes;
 }
 
 #pragma endregion
