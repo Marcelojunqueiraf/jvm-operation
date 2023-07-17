@@ -42,7 +42,7 @@ void JVM::executeFrame(Frame * frame) {
   
   code_attribute * codeAtt = getCode(frame->method_info, frame->methodAreaItem);
   
-  if(frame->pc == 0) {
+  if (frame->pc == 0) {
     DCOUT << "executeFrame #" <<  frame->method_info->name_index << ' ' << methodName << " from " << frame->methodAreaItem->getClassName() << ".class" <<endl;
     DCOUT << "code len: " << codeAtt->code_length << endl;
   }
@@ -52,8 +52,7 @@ void JVM::executeFrame(Frame * frame) {
     
     u1 * opcode = codeAtt->code + frame->pc;
     this->executeInstruction(opcode, frame);
-  }
-  else{
+  } else {
     this->returnVoid();
   }
 }
