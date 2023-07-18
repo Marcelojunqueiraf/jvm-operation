@@ -1,10 +1,8 @@
 #pragma once
 
-#include "../common/intTypes.hpp"
+#include "../common/index.hpp"
 #include "../leitor/leitor.hpp"
-#include "../common/class-file.hpp"
 #include "../leitor/utf8.hpp"
-#include "../common/converters.hpp"
 #include <iostream>
 #include <string.h>
 
