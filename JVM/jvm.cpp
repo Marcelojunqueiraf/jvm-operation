@@ -10,8 +10,8 @@ void JVM::initialize(string classPath) {
   this->methodArea.pushStaticBlock(firstClass);
 }
 
-void JVM::showClass(string className) {
-  ClassFile * classfile = this->methodArea.loadClass(className);
+void JVM::showClass(string classPath) {
+  ClassFile * classfile = this->methodArea.loadClassFromPath(classPath);
   class_exibitor(classfile);
 }
 

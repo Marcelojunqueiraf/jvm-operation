@@ -1,15 +1,4 @@
 #pragma once
-/**
- * @file leitor_exibidor.h
- * @author Marcelo Piano
- * @author Gabriel Borges
- * @author Gabriel Amaro
- * @author Pedro Venzi
- * @author Kayran Vieira
- * @brief Arquivo com as funções utilizadas no exibidor.
- * @details Declaração das funções de exibição.
- */
-
 
 #include "../common/intTypes.hpp"
 #include "../leitor/leitor.hpp"
@@ -18,8 +7,6 @@
 #include "../common/converters.hpp"
 #include <iostream>
 #include <string.h>
-
-
 
 /// @brief Função que exibe o cp info com base no ponteiro que aponta para os cp_infos alocados 
 /// @param classFile Ponteiro que aponta para o classfile em questão
@@ -379,7 +366,7 @@ typedef enum value_to_opcode
     ifnonnull = 0xc7,
     goto_w = 0xc8,
     jsr_w = 0xc9,
-}value_to_opcode;
+} value_to_opcode;
 }
 
 /// @brief Função que pega o nome baseado no opcode

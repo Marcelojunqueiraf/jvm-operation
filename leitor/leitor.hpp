@@ -1,13 +1,3 @@
-/**
- * @file leitor_exibidor.h
- * @author Marcelo Piano
- * @author Aluno 2
- * @author Aluno 3
- * @author Aluno 4
- * @author Aluno 5
- * @brief Arquivo com as funções utilizadas no leitor.
- * @details Declaração das funções de leitura.
- */
 #include "../common/class-file.hpp"
 #include "utf8.hpp"
 #include <cstdio>

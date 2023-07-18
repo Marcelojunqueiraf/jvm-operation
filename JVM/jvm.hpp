@@ -32,7 +32,7 @@ class JVM {
   public:
     JVM();
     void initialize(string classPath);
-    void showClass(string className);
+    void showClass(string classPath);
     void run();
     
     void invoke(Frame frame);
