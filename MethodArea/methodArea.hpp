@@ -3,6 +3,7 @@
 
 #include "../common/index.hpp"
 #include "../leitor/index.hpp"
+#include "../FrameStack/frameStack.hpp"
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -11,6 +12,7 @@
 using namespace std;
 
 class MethodArea;
+class FrameStack;
 
 class MethodAreaItem {
   private:
@@ -30,7 +32,8 @@ class MethodAreaItem {
   Method_info * getMainMethod();
   Method_info * getInitMethod();
   Method_info * getStaticBlock();
-  Method_info * getMethodByName(string name);
+  Method_info * getMethodByName(string methodName, bool onlyActualClass = false);
+  MethodAreaItem * getMethodItemByMethodName(string methodName);
 
   JvmValue getStaticField(string fieldName);
   void setStaticField(string fieldName, JvmValue value);
@@ -41,12 +44,18 @@ class MethodAreaItem {
 
 class MethodArea {
   private:
+    FrameStack * frameStack;
     vector<MethodAreaItem *> methodItems;
     // tabela de nomes e paths aqui
     ClassFile * loadClass(string className);
     ClassFile * loadClassFromPath(string className);
     void insert (MethodAreaItem * methodAreaItem);
   public:
+    MethodArea();
+    MethodArea(FrameStack * frameStack);
+
+    void pushStaticBlock(MethodAreaItem * methodAreaItem);
+
     MethodAreaItem * getMethodAreaItem (string className);
     MethodAreaItem * getMethodAreaItemFromFile(string path);
 };
