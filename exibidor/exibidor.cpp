@@ -1,5 +1,8 @@
 #include "exibidor.hpp"
 #include "../leitor/utf8.hpp"
+#include "../common/converters.hpp"
+#include <string.h>
+
 
 int bytecode_group(u1);
 void bytecode_print( u1*, int *, int, cp_info *);
@@ -16,39 +19,21 @@ string class_decoder(cp_info *cp, u2 classIndex) {
     return className;
 }
 
-float float_decoder (u4 bytes) {
-    float value;
-    memcpy(&value, &bytes, sizeof(float));
-    return value;
-}
-
-long long int long_decoder (u8 highBytes, u8 lowBytes) {
-    long long int value = (highBytes << 32) | lowBytes;
-    return value;
-}
-
-double double_decoder (u8 high_bytes, u8 low_bytes) {
-    u8 bytes = (high_bytes << 32) | low_bytes;
-    double value;
-    memcpy(&value, &bytes, sizeof(double));
-    return value;
-}
-
 // ----------------------------- CONSTANTVALUE -------------------------------------
 
 void constantValue_type_exibitor(cp_info *cp, ClassFile *cf) {
     switch (cp->tag)
     {
     case (CONSTANT_Long_info): {
-        printf("<%lld>\n\n", long_decoder(cp->constant_type_union.Long.high_bytes, cp->constant_type_union.Long.low_bytes));
+        printf("<%lld>\n\n", u4ToLong(cp->constant_type_union.Long.low_bytes, cp->constant_type_union.Long.high_bytes));
     }
         break;
     case (CONSTANT_Float_info): {
-        printf("<%f>\n\n", float_decoder(cp->constant_type_union.Float.bytes));
+        printf("<%f>\n\n", u4ToFloat(cp->constant_type_union.Float.bytes));
     }
         break;
     case (CONSTANT_Double_info): {
-        printf("<%lf>\n\n", double_decoder(cp->constant_type_union.Double.high_bytes, cp->constant_type_union.Double.low_bytes));
+        printf("<%lf>\n\n", u4ToDouble(cp->constant_type_union.Double.low_bytes, cp->constant_type_union.Double.high_bytes));
     }
         break;
     case (CONSTANT_Integer_info): {
@@ -457,23 +442,23 @@ void cp_info_exibitor(ClassFile *classFile){
             case(CONSTANT_Float_info):
             {
                 u4 bytes = constantPool[i].constant_type_union.Float.bytes;
-                printf("Float value: %f\n\n", float_decoder(bytes));
+                printf("Float value: %f\n\n", u4ToFloat(bytes));
             }   
                 break;
 
             case(CONSTANT_Long_info): 
             {
-                u8 high_bytes = constantPool[i].constant_type_union.Long.high_bytes;
-                u8 low_bytes = constantPool[i].constant_type_union.Long.low_bytes;
-                printf("Long value: %lld\n\n", long_decoder(high_bytes, low_bytes));
+                u4 high_bytes = constantPool[i].constant_type_union.Long.high_bytes;
+                u4 low_bytes = constantPool[i].constant_type_union.Long.low_bytes;
+                printf("Long value: %lld\n\n", u4ToLong(low_bytes, high_bytes));
             }
                 break;
 
             case(CONSTANT_Double_info): 
             {
-                u8 high_bytes = constantPool[i].constant_type_union.Double.high_bytes;
-                u8 low_bytes = constantPool[i].constant_type_union.Double.low_bytes;
-                printf("Double value: %lf\n\n", double_decoder(high_bytes, low_bytes));
+                u4 high_bytes = constantPool[i].constant_type_union.Double.high_bytes;
+                u4 low_bytes = constantPool[i].constant_type_union.Double.low_bytes;
+                printf("Double value: %lf\n\n", u4ToDouble(low_bytes, high_bytes));
             }
                 break;
             
@@ -1010,7 +995,7 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
                 printf("#%d %d\n", pool_index, constant_pool[pool_index].constant_type_union.Integer.bytes);
             }
             else if(tag == CONSTANT_Float_info){
-                printf("#%d %f\n", pool_index, float_decoder(constant_pool[pool_index].constant_type_union.Integer.bytes));
+                printf("#%d %f\n", pool_index, u4ToFloat(constant_pool[pool_index].constant_type_union.Integer.bytes));
             }
             else if(tag == CONSTANT_Class_info){
                 printf("#%d <%s>\n", pool_index, utf8ToString(&constant_pool[constant_pool[pool_index].constant_type_union.Class_info.name_index]));
@@ -1097,7 +1082,7 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
                     printf("#%d %d\n", cp_index, constant_pool[cp_index].constant_type_union.Integer.bytes);
                 }
                 else if(tag == CONSTANT_Float_info){
-                    printf("#%d %f\n", cp_index, float_decoder(constant_pool[cp_index].constant_type_union.Integer.bytes));
+                    printf("#%d %f\n", cp_index, u4ToFloat(constant_pool[cp_index].constant_type_union.Integer.bytes));
                 }
                 else if(tag == CONSTANT_Class_info){
                     printf("#%d <%s>\n", cp_index, utf8ToString(&constant_pool[constant_pool[cp_index].constant_type_union.Class_info.name_index]));
@@ -1112,10 +1097,10 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
                 int tag = constant_pool[cp_index].tag;
 
                 if(tag == CONSTANT_Double_info){
-                    printf("#%d %lf", cp_index, double_decoder(constant_pool[cp_index].constant_type_union.Double.high_bytes,constant_pool[cp_index].constant_type_union.Double.low_bytes));
+                    printf("#%d %lf", cp_index, u4ToDouble(constant_pool[cp_index].constant_type_union.Double.low_bytes,constant_pool[cp_index].constant_type_union.Double.high_bytes));
                 }
                 else if(tag == CONSTANT_Long_info){
-                    printf("#%d %lld", cp_index, long_decoder(constant_pool[cp_index].constant_type_union.Long.high_bytes,constant_pool[cp_index].constant_type_union.Long.low_bytes));
+                    printf("#%d %lld", cp_index, u4ToLong(constant_pool[cp_index].constant_type_union.Long.low_bytes,constant_pool[cp_index].constant_type_union.Long.high_bytes));
                 }
                 else{
                     printf("\n");
