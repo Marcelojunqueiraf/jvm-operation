@@ -453,17 +453,18 @@ pair<Frame *, vector<string>> createInvokedFrame(Frame * frame, u2 index, string
   MethodArea  * methodAreaRef = frame->methodAreaItem->getMethodArea();
   MethodAreaItem * classMethodAreaItem = methodAreaRef->getMethodAreaItem(classname);
   Method_info * invokedMethod = classMethodAreaItem->getMethodByName(methodName);
+  MethodAreaItem * invokedMethodAreaItem = classMethodAreaItem->getMethodItemByMethodName(methodName);
 
   // TODO: lidar com as exceções que a especificação diz que podem acontecer
 
-  vector<string> argTypes = classMethodAreaItem->getMethodArgTypesByDescriptorIndex(invokedMethod->descriptor_index);
+  vector<string> argTypes = invokedMethodAreaItem->getMethodArgTypesByDescriptorIndex(invokedMethod->descriptor_index);
   // string returnType = argTypes.back(); caso precise, é assim que pega o tipo do retorno
   argTypes.pop_back(); // tira o tipo do retorno
   
   DCOUT << "method " << classname << '.' << methodName << ", nargs " << argTypes.size() << endl;
   for (string argType : argTypes) DCOUT << "argType " << argType << endl;
 
-  Frame * invokedFrame = new Frame(invokedMethod, classMethodAreaItem);
+  Frame * invokedFrame = new Frame(invokedMethod, invokedMethodAreaItem);
 
   return {invokedFrame, argTypes};
 }
@@ -645,7 +646,7 @@ void bipush (Frame * frame, JVM * jvm) {
   int8_t bytesSigned = bytes;
 
   frame->pushOperandStack(JvmValue(INT, {.i = bytesSigned}));
-  DCOUT << "valor empilhado: " << bytesSigned << endl;
+  DCOUT << "valor empilhado: " << (int) bytesSigned << endl;
   frame->pc += 2;
 }
 
@@ -658,7 +659,7 @@ void sipush (Frame * frame, JVM * jvm) {
   int16_t bytesSigned = (int16_t) bytes;
 
   frame->pushOperandStack(JvmValue(INT, {.i = bytesSigned}));
-  DCOUT << "valor empilhado: " << bytesSigned << endl;
+  DCOUT << "valor empilhado: " << (int) bytesSigned << endl;
   frame->pc += 3;
 }
 

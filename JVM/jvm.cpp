@@ -1,11 +1,5 @@
 #include "jvm.hpp"
 
-void JVM::initClass(MethodAreaItem * methodAreaItem) {
-  if (methodAreaItem->getClassName() == JAVA_OBJ_CLASSNAME) return;
-  MethodAreaItem * superClass = this->methodArea.getMethodAreaItem(methodAreaItem->getSuper());
-
-  this->initClass(superClass);
-}
 
 void JVM::initialize(string classPath) {
   MethodAreaItem * firstClass = this->methodArea.getMethodAreaItemFromFile(classPath);
@@ -14,7 +8,7 @@ void JVM::initialize(string classPath) {
   Frame * frame = new Frame(mainMethod, firstClass);
 
   this->frameStack.push(*frame);
-  this->initClass(firstClass);
+  this->methodArea.pushStaticBlock(firstClass);
 }
 
 code_attribute * getCode(Method_info * method_info, MethodAreaItem * methodAreaItem) {

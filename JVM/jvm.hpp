@@ -25,7 +25,6 @@ class JVM {
     MethodArea methodArea;
     InstructionsMap instructionsMap;
     void * pc;
-    void initClass(MethodAreaItem * methodAreaItem);
     void executeFrame(Frame * frame);
     void executeInstruction(u1 * instruction, Frame * frame);
 

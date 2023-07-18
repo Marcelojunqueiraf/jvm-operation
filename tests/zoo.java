@@ -13,6 +13,10 @@ abstract class animal {
     public String cor_pelo;
     public static String planeta = "terra";
 
+  String getCorPelo() {
+    return cor_pelo;
+  }
+
 };  
 
 class lion extends animal implements animals_actions{
@@ -89,6 +93,8 @@ public class zoo implements control{
         
         System.out.println(cat.planeta); // terra
         System.out.println(gatinho.planeta); // terra
+
+        System.out.println(leao.getCorPelo()); // preto
 
         gatinho.animal_sound(); // MIAUUUU!
         leao.animal_sound(); // ROAARRR!

@@ -32,7 +32,8 @@ class MethodAreaItem {
   Method_info * getMainMethod();
   Method_info * getInitMethod();
   Method_info * getStaticBlock();
-  Method_info * getMethodByName(string name);
+  Method_info * getMethodByName(string methodName, bool onlyActualClass = false);
+  MethodAreaItem * getMethodItemByMethodName(string methodName);
 
   JvmValue getStaticField(string fieldName);
   void setStaticField(string fieldName, JvmValue value);
@@ -52,6 +53,8 @@ class MethodArea {
   public:
     MethodArea();
     MethodArea(FrameStack * frameStack);
+
+    void pushStaticBlock(MethodAreaItem * methodAreaItem);
 
     MethodAreaItem * getMethodAreaItem (string className);
     MethodAreaItem * getMethodAreaItemFromFile(string path);
