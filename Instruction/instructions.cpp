@@ -2147,7 +2147,7 @@ void ret (Frame * frame, JVM * jvm) {
   DCOUT << "ret" << endl;
   u1 localIndex = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   JvmValue ret = frame->localVariables[localIndex];
-  frame->pc = ret.data.u;
+  frame->pc = ret.data.i;
 }
 
 #pragma endregion
