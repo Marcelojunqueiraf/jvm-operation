@@ -12,3 +12,4 @@ u4 intToU4(int32_t value);
 std::pair<u4, u4> longToU8(int64_t value);
 u4 floatToU4(float value);
 std::pair<u4,u4> doubleToU8(double value);
+

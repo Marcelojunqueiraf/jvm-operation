@@ -47,7 +47,6 @@ class MethodArea {
     FrameStack * frameStack;
     vector<MethodAreaItem *> methodItems;
     // tabela de nomes e paths aqui
-    ClassFile * loadClass(string className);
     ClassFile * loadClassFromPath(string className);
     void insert (MethodAreaItem * methodAreaItem);
   public:
@@ -55,6 +54,8 @@ class MethodArea {
     MethodArea(FrameStack * frameStack);
 
     void pushStaticBlock(MethodAreaItem * methodAreaItem);
+
+    ClassFile * loadClass(string className);
 
     MethodAreaItem * getMethodAreaItem (string className);
     MethodAreaItem * getMethodAreaItemFromFile(string path);

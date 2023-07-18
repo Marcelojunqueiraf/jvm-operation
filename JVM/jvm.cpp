@@ -1,6 +1,5 @@
 #include "jvm.hpp"
 
-
 void JVM::initialize(string classPath) {
   MethodAreaItem * firstClass = this->methodArea.getMethodAreaItemFromFile(classPath);
 
@@ -10,6 +9,12 @@ void JVM::initialize(string classPath) {
   this->frameStack.push(*frame);
   this->methodArea.pushStaticBlock(firstClass);
 }
+
+void JVM::showClass(string className) {
+  ClassFile * classfile = this->methodArea.loadClass(className);
+  class_exibitor(classfile);
+}
+
 
 code_attribute * getCode(Method_info * method_info, MethodAreaItem * methodAreaItem) {
   for (int i = 0; i < method_info->attributes_count; i++) {

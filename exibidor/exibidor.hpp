@@ -1,3 +1,4 @@
+#pragma once
 /**
  * @file leitor_exibidor.h
  * @author Marcelo Piano
@@ -13,8 +14,11 @@
 #include "../common/intTypes.hpp"
 #include "../leitor/leitor.hpp"
 #include "../common/class-file.hpp"
-#ifndef EXIBIDORH
-#define EXIBIDORH
+#include "../leitor/utf8.hpp"
+#include "../common/converters.hpp"
+#include <iostream>
+#include <string.h>
+
 
 
 /// @brief Função que exibe o cp info com base no ponteiro que aponta para os cp_infos alocados 
@@ -135,6 +139,8 @@ typedef enum array_code_attr_to_type{
 
 
 /// @brief Enum que une o valor do upcode ao opcode
+namespace exibidor 
+{
 typedef enum value_to_opcode
 {
     nop = 0x00,
@@ -374,11 +380,8 @@ typedef enum value_to_opcode
     goto_w = 0xc8,
     jsr_w = 0xc9,
 }value_to_opcode;
-
+}
 
 /// @brief Função que pega o nome baseado no opcode
 /// @param op Opcode
-const string  bytecode_to_opcode_string(value_to_opcode op);
-
-
-#endif
+const string  bytecode_to_opcode_string(exibidor::value_to_opcode op);

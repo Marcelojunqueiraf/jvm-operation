@@ -6,6 +6,7 @@
 #include "../MethodArea/methodArea.hpp"
 #include "../Heap/heap.hpp"
 #include "../Instruction/instructions.hpp"
+#include "../exibidor/exibidor.hpp"
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -31,6 +32,7 @@ class JVM {
   public:
     JVM();
     void initialize(string classPath);
+    void showClass(string className);
     void run();
     
     void invoke(Frame frame);

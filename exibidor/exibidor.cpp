@@ -1,15 +1,13 @@
 #include "exibidor.hpp"
-#include "../leitor/utf8.hpp"
-#include "../common/converters.hpp"
-#include <string.h>
 
+using namespace exibidor;
+using namespace std;
 
 int bytecode_group(u1);
 void bytecode_print( u1*, int *, int, cp_info *);
 
 // print u1 em hexadecimal
 // void exibir_u1_hexa(u1 estrutura){
-//     printf("%x \n", estrutura);
 // }
 
 
@@ -24,34 +22,39 @@ string class_decoder(cp_info *cp, u2 classIndex) {
 void constantValue_type_exibitor(cp_info *cp, ClassFile *cf) {
     switch (cp->tag)
     {
-    case (CONSTANT_Long_info): {
-        printf("<%lld>\n\n", u4ToLong(cp->constant_type_union.Long.low_bytes, cp->constant_type_union.Long.high_bytes));
-    }
+    case (CONSTANT_Long_info):
+    {
+        cout << '<' << u4ToLong(cp->constant_type_union.Long.low_bytes, cp->constant_type_union.Long.high_bytes) << '>' << endl << endl;
         break;
-    case (CONSTANT_Float_info): {
-        printf("<%f>\n\n", u4ToFloat(cp->constant_type_union.Float.bytes));
     }
+    case (CONSTANT_Float_info):
+    {
+        cout << '<' << u4ToFloat(cp->constant_type_union.Float.bytes) << '>' << endl << endl;
         break;
-    case (CONSTANT_Double_info): {
-        printf("<%lf>\n\n", u4ToDouble(cp->constant_type_union.Double.low_bytes, cp->constant_type_union.Double.high_bytes));
     }
+    case (CONSTANT_Double_info):
+    {
+        cout << '<' << u4ToDouble(cp->constant_type_union.Double.low_bytes, cp->constant_type_union.Double.high_bytes) << '>' << endl << endl;
         break;
-    case (CONSTANT_Integer_info): {
-        printf("<%d>\n\n", cp->constant_type_union.Integer.bytes);
     }
+    case (CONSTANT_Integer_info):
+    {
+        cout << '<' << u4ToInt(cp->constant_type_union.Integer.bytes) << '>' << endl << endl;
         break;
-    case (CONSTANT_String_info): {
+    }
+    case (CONSTANT_String_info):
+    {
         u2 index = cp->constant_type_union.String.string_index;
-        printf("<%s>\n\n", utf8ToString(&cf->constant_pool[index]));
-    }
+        cout << '<' << utf8ToString(&cf->constant_pool[index]) << '>' << endl << endl;
         break;
+    }
     }
 }
 
 void constantValue_exibitor(Attribute_info *attribute, ClassFile *cf) {
     u2 constantValue_index = attribute->attribute_info_union.constantvalue_index;
-    printf("\tSpecific info:\n");
-    printf("\tConstant value index: cp_info #%d ", constantValue_index);
+    cout << "\tSpecific info:" << endl;
+    cout << "\tConstant value index: cp_info #" << constantValue_index << endl;
     constantValue_type_exibitor(&cf->constant_pool[constantValue_index], cf);
 }
 
@@ -60,21 +63,19 @@ void constantValue_exibitor(Attribute_info *attribute, ClassFile *cf) {
 void code_exibitor(Attribute_info *attribute, ClassFile *cf){
     
     // MISC    
-    printf("\n\tMISC: \n\n");
-    printf("\tMaximum stack size: %d \n",attribute->attribute_info_union.code_attribute.max_stack);
-    printf("\tMaximum local variables: %d \n",attribute->attribute_info_union.code_attribute.max_locals);
-    printf("\tMaximum code length: %d \n\n",attribute->attribute_info_union.code_attribute.code_length);
+    cout << "\n\tMISC: \n\n";
+    cout << "\tMaximum stack size: " << attribute->attribute_info_union.code_attribute.max_stack << "\n";
+    cout << "\tMaximum local variables: " << attribute->attribute_info_union.code_attribute.max_locals << "\n";
+    cout << "\tMaximum code length: " << attribute->attribute_info_union.code_attribute.code_length << "\n\n";
     
 
-    printf("\tBytecodes: \n\n");
+    cout << "\tBytecodes: \n\n";
     // code mnermonicos!
     int line = 1;
     // iterar para cada byte
     for(int i = 0; i < attribute->attribute_info_union.code_attribute.code_length; i++){
-        printf("\t%d | %d ", line, i);
+        cout << "\t" << line << " | " << i << " ";
 
-        // printf("\t%d %s   ",i , bytecode_to_opcode_string(bytecode));
-        // printf("HEXA %x \n", bytecode);
         
 
         //bytecode em questão 
@@ -83,11 +84,10 @@ void code_exibitor(Attribute_info *attribute, ClassFile *cf){
         // pegar o grupo
         int group = bytecode_group(bytecode);
 
-        // printf("- grupo %d - ", group);
         
         // se for lookupswitch break e print instrução não implementada
         if(bytecode == lookupswitch){
-            printf("Instrução não implementada!\n");
+            cout << "Instrução não implementada!\n";
             break;
         };
 
@@ -97,7 +97,7 @@ void code_exibitor(Attribute_info *attribute, ClassFile *cf){
         line++;
     };
     
-    printf("\n");
+    cout << endl;
 
     attributes_exibitor(attribute->attribute_info_union.code_attribute.attributes, attribute->attribute_info_union.code_attribute.attribute_count, cf, 2);
 
@@ -110,14 +110,14 @@ void code_exibitor(Attribute_info *attribute, ClassFile *cf){
 void exceptions_exibitor(Attribute_info *attribute, ClassFile *cf) {
     u2 length = attribute->attribute_info_union.exceptions_attribute.number_of_exceptions;
     cp_info *cp = cf->constant_pool;
-    printf("\tSpecific info:\n");
+    cout << "\tSpecific info:\n";
 
     for (int i = 0; i < length; i++) {
         u2 exception_index = attribute->attribute_info_union.exceptions_attribute.exception_index_table[i];
-        printf("\tNúmero: %d - Exception: cp_info #%d <%s>\n", i, exception_index, class_decoder(cp, exception_index));
+        cout << "\tNúmero: " << i << " - Exception: cp_info #" << exception_index << " <" << class_decoder(cp, exception_index) << ">\n";
     }
 
-    printf("\n");
+    cout << endl;
 }
 
 // -------------------------- INNERCLASSES ---------------------- 
@@ -125,45 +125,49 @@ void exceptions_exibitor(Attribute_info *attribute, ClassFile *cf) {
 void innerClasses_exibitor(Attribute_info *attribute, ClassFile *cf) {
     u2 length = attribute->attribute_info_union.innerClasses_attribute.number_of_classes;
     cp_info *cp = cf->constant_pool;
-    printf("Specific info:\n\n");
+    cout << "Specific info:\n\n";
     
     for (int i = 0; i < length; i++) {
         inner_classes *inner_class = &attribute->attribute_info_union.innerClasses_attribute.inner_classes[i];
-        printf("Número: %d - Inner Class: cp_info #%d <%s> - Outer Class: cp_info #%d <%s> - Inner Name: cp_info #%d <%s> - Access Flags: 0x%x [%s]\n\n", i, inner_class->inner_class_info_index, class_decoder(cp, inner_class->inner_class_info_index), inner_class->outer_class_info_index, class_decoder(cp, inner_class->outer_class_info_index), inner_class->inner_name_index, utf8ToString(&cp[inner_class->inner_name_index]), inner_class->inner_class_access_flags, accFlag_decoder(inner_class->inner_class_access_flags));
+        cout << "Número: " << i << " - Inner Class: cp_info #" << inner_class->inner_class_info_index << " <" << class_decoder(cp, inner_class->inner_class_info_index) << "> - Outer Class: cp_info #" << inner_class->outer_class_info_index << " <" << class_decoder(cp, inner_class->outer_class_info_index) << "> - Inner Name: cp_info #" << inner_class->inner_name_index << " <" << utf8ToString(&cp[inner_class->inner_name_index]) << "> - Access Flags: 0x" << inner_class->inner_class_access_flags << " [" << accFlag_decoder(inner_class->inner_class_access_flags) << "]\n\n";
     }
 
-    // printf("\n");
 }
 
 // -------------------------- LINENUMBERTABLE ---------------------- 
 
 void lineNumberTable_exibitor(Attribute_info *attribute, ClassFile *cf) {
     u2 length = attribute->attribute_info_union.lineNumberTable_attribute.line_number_table_length;
-    printf("\t\tSpecific info:\n");
+    cout << "\t\tSpecific info:\n";
 
     for (int i = 0; i < length; i++) {
         line_number_table *line_number_table = &attribute->attribute_info_union.lineNumberTable_attribute.line_number_table[i];
-        printf("\t\tNúmero: %d - Start PC: %d - Line Number: %d\n", i, line_number_table->start_pc, line_number_table->line_number);
+        cout << "\t\tNúmero: " << i << " - Start PC: " << line_number_table->start_pc << " - Line Number: " << line_number_table->line_number << "\n";
     }
 
-    printf("\n");
+    cout << endl;
 }
 // -------------------------- LOCALVARIABLETABLE ---------------------- 
 
 void localVariableTable_exibitor(Attribute_info *attribute, ClassFile *cf) {
     u2 length = attribute->attribute_info_union.localVariableTable_attribute.local_variable_table_length;
     cp_info *cp = cf->constant_pool;
-    printf("\tSpecific info:\n");
+    cout << "\tSpecific info:\n";
     
     for (int i = 0; i < length; i++) {
         Local_variable_table *local_variable_table = &attribute->attribute_info_union.localVariableTable_attribute.local_variable_table[i];
-        printf("\tNúmero: %d - Start PC: %d - Length: %d - Name Index: cp_info #%d <%s> - Descriptor Index: cp_info #%d <%s> - Index: %d\n", i, local_variable_table->start_pc, local_variable_table->length, local_variable_table->name_index, utf8ToString(&cp[local_variable_table->name_index]), local_variable_table->descriptor_index, utf8ToString(&cp[local_variable_table->descriptor_index]), local_variable_table->index);
-        if (!strcmp(utf8ToString(&cp[local_variable_table->descriptor_index]), "J") || !strcmp(utf8ToString(&cp[local_variable_table->descriptor_index]), "D")) {
+        cout << "\tNúmero: " << i << " - ";
+        cout << "Start PC: " << local_variable_table->start_pc << " - ";
+        cout << "Length: " << local_variable_table->length << " - ";
+        cout << "Name Index: #" << local_variable_table->name_index << " <" << utf8ToString(&cp[local_variable_table->name_index]) << "> - ";
+        cout << "Descriptor Index: #" << local_variable_table->descriptor_index << " <" << utf8ToString(&cp[local_variable_table->descriptor_index]) << "> - ";
+        cout << "Index: " << local_variable_table->index << "\n";
+        if (utf8ToString(&cp[local_variable_table->descriptor_index]) == "J" || utf8ToString(&cp[local_variable_table->descriptor_index]) == "D") {
             i++;
         }
     }
 
-    printf("\n");
+    cout << endl;
 }
 
 
@@ -172,7 +176,7 @@ void localVariableTable_exibitor(Attribute_info *attribute, ClassFile *cf) {
 void attributes_exibitor(Attribute_info *attributes, u2 attributes_count, ClassFile * cf, int tabs_count){
     string tabs = (char*) malloc(tabs_count * 2 * sizeof(char));
     if (tabs_count == 0) {
-        printf("Início attributes: \n\n");
+        cout <<"Início attributes: \n\n"; 
     }
     if (tabs_count == 1) {
         tabs = "\t";
@@ -186,43 +190,45 @@ void attributes_exibitor(Attribute_info *attributes, u2 attributes_count, ClassF
         Attribute_info *attr = &attributes[i];
         u2 length = attr->attribute_length;
         u2 name_index = attr->attribute_name_index;
-        printf("%sAttribute[%d]\n", tabs, i);
-        printf("%sAttribute name index: cp_info #%d <%s> \n", tabs, name_index, utf8ToString(&cf->constant_pool[name_index]));
-        printf("%sAttribute length: %d\n", tabs, length);
+        cout << tabs << "Attribute[" << i << "]\n";
+
+        cout << tabs << "Attribute name index: cp_info #" << name_index << " <" << utf8ToString(&cf->constant_pool[name_index]) << ">\n";
+
+        cout << tabs << "Attribute length: " << length << "\n";
 
         string  name = utf8ToString(&cf->constant_pool[name_index]);
         // usar o code length aqui não faz sentido porque não é pra printar um code para cada length.
         // entramos na função e com base no bytecode vamos ter que tomar nossas decisões do que fazer
-        if (!strcmp(name, "ConstantValue"))
+        if (name == "ConstantValue")
         {   
             constantValue_exibitor(attr, cf);
         }
-        else if (!strcmp(name, "Code"))
+        else if (name == "Code")
         {
             code_exibitor(attr, cf);
         }
-        else if (!strcmp(name, "Exceptions"))
+        else if (name == "Exceptions")
         {
             exceptions_exibitor(attr, cf);
         }
-        else if (!strcmp(name, "InnerClasses"))
+        else if (name == "InnerClasses")
         {
             innerClasses_exibitor(attr, cf);
         }
-        else if (!strcmp(name, "LineNumberTable"))
+        else if (name == "LineNumberTable")
         {
             lineNumberTable_exibitor(attr, cf);
         }
-        else if (!strcmp(name, "LocalVariableTable"))
+        else if (name == "LocalVariableTable")
         {
             localVariableTable_exibitor(attr, cf);
         } else {
-            printf("\n");
+            cout << "\n";
         }
     }
 
     if (tabs_count == 0) {
-        printf("Fim attributes\n\n");
+        cout << "Fim attributes\n\n";
     }   
     
 };
@@ -231,17 +237,17 @@ void attributes_exibitor(Attribute_info *attributes, u2 attributes_count, ClassF
 
 void fields_exibitor(ClassFile *cf) {
     u2 fields_count = cf->fields_count;
-    printf("Início Fields\n\n");
+    cout <<"Início Fields\n\n";
     for (int i = 0; i < fields_count; i++) {
         field_info *field = &cf->fields[i];
         cp_info *cp = cf->constant_pool;
-        printf("Field[%d]\n", i);
-        printf("Name: cp_info #%d %s\n", field->name_index, utf8ToString(&cp[field->name_index]));
-        printf("Descriptor: cp_info #%d <%s>\n", field->descriptor_index, utf8ToString(&cp[field->descriptor_index]));
-        printf("Access flags: 0x%x [%s]\n\n", field->access_flags, accFlag_decoder(field->access_flags));
+        cout << "Field[" << i << "]\n";
+        cout << "Name: #" << field->name_index << " <" << utf8ToString(&cp[field->name_index]) << ">\n";
+        cout << "Descriptor: #" << field->descriptor_index << " <" << utf8ToString(&cp[field->descriptor_index]) << ">\n";
+        cout << "Access flags: 0x" << hex << field->access_flags << dec << " [" << accFlag_decoder(field->access_flags) << "]\n\n";
         attributes_exibitor(field->attributes, field->attributes_count, cf, 1);
     }
-    printf("Fim Fields\n\n");
+    cout <<"Fim Fields\n\n";
 }
 
 // ----------------------------- METHODS -------------------------------------
@@ -250,7 +256,7 @@ void methods_exibitor(ClassFile *cf){
 
     u2 methods_count = cf->methods_count;
 
-    printf("Início Methods:\n\n");
+    cout << "Início Methods:\n\n";
 
     // iterar em cada method
     for (int i = 0; i < methods_count; i++){
@@ -258,68 +264,54 @@ void methods_exibitor(ClassFile *cf){
         // pegar o method
         Method_info *method = &cf->methods[i]; 
         
-        printf("Method[%d]\n", i);
+        cout << "Method[" << i << "]\n";
 
         //name
-        printf("Name: cp_info #%d <%s> \n", method->name_index, utf8ToString(&cf->constant_pool[method->name_index])); 
+        cout << "Name: #" << method->name_index << "<" << utf8ToString(&cf->constant_pool[method->name_index]) << ">\n";
 
         // discriptor 
-        printf("Descriptor: cp_info #%d <%s> \n", method->descriptor_index, utf8ToString(&cf->constant_pool[method->descriptor_index]));
+        cout << "Descriptor: #" << method->descriptor_index << " <" << utf8ToString(&cf->constant_pool[method->descriptor_index]) << ">\n";
         
         // access flags
-        printf("Access Flags: 0x%x [%s] \n\n", method->access_flags, accFlag_decoder(method->access_flags));
+        cout << "Access Flags: 0x" << hex << method->access_flags << dec << " [" << accFlag_decoder(method->access_flags) << "]\n\n";
 
         // attributes
         attributes_exibitor(method->attributes, method->attributes_count, cf, 1);
     };
 
-    printf("Fim Methods\n\n");
 
 };
 
 
 string  accFlag_decoder(u2 accFlag) {
-    string flagName = (string ) malloc(64 * sizeof(char));
-    if (accFlag & 0x0001) {
-        strcat(flagName, "public ");
-    }if (accFlag & 0x0002) {
-        strcat(flagName, "private ");
-    }if (accFlag & 0x0004) {
-        strcat(flagName, "protected ");
-    }if (accFlag & 0x0008) {
-        strcat(flagName, "static ");
-    } if (accFlag & 0x0010) {
-        strcat(flagName, "final ");
-    } if (accFlag & 0x0020) {
-        strcat(flagName, "super ");
-    } if (accFlag & 0x0200) {
-        strcat(flagName, "interface ");
-    } if (accFlag & 0x0400) {
-        strcat(flagName, "abstract ");
-    } if (accFlag & 0x1000) {
-        strcat(flagName, "synthetic ");
-    } if (accFlag & 0x2000) {
-        strcat(flagName, "annotation ");
-    } if (accFlag & 0x4000) {
-        strcat(flagName, "enum ");
-    }
+    string flagName = "";
+    if (accFlag & 0x0001) flagName += "public ";
+    if (accFlag & 0x0002) flagName += "private ";
+    if (accFlag & 0x0004) flagName += "protected ";
+    if (accFlag & 0x0008) flagName += "static ";
+    if (accFlag & 0x0010) flagName += "final ";
+    if (accFlag & 0x0020) flagName += "super ";
+    if (accFlag & 0x0200) flagName += "interface ";
+    if (accFlag & 0x0400) flagName += "abstract ";
+    if (accFlag & 0x1000) flagName += "synthetic ";
+    if (accFlag & 0x2000) flagName += "annotation ";
+    if (accFlag & 0x4000) flagName += "enum ";
 
-    if (strlen(flagName) > 0) {
-        flagName[strlen(flagName) - 1] = '\0';
+    if (flagName.size() > 0) {
+        flagName = flagName.substr(0, flagName.size() - 1);
     }
-
     return flagName;
 }
 
 void interfaces_exibitor (ClassFile *cf) {
     u2 interfaces_count = cf->interfaces_count;
-    printf("Início Interfaces: \n \n");
+    cout << "Início Interfaces: \n \n";
     for (int i = 0; i < interfaces_count; i++) {
         u2 interface = cf->interfaces[i];
-        printf("Interface[%d]\n", i);
-        printf("Class name: cp_info #%d <%s> \n\n", interface, class_decoder(cf->constant_pool, interface));
+        cout << "Interface[" << i << "]\n";
+        cout << "Interface: #" << interface << " <" << class_decoder(cf->constant_pool, interface) << ">\n\n";
     }
-    printf("Fim Interfaces \n\n");
+    cout << "Fim Interfaces \n\n";
 }
 
 // exibir o cp_info
@@ -332,85 +324,82 @@ void cp_info_exibitor(ClassFile *classFile){
     // pegar o endereço do constant pool salvo e colocar no ponteiro constantPool.
     cp_info *constantPool = classFile->constant_pool;
     
-    printf("\nInício Constant Pool \n \n");
+    cout << "\nInício Constant Pool \n \n";
+    
 
     // iterar nos constant pools e ir printando com base em cada um de (1 até cp_count - 1) 
     for(int i = 1; i < cp_info_count; i++){
-    // printf("\n debug indice = %d \n\n", methodref_class_index);
 
         // constantPoolItem é um ponteiro que aponta para a cp em questão
         // aqui pegamos no &constantPool[i] o endereço do cp_info localizado nessa posição
         // cp_info *constantPoolItem = &constantPool[i];
 
         // imprimir o indice do constant pool
-        printf("[0%d] - ", i);
-        // primeiro byte é o tag 
-        printf("Tag: %d \n", constantPool[i].tag);
+        cout << "[" << i << "] ";
         // agora temos o restante que depende do tag, aplicar um SWITCH
         // para cada estrutura, agora temos que realizar os devidos prints
         switch(constantPool[i].tag){
 
             case(0) :
-                {
-                printf("(large numeric continued)\n\n");
-                }
+            {
+                cout << "(large numeric continued)\n\n";
                 break;
+            }
             case(CONSTANT_Class_info):
-                { 
+            { 
+                cout << "CONSTANT_Class_info" << endl;
                 u2 class_name_index = constantPool[i].constant_type_union.Class_info.name_index;
                 // aqui pegamos o index para accessar a constante utf_8 para a nossa função
-                printf("Class name: cp_info #%d <%s>\n\n", class_name_index, utf8ToString(&constantPool[class_name_index]));
-                }
+                cout << "Class name: cp_info #" << class_name_index << " <" << utf8ToString(&constantPool[class_name_index]) << ">\n\n";
                 break;
-
+            }
             case(CONSTANT_Fieldref_info):
-                {
+            {
+                cout << "CONSTANT_Fieldref_info" << endl;
                     
-                u1 fieldref_class_index = constantPool[i].constant_type_union.Fieldref_info.class_index;
-                u1 fieldref_name_and_type_index = constantPool[i].constant_type_union.Fieldref_info.name_and_type_index;
+                u2 fieldref_class_index = constantPool[i].constant_type_union.Fieldref_info.class_index;
+                u2 fieldref_name_and_type_index = constantPool[i].constant_type_union.Fieldref_info.name_and_type_index;
                 
                 // meio confuso, tem outras formas de implementar
                 // aqui o class_index aponta para uma classe no constant poll e depois essa class_info aponta para um utf8.
                 
                 // printando o class name
-                printf("Class name: cp_info #%d <%s>\n", fieldref_class_index, utf8ToString(&constantPool[constantPool[fieldref_class_index].constant_type_union.Class_info.name_index]));
-                
+                cout << "Class name: cp_info #" << fieldref_class_index << " <" << utf8ToString(&constantPool[constantPool[fieldref_class_index].constant_type_union.Class_info.name_index]) << ">\n";
                 // printando o name and type
                 // name
-                printf("Name and type: cp_info #%d <%s : ",  fieldref_name_and_type_index, utf8ToString(&constantPool[constantPool[fieldref_name_and_type_index].constant_type_union.NameAndType.name_index]));
+                cout << "Name and type: cp_info #" << fieldref_name_and_type_index << " <" << utf8ToString(&constantPool[constantPool[fieldref_name_and_type_index].constant_type_union.NameAndType.name_index]) << " : ";
 
                 // descriptor
-                printf("%s>\n\n", utf8ToString(&constantPool[constantPool[fieldref_name_and_type_index].constant_type_union.NameAndType.descriptor_index]));
-                }
-                
+                cout << utf8ToString(&constantPool[constantPool[fieldref_name_and_type_index].constant_type_union.NameAndType.descriptor_index]) << ">\n\n";
                 break;
-                
+            }
             case(CONSTANT_Methodref_info):
-                {
+            {
+                cout << "CONSTANT_Methodref_info" << endl;
 
-                u1 methodref_class_index = constantPool[i].constant_type_union.Methodref_info.class_index;
-                u1 methodref_name_and_type_index = constantPool[i].constant_type_union.Methodref_info.name_and_type_index;
+                u2 methodref_class_index = constantPool[i].constant_type_union.Methodref_info.class_index;
+                u2 methodref_name_and_type_index = constantPool[i].constant_type_union.Methodref_info.name_and_type_index;
                 
                 // meio confuso, tem outras formas de implementar
                 // aqui o class_index aponta para uma classe no constant poll e depois essa class_info aponta para um utf8.
                 
                 // printando o class name
-                printf("Class name: cp_info #%d <%s>\n", methodref_class_index, utf8ToString(&constantPool[constantPool[methodref_class_index].constant_type_union.Class_info.name_index]));
+                cout << "Class name: #" << (u4) methodref_class_index << " <" << utf8ToString(&constantPool[constantPool[methodref_class_index].constant_type_union.Class_info.name_index]) << ">\n";
                 
                 // printando o name and type
 
                 // name
-                printf("Name and type: cp_info #%d <%s : ",  methodref_name_and_type_index, utf8ToString(&constantPool[constantPool[methodref_name_and_type_index].constant_type_union.NameAndType.name_index]));
+                cout << "Name and type: #" << (u4) methodref_name_and_type_index;
+                cout << " <" << utf8ToString(&constantPool[constantPool[methodref_name_and_type_index].constant_type_union.NameAndType.name_index]) << " : ";
 
                 // descriptor
-                printf("%s> \n\n", utf8ToString(&constantPool[constantPool[methodref_name_and_type_index].constant_type_union.NameAndType.descriptor_index]));
-                
-                }
-                break;
-                
+                cout << utf8ToString(&constantPool[constantPool[methodref_name_and_type_index].constant_type_union.NameAndType.descriptor_index]) << ">\n\n";
 
+                break;
+            }
             case(CONSTANT_InterfaceMethodref_info): 
-                {
+            {
+                cout << "CONSTANT_InterfaceMethodref_info" << endl;
                 u2 interface_index = constantPool[i].constant_type_union.InterfaceMethodref_info.class_index;
                 u2 name_and_type_index = constantPool[i].constant_type_union.InterfaceMethodref_info.name_and_type_index;
 
@@ -418,114 +407,114 @@ void cp_info_exibitor(ClassFile *classFile){
                 u2 utf8_name_and_type_index_name = constantPool[name_and_type_index].constant_type_union.NameAndType.name_index;
                 u2 utf8_name_and_type_index_descriptor = constantPool[name_and_type_index].constant_type_union.NameAndType.descriptor_index;
 
-                printf("Interface name: cp_info #%d <%s>\n", interface_index, utf8ToString(&constantPool[utf8_interface_index]));
-                printf("Name and type: cp_info #%d <%s %s>\n\n", name_and_type_index, utf8ToString(&constantPool[utf8_name_and_type_index_name]), utf8ToString(&constantPool[utf8_name_and_type_index_descriptor]));
-                }
+                cout << "Interface name: cp_info #" << interface_index << " <" << utf8ToString(&constantPool[utf8_interface_index]) << ">\n";
+
+                cout << "Name and type: cp_info #" << name_and_type_index << " <" << utf8ToString(&constantPool[utf8_name_and_type_index_name]) << " " << utf8ToString(&constantPool[utf8_name_and_type_index_descriptor]) << ">\n\n";
                 break;
-                
+            }
             case(CONSTANT_String_info):
             {
+                cout << "CONSTANT_String_info" << endl;
 
-                u1 string_info_index = constantPool[i].constant_type_union.String.string_index;
-                printf("String: cp_info #%d <%s> \n\n", string_info_index ,utf8ToString(&constantPool[string_info_index]));
-
-            }
+                u2 string_info_index = constantPool[i].constant_type_union.String.string_index;
+                cout << "String: cp_info #" << (u4) string_info_index << " <" << utf8ToString(&constantPool[string_info_index]) << ">\n\n";
                 break;
-
+            }
             case(CONSTANT_Integer_info): 
             {
+                cout << "CONSTANT_Integer_info" << endl;
                 u4 bytes = constantPool[i].constant_type_union.Integer.bytes;
-                printf("Integer value: %d\n\n", bytes);
-            }
+                cout << "Integer value: " << bytes << "\n\n";
                 break;
-            
+            }
             case(CONSTANT_Float_info):
             {
+                cout << "CONSTANT_Float_info" << endl;
                 u4 bytes = constantPool[i].constant_type_union.Float.bytes;
-                printf("Float value: %f\n\n", u4ToFloat(bytes));
-            }   
+                cout << "Float value: " << u4ToFloat(bytes) << "\n\n";
                 break;
-
+            }   
             case(CONSTANT_Long_info): 
             {
+                cout << "CONSTANT_Long_info" << endl;
                 u4 high_bytes = constantPool[i].constant_type_union.Long.high_bytes;
                 u4 low_bytes = constantPool[i].constant_type_union.Long.low_bytes;
-                printf("Long value: %lld\n\n", u4ToLong(low_bytes, high_bytes));
-            }
+                cout << "Long value: " << u4ToLong(low_bytes, high_bytes) << "\n\n";
                 break;
-
+            }
             case(CONSTANT_Double_info): 
             {
+                cout << "CONSTANT_Double_info" << endl;
                 u4 high_bytes = constantPool[i].constant_type_union.Double.high_bytes;
                 u4 low_bytes = constantPool[i].constant_type_union.Double.low_bytes;
-                printf("Double value: %lf\n\n", u4ToDouble(low_bytes, high_bytes));
-            }
+                cout << "Double value: " << u4ToDouble(low_bytes, high_bytes) << "\n\n";
                 break;
-            
-            case(CONSTANT_NameAndType_info):{
-
+            }
+            case(CONSTANT_NameAndType_info):
+            {
+                cout << "CONSTANT_NameAndType_info" << endl;
                 u2 name_index = constantPool[i].constant_type_union.NameAndType.name_index;
                 u2 descriptor_index = constantPool[i].constant_type_union.NameAndType.descriptor_index;
 
-                printf("Name: cp_info #%d %s \n", name_index, utf8ToString(&constantPool[name_index]));
-                printf("Descriptor: cp_info #%d %s\n\n", descriptor_index, utf8ToString(&constantPool[descriptor_index]));
-            }
+                cout << "Name: cp_info #" << name_index << " " << utf8ToString(&constantPool[name_index]) << "\n";
+                cout << "Descriptor: cp_info #" << descriptor_index << " " << utf8ToString(&constantPool[descriptor_index]) << "\n\n";
                 break;
-            
+            }
             case(CONSTANT_Utf8_info):
             {   
+                cout << "CONSTANT_Utf8_info" << endl;
                 // length of byte array?
-                printf("length of Byte array: %d \n", constantPool[i].constant_type_union.Utf8.length);
+                cout << "length of Byte array: " << constantPool[i].constant_type_union.Utf8.length << "\n";
                 // length of string?
-                printf("length of string: %d \n", constantPool[i].constant_type_union.Utf8.length);
+                cout << "length of string: " << constantPool[i].constant_type_union.Utf8.length << "\n";
                 // String
-                printf("String: %s \n\n", utf8ToString(&constantPool[i]));
-            }   
+                cout << "String: " << utf8ToString(&constantPool[i]) << "\n\n";
                 break;
-
+            }   
             default:
-                printf("\n");
+                cout << "\n";
                 break;
         };
     }
 
-    printf("Fim Constant Pool \n \n");
+    cout << "Fim Constant Pool \n \n";
 
 }
 
 void class_exibitor(ClassFile *cf) {
     // Exibição magic number
-    printf("Magic: %x \n", cf->magic);
+    cout << "Magic: 0x" << hex << cf->magic << dec << "\n";
 
     // Exibição minor version
-    printf("Minor version: %d \n", cf->minor_version);
+    cout << "Minor version: " << cf->minor_version << "\n";
 
     // Exibição major version
-    printf("Major version: %d \n", cf->major_version);
+    cout << "Major version: " << cf->major_version << "\n";
+
+    // Java version
+    cout << "Java version: 1." << cf->major_version - 44 << "\n";
 
     // Exibição constant pool size
-    printf("Constant Pool Count: %d \n", cf->constant_pool_count);
-
+    cout << "Constant Pool Count: " << cf->constant_pool_count << "\n";
     // Exibição access flags
-    printf("Access flags: 0x%x [%s] \n", cf->access_flags, accFlag_decoder(cf->access_flags));
-
+    cout << "Access flags: 0x" << hex << cf->access_flags << dec << " [" << accFlag_decoder(cf->access_flags) << "] \n";
     // Exibição this class 
-    printf("This class: #%d <%s> \n", cf->this_class, class_decoder(cf->constant_pool, cf->this_class));
+    cout << "This class: #" << cf->this_class << " <" << class_decoder(cf->constant_pool, cf->this_class) << "> \n";
 
     // Exibição super class
-    printf("Super class: #%d <%s> \n", cf->super_class, class_decoder(cf->constant_pool, cf->super_class));
+    cout << "Super class: #" << cf->super_class << " <" << class_decoder(cf->constant_pool, cf->super_class) << "> \n";
 
     // Exibição interfaces count
-    printf("Interfaces count: %d\n", cf->interfaces_count);
+    cout << "Interfaces count: " << cf->interfaces_count << "\n";
 
     // Exibição fields count 
-    printf("Fields count: %d \n", cf->fields_count);
+    cout << "Fields count: " << cf->fields_count << "\n";
 
     // Exibição methods count
-    printf("Methods count: %d \n", cf->methods_count);
+    cout << "Methods count: " << cf->methods_count << "\n";
 
     // Exibição attributes count
-    printf("Attributes count: %d \n", cf->attributes_count);
+    cout << "Attributes count: " << cf->attributes_count << "\n";
 
     // Exibição constant pool
     cp_info_exibitor(cf);
@@ -547,6 +536,7 @@ void class_exibitor(ClassFile *cf) {
 
 // -------------------------- CODE NAME ---------------------- 
 // função que pega o nome baseado no opcode.
+
 const string bytecode_to_opcode_string(value_to_opcode op)
 {
     switch (op)
@@ -947,6 +937,7 @@ string  code_arr_to_string(int atype){
     else if (atype == T_LONG){
         return "long";
     };
+    return "unknown";
 };
 
 // -------------------------- GROUP PRINT ---------------------- 
@@ -961,12 +952,12 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
         case(1):{
 
             // printando bytecode
-            printf("%s ", bytecode_to_opcode_string((value_to_opcode)code_array[*index]));
+            cout << bytecode_to_opcode_string((value_to_opcode)code_array[*index]) << " ";
             
             ++(*index);
             
             // printando o número
-            printf("%d \n", *index);
+            cout << *index << " \n";
         }
         break;
 
@@ -976,7 +967,7 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
         case(11):{
 
             // printando
-            printf("%s ", bytecode_to_opcode_string((value_to_opcode)code_array[*index]));
+            cout << bytecode_to_opcode_string((value_to_opcode)code_array[*index]) << " ";
 
             ++(*index);
 
@@ -985,34 +976,30 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
             // pegar a tag fazer os casos
             // String, int, float, Class
             int tag = constant_pool[pool_index].tag;
-            // printf("pool_index %d \n", pool_index);        
-            // printf("tag %d \n", tag);        
 
             if(tag == CONSTANT_String_info){
-                printf("#%d %s \n", pool_index, utf8ToString(&constant_pool[constant_pool[pool_index].constant_type_union.String.string_index]));
+                cout << "#" << pool_index << " " << utf8ToString(&constant_pool[constant_pool[pool_index].constant_type_union.String.string_index]) << " \n";
             }
             else if(tag == CONSTANT_Integer_info){
-                printf("#%d %d\n", pool_index, constant_pool[pool_index].constant_type_union.Integer.bytes);
+                cout << "#" << pool_index << " " << constant_pool[pool_index].constant_type_union.Integer.bytes << " \n";
             }
             else if(tag == CONSTANT_Float_info){
-                printf("#%d %f\n", pool_index, u4ToFloat(constant_pool[pool_index].constant_type_union.Integer.bytes));
+                cout << "#" << pool_index << " " << u4ToFloat(constant_pool[pool_index].constant_type_union.Integer.bytes) << " \n";
             }
             else if(tag == CONSTANT_Class_info){
-                printf("#%d <%s>\n", pool_index, utf8ToString(&constant_pool[constant_pool[pool_index].constant_type_union.Class_info.name_index]));
+                cout << "#" << pool_index << " " << utf8ToString(&constant_pool[constant_pool[pool_index].constant_type_union.Class_info.name_index]) << " \n";
             }
             else{
-                printf("\n");
             };
             
             // printando o cp_info
             // aqui o pool_index aponta -> CONSTANT_String_info
-            // printf("#%d %s\n", pool_index, utf8ToString(&constant_pool[constant_pool[pool_index].constant_type_union.String.string_index]));
         }
         break;
 
         case(12):{
 
-            printf("%s ", bytecode_to_opcode_string((value_to_opcode)code_array[*index]));
+            cout << bytecode_to_opcode_string((value_to_opcode)code_array[*index]) << " ";
             
             ++(*index);
             int atype = code_array[*index];
@@ -1021,19 +1008,19 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
             // ver qual o tipo do array
             string atype_string = code_arr_to_string(atype);
 
-            printf("%d (%s)\n",atype, atype_string);
+            cout << atype << " (" << atype_string << ") \n";
 
         };
         break;
 
 
         case(13):{
-            printf("%s ", bytecode_to_opcode_string((value_to_opcode)code_array[*index]));
+            cout << bytecode_to_opcode_string((value_to_opcode)code_array[*index]) << " ";
 
             ++(*index);
             int byte_to_push = code_array[*index];
 
-            printf("%d \n", byte_to_push);
+            cout << byte_to_push << " \n";
 
         }
         break;
@@ -1054,56 +1041,55 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
             uint16_t cp_index = (first_bytes << 8) | second_bytes; 
             // ver qual é o tipo e ir 
 
-            // printf("cp index: %d \n", cp_index);
             
-            printf("%s ", bytecode_to_opcode_string(bytecode));
+            cout << bytecode_to_opcode_string(bytecode) << " ";
 
             // class
-            if (!strcmp(bytecode_to_opcode_string(bytecode), "anewarray") | !strcmp(bytecode_to_opcode_string(bytecode), "checkcast") | !strcmp(bytecode_to_opcode_string(bytecode), "instanceof") | !strcmp(bytecode_to_opcode_string(bytecode), "new")){
-                printf("#%d <%s>\n", cp_index, utf8ToString(&constant_pool[constant_pool[cp_index].constant_type_union.Class_info.name_index]));
+            if (bytecode_to_opcode_string(bytecode) == "anewarray" || bytecode_to_opcode_string(bytecode) == "checkcast" || bytecode_to_opcode_string(bytecode) == "instanceof" || bytecode_to_opcode_string(bytecode) == "new") {
+                cout << "#" << cp_index << " " << utf8ToString(&constant_pool[constant_pool[cp_index].constant_type_union.Class_info.name_index]) << " \n";
             }
             // field
-            else if(!strcmp(bytecode_to_opcode_string(bytecode), "getfield") | !strcmp(bytecode_to_opcode_string(bytecode), "getstatic") | !strcmp(bytecode_to_opcode_string(bytecode), "putfield") | !strcmp(bytecode_to_opcode_string(bytecode), "putstatic")){
-                printf("#%d <%s : %s>\n", cp_index, utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Fieldref_info.class_index].constant_type_union.Class_info.name_index]), utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Fieldref_info.name_and_type_index].constant_type_union.NameAndType.descriptor_index]));
+            else if(bytecode_to_opcode_string(bytecode) == "getfield" || bytecode_to_opcode_string(bytecode) == "getstatic" || bytecode_to_opcode_string(bytecode) == "putfield" || bytecode_to_opcode_string(bytecode) == "putstatic"){
+                cout << "#" << cp_index << " <" << utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Fieldref_info.class_index].constant_type_union.Class_info.name_index]) << " : " << utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Fieldref_info.name_and_type_index].constant_type_union.NameAndType.descriptor_index]) << "> \n";
+            
             }
             // method
-            else if(!strcmp(bytecode_to_opcode_string(bytecode), "invokespecial") | !strcmp(bytecode_to_opcode_string(bytecode), "invokestatic") | !strcmp(bytecode_to_opcode_string(bytecode), "invokevirtual")){
-                 printf("#%d <%s : %s>\n", cp_index, utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Methodref_info.class_index].constant_type_union.Class_info.name_index]),utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Methodref_info.name_and_type_index].constant_type_union.NameAndType.descriptor_index]));
-                // printf("#%d <%s : >\n", cp_index, utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Methodref_info.class_index].constant_type_union.Class_info.name_index]));
+            else if(bytecode_to_opcode_string(bytecode) == "invokespecial" || bytecode_to_opcode_string(bytecode) == "invokestatic" || bytecode_to_opcode_string(bytecode) == "invokevirtual") {
+                cout << "#" << cp_index << " <" << utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Methodref_info.class_index].constant_type_union.Class_info.name_index]) << " : " << utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Methodref_info.name_and_type_index].constant_type_union.NameAndType.descriptor_index]) << ">\n";
             }
-            else if(!strcmp(bytecode_to_opcode_string(bytecode), "ldc_w")){
+            else if(bytecode_to_opcode_string(bytecode) == "ldc_w"){
 
                 int tag = constant_pool[cp_index].tag;
 
                 if(tag == CONSTANT_String_info){
-                    printf("#%d %s \n", cp_index, utf8ToString(&constant_pool[constant_pool[cp_index].constant_type_union.String.string_index]));
+                    cout << "#" << cp_index << " " << utf8ToString(&constant_pool[constant_pool[cp_index].constant_type_union.String.string_index]) << endl;
                 }
                 else if(tag == CONSTANT_Integer_info){
-                    printf("#%d %d\n", cp_index, constant_pool[cp_index].constant_type_union.Integer.bytes);
+                    cout << "#" << cp_index << " " << constant_pool[cp_index].constant_type_union.Integer.bytes << endl;
                 }
                 else if(tag == CONSTANT_Float_info){
-                    printf("#%d %f\n", cp_index, u4ToFloat(constant_pool[cp_index].constant_type_union.Integer.bytes));
+                    cout << "#" << cp_index << " " << u4ToFloat(constant_pool[cp_index].constant_type_union.Integer.bytes) << endl;
                 }
                 else if(tag == CONSTANT_Class_info){
-                    printf("#%d <%s>\n", cp_index, utf8ToString(&constant_pool[constant_pool[cp_index].constant_type_union.Class_info.name_index]));
+                    cout << "#" << cp_index << " <" << utf8ToString(&constant_pool[constant_pool[cp_index].constant_type_union.Class_info.name_index]) << ">\n";
                 }
                 else{
-                    printf("\n");
+                    cout << endl;
                 };
             }
-            else if(!strcmp(bytecode_to_opcode_string(bytecode), "ldc2_w")){
+            else if(bytecode_to_opcode_string(bytecode) == "ldc2_w"){
                 // double, long
 
                 int tag = constant_pool[cp_index].tag;
 
                 if(tag == CONSTANT_Double_info){
-                    printf("#%d %lf", cp_index, u4ToDouble(constant_pool[cp_index].constant_type_union.Double.low_bytes,constant_pool[cp_index].constant_type_union.Double.high_bytes));
+                    cout << "#" << cp_index << " " << u4ToDouble(constant_pool[cp_index].constant_type_union.Double.low_bytes,constant_pool[cp_index].constant_type_union.Double.high_bytes) << endl;
                 }
                 else if(tag == CONSTANT_Long_info){
-                    printf("#%d %lld", cp_index, u4ToLong(constant_pool[cp_index].constant_type_union.Long.low_bytes,constant_pool[cp_index].constant_type_union.Long.high_bytes));
+                    cout << "#" << cp_index << " " << u4ToLong(constant_pool[cp_index].constant_type_union.Long.low_bytes,constant_pool[cp_index].constant_type_union.Long.high_bytes) << endl;
                 }
                 else{
-                    printf("\n");
+                    cout << endl;
                 }
 
             };
@@ -1128,15 +1114,15 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
             // calculando local final
             uint16_t final = start_index + branch_jump;
 
-            printf("%s ", bytecode_to_opcode_string(bytecode));
+            cout << bytecode_to_opcode_string(bytecode) << ' ';
             // local final  (+numero de pualos)
-            printf("%d (+%d)\n", final, branch_jump);
+            cout << final << " (+" << branch_jump << ")\n";
         }
         break;
 
         case(22):{
             // printando
-            printf("%s ", bytecode_to_opcode_string((value_to_opcode)code_array[*index]));
+            cout << bytecode_to_opcode_string((value_to_opcode)code_array[*index]) << " ";
 
             ++(*index);
             int local_variable_index = code_array[*index];
@@ -1144,13 +1130,13 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
             ++(*index);
             int constant = code_array[*index];
 
-            printf("%d by %d\n",local_variable_index, constant);
+            cout << local_variable_index << " by " << constant << endl;
         }
         break;
 
         case(23):{
             // printando
-            printf("%s ", bytecode_to_opcode_string((value_to_opcode)code_array[*index]));
+            cout << bytecode_to_opcode_string((value_to_opcode)code_array[*index]) << " ";
 
             ++(*index);
             int first_bytes = code_array[*index];
@@ -1160,14 +1146,15 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
 
             uint16_t sum = (first_bytes << 8) | second_bytes; 
 
-            printf("%d \n",sum);
+            cout << sum << endl;
 
         }   
         break;
 
         case(4):{
             
-            printf("%s \n", bytecode_to_opcode_string((value_to_opcode)code_array[*index]));
+            cout << bytecode_to_opcode_string((value_to_opcode)code_array[*index]) << endl;
+
 
             ++(*index);
             ++(*index);        
@@ -1194,8 +1181,8 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
             int count = code_array[*index]; 
             ++(*index);
         
-            printf("%s ", bytecode_to_opcode_string(bytecode));
-            printf("#%d <%s : %s> count %d\n", cp_index, utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Methodref_info.class_index].constant_type_union.Class_info.name_index]),utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Methodref_info.name_and_type_index].constant_type_union.NameAndType.descriptor_index]), count);
+            cout << bytecode_to_opcode_string(bytecode) << ' ';
+            cout << "#" << cp_index << " <" << utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Methodref_info.class_index].constant_type_union.Class_info.name_index]) << " : " << utf8ToString(&constant_pool[constant_pool[constant_pool[cp_index].constant_type_union.Methodref_info.name_and_type_index].constant_type_union.NameAndType.descriptor_index]) << "> count " << count << endl;
 
         }
         break;
@@ -1214,14 +1201,14 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
             ++(*index);
             ++(*index);
 
-            printf("%s ", bytecode_to_opcode_string(bytecode));
+            cout << bytecode_to_opcode_string(bytecode) << ' ';
 
             // %s é feito de forma diferente, iterar até o : no primeiro e pegar o que tiver
             // string  name_and_type_start = ;
 
 
             // identified by method reference index in constant pool
-            printf("#%d\n", cp_index);
+            cout << "#" << cp_index << endl;
             
         }
         break;
@@ -1247,9 +1234,9 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
 
             int32_t final = start + branch_byte;
 
-            printf("%s ", bytecode_to_opcode_string(bytecode));
+            cout << bytecode_to_opcode_string(bytecode) << ' ';
 
-            printf("%d (+%d)\n",final, branch_byte);
+            cout << final << " (+" << branch_byte << ")\n";
         }
         break;
 
@@ -1266,9 +1253,9 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
 
             uint16_t cp_index = (first_bytes << 8) | second_bytes; 
 
-            printf("%s ", bytecode_to_opcode_string(bytecode));
+            cout << bytecode_to_opcode_string(bytecode) << ' ';
 
-            printf("#%d <%s> dim %d\n",cp_index, utf8ToString(&constant_pool[constant_pool[cp_index].constant_type_union.Class_info.name_index]), dimensions);
+            cout << "#" << cp_index << " <" << utf8ToString(&constant_pool[constant_pool[cp_index].constant_type_union.Class_info.name_index]) << "> dim " << dimensions << "\n";
             
 
         }
@@ -1280,9 +1267,8 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
         int start_position = *index;
 
         value_to_opcode bytecode = (value_to_opcode)code_array[*index];
-        printf("%s \n", bytecode_to_opcode_string(bytecode));
+        cout << bytecode_to_opcode_string(bytecode) << "\n";
         // ++(*index);
-        // printf("inside index %d = %d\n ",*index, code_array[*index]);
         
         // pular o padding
         // int padding = *(index) % 4;
@@ -1298,20 +1284,8 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
             fator = 1;
         };
         for(int i=0; i < fator;i++){
-            // printf("inside index %d = %d\n ",*index, code_array[*index]);
             ++(*index);
         }
-        // printf("inside index %d = %d\n ",*index, code_array[*index]);
-        
-
-        // printf("inside index %d = %d\n ",*index, code_array[*index]);
-
-
-
-        // after the tableswitch opcode, 
-        // between zero and three bytes must act as padding, such that defaultbyte1 begins at an address that is a multiple of four bytes from the start of the current method (the opcode of its first instruction).
-        // levar em conta o padding e pegar o inicio da instrução 
-        int start_index = ((3 - (*index % 4)) + *index);
         
         // defaultbyte1, defaultbyte2, defaultbyte3, defaultbyte4, lowbyte1, lowbyte2, lowbyte3, lowbyte4, highbyte1, highbyte2, highbyte3, highbyte4
         int defaultbyte1 = code_array[*index];
@@ -1345,10 +1319,9 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
         int32_t low_bytes =  lowbyte1 << 24 | lowbyte2 << 16 | lowbyte3 << 8 | lowbyte4; 
         int32_t high_bytes =  highbyte1 << 24 | highbyte2 << 16 | highbyte3 << 8 | highbyte4;
 
-        // printf("\t%d to %d\n", low_bytes, high_bytes);
 
         // iterar entre tamanho de high_bytes 
-        for (int i = 0; i < high_bytes; i++){
+        for (int i = low_bytes; i <= high_bytes; i++){
             
             int byte1 = code_array[*index];
             ++(*index); 
@@ -1364,12 +1337,12 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
             
             int32_t jump_bytes = start_position + bytes;
             
-            printf("\t\t%d: %d (+%d)\n", i + 1, jump_bytes, bytes);
+            cout << "\t\t" << i + 1 << ": " << jump_bytes << " (+" << bytes << ")\n";
         };
 
 
         // default:
-        printf("\t\tdefault: %d (+%d)\n", start_position + default_bytes, default_bytes);
+        cout << "\t\tdefault: " << start_position + default_bytes << " (+" << default_bytes << ")\n";
 
 
         --(*index);
@@ -1422,7 +1395,7 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
         case(102):{
             value_to_opcode bytecode = (value_to_opcode)code_array[*index];
 
-            printf("%s ", bytecode_to_opcode_string(bytecode));
+            cout << bytecode_to_opcode_string(bytecode) << ' ';
 
             ++(*index);
             if(code_array[*index] == iinc){
@@ -1443,7 +1416,7 @@ void bytecode_print( u1* code_array, int *index, int bytecode_group, cp_info *co
 
         // noarguments group 
         case(0):
-            printf("%s \n", bytecode_to_opcode_string((value_to_opcode)code_array[*index]));
+            cout << bytecode_to_opcode_string((value_to_opcode)code_array[*index]) << "\n";
         break;
 
     };
