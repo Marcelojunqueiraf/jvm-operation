@@ -453,17 +453,18 @@ pair<Frame *, vector<string>> createInvokedFrame(Frame * frame, u2 index, string
   MethodArea  * methodAreaRef = frame->methodAreaItem->getMethodArea();
   MethodAreaItem * classMethodAreaItem = methodAreaRef->getMethodAreaItem(classname);
   Method_info * invokedMethod = classMethodAreaItem->getMethodByName(methodName);
+  MethodAreaItem * invokedMethodAreaItem = classMethodAreaItem->getMethodItemByMethodName(methodName);
 
   // TODO: lidar com as exceções que a especificação diz que podem acontecer
 
-  vector<string> argTypes = classMethodAreaItem->getMethodArgTypesByDescriptorIndex(invokedMethod->descriptor_index);
+  vector<string> argTypes = invokedMethodAreaItem->getMethodArgTypesByDescriptorIndex(invokedMethod->descriptor_index);
   // string returnType = argTypes.back(); caso precise, é assim que pega o tipo do retorno
   argTypes.pop_back(); // tira o tipo do retorno
   
   DCOUT << "method " << classname << '.' << methodName << ", nargs " << argTypes.size() << endl;
   for (string argType : argTypes) DCOUT << "argType " << argType << endl;
 
-  Frame * invokedFrame = new Frame(invokedMethod, classMethodAreaItem);
+  Frame * invokedFrame = new Frame(invokedMethod, invokedMethodAreaItem);
 
   return {invokedFrame, argTypes};
 }
@@ -645,7 +646,7 @@ void bipush (Frame * frame, JVM * jvm) {
   int8_t bytesSigned = bytes;
 
   frame->pushOperandStack(JvmValue(INT, {.i = bytesSigned}));
-  DCOUT << "valor empilhado: " << bytesSigned << endl;
+  DCOUT << "valor empilhado: " << (int) bytesSigned << endl;
   frame->pc += 2;
 }
 
@@ -658,7 +659,7 @@ void sipush (Frame * frame, JVM * jvm) {
   int16_t bytesSigned = (int16_t) bytes;
 
   frame->pushOperandStack(JvmValue(INT, {.i = bytesSigned}));
-  DCOUT << "valor empilhado: " << bytesSigned << endl;
+  DCOUT << "valor empilhado: " << (int) bytesSigned << endl;
   frame->pc += 3;
 }
 
@@ -2285,108 +2286,85 @@ void ret (Frame * frame, JVM * jvm) {
 
 //implementado pelo Piano 
 void tableswitch (Frame * frame, JVM * jvm) {
-  /*DCOUT << "tableswitch" << endl;
+  DCOUT << "tableswitch" << endl;
 
+  u1* code_arr = frame->method_info->attributes->attribute_info_union.code_attribute.code;
+  JvmValue index = frame->popOperandStack();
 
-  code_attribute codeAtt = frame->method_info->attributes->attribute_info_union.code_attribute;
-  
-  u1* code_arr = codeAtt.code;
-
-  int aux_pc = frame->pc; 
-
-  //acho que nao precisa, uma vez que a start position é o proprio pc
-  // int start_position = aux_pc;
-
-  //pulando padding
-  int fator; 
-  if(aux_pc < 4){
-      fator = 4 - aux_pc;
-  }
-  else if(aux_pc > 4){
-      fator = aux_pc % 4;
-  }
-  else if(aux_pc == 4){
-      fator = 1;
-  };
-  for(int i=0; i < fator;i++){
-      ++(aux_pc);
-  }
-
-  // int start_index = ((3 - (aux_pc % 4)) + aux_pc);
+  int32_t aux_pc = frame->pc;
+  int32_t padding = 4 - (aux_pc + 1) % 4;
+  if (padding == 4) padding = 0;
+  aux_pc += padding;
 
   // carregando bytes
-  int defaultbyte1 = code_arr[aux_pc];
-  ++(aux_pc); 
-  int defaultbyte2 = code_arr[aux_pc];
-  ++(aux_pc); 
-  int defaultbyte3 = code_arr[aux_pc];
-  ++(aux_pc); 
-  int defaultbyte4 = code_arr[aux_pc];
-  ++(aux_pc); 
+  int32_t defaultbytes = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
+  aux_pc += 4;
+  int32_t lowbytes = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
+  aux_pc += 4;
+  int32_t highbytes = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
+  aux_pc += 4;
 
-  int lowbyte1 = code_arr[aux_pc];
-  ++(aux_pc); 
-  int lowbyte2 = code_arr[aux_pc];
-  ++(aux_pc); 
-  int lowbyte3 = code_arr[aux_pc];
-  ++(aux_pc); 
-  int lowbyte4 = code_arr[aux_pc];
-  ++(aux_pc); 
+  DCOUT << "table index: " << index.data.i << endl;
+  DCOUT << "defaultbytes: " << defaultbytes << endl;
+  DCOUT << "lowbytes: " << lowbytes << endl;
+  DCOUT << "highbytes: " << highbytes << endl;
 
-  int highbyte1 = code_arr[aux_pc];
-  ++(aux_pc); 
-  int highbyte2 = code_arr[aux_pc];
-  ++(aux_pc); 
-  int highbyte3 = code_arr[aux_pc];
-  ++(aux_pc); 
-  int highbyte4 = code_arr[aux_pc];
-  ++(aux_pc); 
+  if (index.data.i < lowbytes || index.data.i > highbytes) {
+    DCOUT << "index " << index.data.i << " fora do range, pulando para o endereço " << frame->pc + defaultbytes << endl;
+    frame->pc += defaultbytes;
+    return;
+  }
 
-  // int32_t default_bytes =  defaultbyte1 << 24 | defaultbyte2 << 16 | defaultbyte3 << 8 | defaultbyte4; 
-  // int32_t low_bytes =  lowbyte1 << 24 | lowbyte2 << 16 | lowbyte3 << 8 | lowbyte4; 
-  int32_t high_bytes =  highbyte1 << 24 | highbyte2 << 16 | highbyte3 << 8 | highbyte4;
+  // int32_t nOffsets = highbytes - lowbytes + 1;
+  for (int32_t i = lowbytes; i <= highbytes; i++) {
+    int32_t offset = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
+    aux_pc += 4;
 
-  //logica do table switch levando em conta o index na pilha de operandos
-  JvmValue index = frame->popOperandStack();
-  DCOUT << "table index = " << index.data << endl;
-  DCOUT << "high bytes = " <<high_bytes << endl;
-
-  //iterar entre tamanho de high_bytes 
-  for (int i = 0; i < high_bytes; i++){
-      
-      int byte1 = code_arr[aux_pc];
-      ++(aux_pc); 
-      int byte2 = code_arr[aux_pc];
-      ++(aux_pc ); 
-      int byte3 = code_arr[aux_pc];
-      ++(aux_pc); 
-      int byte4 = code_arr[aux_pc];
-      ++(aux_pc); 
-      
-
-      int32_t bytes =  byte1 << 24 | byte2 << 16 | byte3 << 8 | byte4;
-      
-      int32_t jump_bytes = frame->pc + bytes;
-
-      if(index.data == (u4) i + 1){
-          DCOUT << "table index == " << i+1 << " pulando para o endereço " << frame->pc + bytes <<endl;
-          frame->pc += bytes;
-          break;
-      }
-      
-      DCOUT << "\t\t" << i + 1 << ": " << jump_bytes << " (+" << bytes << ")" << endl;
-  };*/
-
+    DCOUT << "\t" << i << ": " << frame->pc + offset << " (+" << offset << ")" << endl;
+    if (index.data.i == i) {
+      DCOUT << "index == " << i << " pulando para o endereço " << frame->pc + offset <<endl;
+      frame->pc += offset;
+      return;
+    }
+  };
 }
 
 void lookupswitch (Frame * frame, JVM * jvm) {
   DCOUT << "lookupswitch" << endl;
-  // FIXME: consertar os pulos
-  frame->pc += 4;
-  frame->pc += 4;
-  frame->pc += 4;
-  frame->pc += 4;
-  frame->pc += 4;
+  
+  u1* code_arr = frame->method_info->attributes->attribute_info_union.code_attribute.code;
+  JvmValue key = frame->popOperandStack();
+
+  int32_t aux_pc = frame->pc;
+  int32_t padding = 4 - (aux_pc + 1) % 4;
+  if (padding == 4) padding = 0;
+  aux_pc += padding;
+  
+  int32_t defaultbytes = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
+  aux_pc += 4;
+  int32_t npairs = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
+  aux_pc += 4;
+
+  DCOUT << "key: " << key.data.i << endl;
+  DCOUT << "defaultbytes: " << defaultbytes << endl;
+  DCOUT << "npairs: " << npairs << endl;
+
+  for (int32_t i = 0; i < npairs; i++) {
+    int32_t match = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
+    aux_pc += 4;
+    int32_t offset = code_arr[aux_pc+1] << 24 | code_arr[aux_pc+2] << 16 | code_arr[aux_pc+3] << 8 | code_arr[aux_pc+4];
+    aux_pc += 4;
+
+    DCOUT << "\t" << match << ": " << frame->pc + offset << " (+" << offset << ")" << endl;
+    if (key.data.i == match) {
+      DCOUT << "key == " << match << " pulando para o endereço " << frame->pc + offset <<endl;
+      frame->pc += offset;
+      return;
+    }
+  };
+
+  DCOUT << "key " << key.data.i << " não encontrada, pulando para o endereço " << frame->pc + defaultbytes << endl;
+  frame->pc += defaultbytes;
 }
 
 #pragma endregion

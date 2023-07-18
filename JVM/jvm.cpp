@@ -1,15 +1,5 @@
 #include "jvm.hpp"
 
-void JVM::initClass(MethodAreaItem * methodAreaItem) {
-  Method_info * staticBlock = methodAreaItem->getStaticBlock();
-  Frame * frame = new Frame(staticBlock, methodAreaItem);
-  if (staticBlock != NULL) this->frameStack.push(*frame);
-
-  if (methodAreaItem->getClassName() == JAVA_OBJ_CLASSNAME) return;
-  MethodAreaItem * superClass = this->methodArea.getMethodAreaItem(methodAreaItem->getSuper());
-
-  this->initClass(superClass);
-}
 
 void JVM::initialize(string classPath) {
   MethodAreaItem * firstClass = this->methodArea.getMethodAreaItemFromFile(classPath);
@@ -18,7 +8,7 @@ void JVM::initialize(string classPath) {
   Frame * frame = new Frame(mainMethod, firstClass);
 
   this->frameStack.push(*frame);
-  this->initClass(firstClass);
+  this->methodArea.pushStaticBlock(firstClass);
 }
 
 code_attribute * getCode(Method_info * method_info, MethodAreaItem * methodAreaItem) {
@@ -42,7 +32,7 @@ void JVM::executeFrame(Frame * frame) {
   
   code_attribute * codeAtt = getCode(frame->method_info, frame->methodAreaItem);
   
-  if(frame->pc == 0) {
+  if (frame->pc == 0) {
     DCOUT << "executeFrame #" <<  frame->method_info->name_index << ' ' << methodName << " from " << frame->methodAreaItem->getClassName() << ".class" <<endl;
     DCOUT << "code len: " << codeAtt->code_length << endl;
   }
@@ -52,8 +42,7 @@ void JVM::executeFrame(Frame * frame) {
     
     u1 * opcode = codeAtt->code + frame->pc;
     this->executeInstruction(opcode, frame);
-  }
-  else{
+  } else {
     this->returnVoid();
   }
 }
@@ -121,6 +110,8 @@ void JVM::setStaticField(string classname, string fieldName, JvmValue value) {
 }
 
 JVM::JVM() {
+  this->frameStack = FrameStack();
+  this->methodArea = MethodArea(&this->frameStack);
   this->instructionsMap = InstructionsMap(256);
   loadInstructions(&this->instructionsMap);
 }
