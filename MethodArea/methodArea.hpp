@@ -30,10 +30,10 @@ class MethodAreaItem {
   string getUtf8(u2 index);
   
   Method_info * getMainMethod();
-  Method_info * getInitMethod();
+  Method_info * getInitMethod(string descriptor);
   Method_info * getStaticBlock();
-  Method_info * getMethodByName(string methodName, bool onlyActualClass = false);
-  MethodAreaItem * getMethodItemByMethodName(string methodName);
+  Method_info * getMethodByName(string methodName, string descriptor, bool onlyActualClass = false);
+  MethodAreaItem * getMethodItemByMethodName(string methodName, string descriptor);
 
   JvmValue getStaticField(string fieldName);
   void setStaticField(string fieldName, JvmValue value);

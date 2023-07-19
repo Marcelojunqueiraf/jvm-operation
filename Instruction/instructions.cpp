@@ -316,14 +316,14 @@ string getFieldName(Frame * frame, u2 index) {
   return fieldName;
 }
 
-pair<Frame *, vector<string>> createInvokedFrame(Frame * frame, u2 index, string methodName) {
+pair<Frame *, vector<string>> createInvokedFrame(Frame * frame, u2 index, string methodName, string methodDescriptor) {
   cp_info * classRef = frame->methodAreaItem->getConstantPoolItem(index);
   string classname = frame->methodAreaItem->getUtf8(classRef->constant_type_union.Class_info.name_index);
 
   MethodArea  * methodAreaRef = frame->methodAreaItem->getMethodArea();
   MethodAreaItem * classMethodAreaItem = methodAreaRef->getMethodAreaItem(classname);
-  Method_info * invokedMethod = classMethodAreaItem->getMethodByName(methodName);
-  MethodAreaItem * invokedMethodAreaItem = classMethodAreaItem->getMethodItemByMethodName(methodName);
+  Method_info * invokedMethod = classMethodAreaItem->getMethodByName(methodName, methodDescriptor);
+  MethodAreaItem * invokedMethodAreaItem = classMethodAreaItem->getMethodItemByMethodName(methodName, methodDescriptor);
 
   // TODO: lidar com as exceções que a especificação diz que podem acontecer
 
@@ -2354,19 +2354,21 @@ void putfield (Frame * frame, JVM * jvm) {
 #pragma region invoke
 
 void invokevirtual (Frame * frame, JVM * jvm) {
-  DCOUT << "invokevirtual" << endl;
-  u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
-  u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
-  u2 index = (first_bytes << 8) | second_bytes;
+  u1 highBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 lowBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+  u2 index = (highBytes << 8) | lowBytes;
+  DCOUT << "invokevirtual #" << index << endl;
 
-  cp_info * method_ref = frame->methodAreaItem->getConstantPoolItem(index);
-  string className = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.class_index);
-  string methodName = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.name_and_type_index);
+  cp_info * methodRef = frame->methodAreaItem->getConstantPoolItem(index);
+  cp_info * nameAndTypeRef = frame->methodAreaItem->getConstantPoolItem(methodRef->constant_type_union.Methodref_info.name_and_type_index);
+  string methodName = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.name_index);
+  string methodDescriptor = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.descriptor_index);
 
+  string className = frame->methodAreaItem->getUtf8(methodRef->constant_type_union.Methodref_info.class_index);
   if (className == JAVA_PRINT_CLASSNAME) {
     DCOUT << className << "." << methodName << endl;
 
-    vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(method_ref->constant_type_union.Methodref_info.name_and_type_index);
+    vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(methodRef->constant_type_union.Methodref_info.name_and_type_index);
     // argTypes.pop_back(); // remove o tipo de retorno
     for (auto arg : argTypes) DCOUT << "arg " << arg << ' ';
     DCOUT << endl;
@@ -2376,7 +2378,7 @@ void invokevirtual (Frame * frame, JVM * jvm) {
     return;
   }
   
-  auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName);
+  auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName, methodDescriptor);
   setInvokedLocalVars(frame, invokedFrame, args);
   jvm->invoke(*invokedFrame);
 
@@ -2389,7 +2391,12 @@ void invokespecial (Frame * frame, JVM * jvm) {
   u4 index = (high_bytes << 8) | low_bytes;
   DCOUT << "invokespecial #" << index << endl;
 
-  auto [initFrame, args] = createInvokedFrame(frame, index, "<init>");
+  cp_info * methodRef = frame->methodAreaItem->getConstantPoolItem(index);
+  cp_info * nameAndTypeRef = frame->methodAreaItem->getConstantPoolItem(methodRef->constant_type_union.Methodref_info.name_and_type_index);
+  string methodName = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.name_index);
+  string methodDescriptor = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.descriptor_index);
+
+  auto [initFrame, args] = createInvokedFrame(frame, index, methodName, methodDescriptor);
   setInvokedLocalVars(frame, initFrame, args);
   jvm->invoke(*initFrame);
 
@@ -2403,8 +2410,11 @@ void invokestatic (Frame * frame, JVM * jvm) {
   u2 index = (highBytes << 8) | lowBytes;
   
   cp_info * methodRef = frame->methodAreaItem->getConstantPoolItem(index);
+  cp_info * nameAndTypeRef = frame->methodAreaItem->getConstantPoolItem(methodRef->constant_type_union.Methodref_info.name_and_type_index);
+  string methodName = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.name_index);
+  string methodDescriptor = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.descriptor_index);
+
   string classname = frame->methodAreaItem->getUtf8(methodRef->constant_type_union.Methodref_info.class_index);
-  
   if (classname == JAVA_OBJ_CLASSNAME) {
     // se for java/lang/Object, não fazer nada
     DCOUT << "é um invokestatic para o Object.class IGNORADO!" << endl;
@@ -2412,9 +2422,8 @@ void invokestatic (Frame * frame, JVM * jvm) {
     return;
   }
 
-  string methodName = frame->methodAreaItem->getUtf8(methodRef->constant_type_union.Methodref_info.name_and_type_index); 
 
-  auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName);
+  auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName, methodDescriptor);
   setInvokedLocalVars(frame, invokedFrame, args, true);
   jvm->invoke(*invokedFrame);
 

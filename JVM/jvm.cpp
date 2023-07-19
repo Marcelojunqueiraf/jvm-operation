@@ -38,7 +38,7 @@ void JVM::executeFrame(Frame * frame) {
   code_attribute * codeAtt = getCode(frame->method_info, frame->methodAreaItem);
   
   if (frame->pc == 0) {
-    DCOUT << "executeFrame #" <<  frame->method_info->name_index << ' ' << methodName << " from " << frame->methodAreaItem->getClassName() << ".class" <<endl;
+    DCOUT << "executeFrame #" <<  frame->method_info->name_index << ' ' << methodName << " from " << frame->methodAreaItem->getClassName() << ".class" << endl;
     DCOUT << "code len: " << codeAtt->code_length << endl;
   }
   
