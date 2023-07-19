@@ -2147,7 +2147,7 @@ void ret (Frame * frame, JVM * jvm) {
   DCOUT << "ret" << endl;
   u1 localIndex = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   JvmValue ret = frame->localVariables[localIndex];
-  frame->pc = ret.data.i;
+  frame->pc = ret.data.u;
 }
 
 #pragma endregion
@@ -2612,7 +2612,7 @@ void jsr_w (Frame * frame, JVM * jvm) {
   u1 branchbyte3= frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 3];
   u1 branchbyte4 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 4];
   int32_t jump = (int32_t) (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4;
-  JvmValue returnAddress = JvmValue(RETURNADDRESS, DataUnion {.i = frame->pc + 5});
+  JvmValue returnAddress = JvmValue(RETURNADDRESS, DataUnion {.u = frame->pc + 5});
   frame->operandStack.push(returnAddress);
   frame->pc += jump;
 }
