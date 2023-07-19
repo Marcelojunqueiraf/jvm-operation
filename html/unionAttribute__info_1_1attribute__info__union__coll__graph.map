@@ -1,0 +1,13 @@
+<map id="Attribute_info::attribute_info_union" name="Attribute_info::attribute_info_union">
+<area shape="rect" id="node1" title=" " alt="" coords="769,79,944,121"/>
+<area shape="rect" id="node4" href="$structAttribute__info.html" title="Struct para a definição do attribute info." alt="" coords="1136,56,1247,83"/>
+<area shape="rect" id="node2" href="$structcode__attribute.html" title="Struct para a definição do code attribute." alt="" coords="1412,56,1528,83"/>
+<area shape="rect" id="node3" href="$structException__table.html" title="Struct para a definição da exception table." alt="" coords="1128,5,1255,32"/>
+<area shape="rect" id="node5" href="$structLineNumberTable__attribute.html" title="Struct para a definição da line number table attribute." alt="" coords="345,9,544,36"/>
+<area shape="rect" id="node6" href="$structline__number__table.html" title="Struct para a definição da line number table." alt="" coords="12,9,155,36"/>
+<area shape="rect" id="node7" href="$structInnerClasses__attribute.html" title="Struct para a definição das inner classes attribute." alt="" coords="361,60,529,87"/>
+<area shape="rect" id="node8" href="$structinner__classes.html" title="Struct para a definição das inner classes." alt="" coords="28,60,139,87"/>
+<area shape="rect" id="node9" href="$structexceptions__attribute.html" title="Struct para a definição dos exceptions attribute." alt="" coords="367,111,523,137"/>
+<area shape="rect" id="node10" href="$structLocalVariableTable__attribute.html" title="Struct para a definição da local variable table attribute." alt="" coords="373,162,516,203"/>
+<area shape="rect" id="node11" href="$structLocal__variable__table.html" title="Struct para a definição da local variable table." alt="" coords="5,169,161,196"/>
+</map>

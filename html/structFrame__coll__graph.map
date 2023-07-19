@@ -1,0 +1,16 @@
+<map id="Frame" name="Frame">
+<area shape="rect" id="node1" title=" " alt="" coords="825,32,888,59"/>
+<area shape="rect" id="node2" href="$structMethod__info.html" title="Struct para a definição do Method Info." alt="" coords="393,5,496,32"/>
+<area shape="rect" id="node3" href="$structAttribute__info.html" title="Struct para a definição do attribute info." alt="" coords="28,108,139,135"/>
+<area shape="rect" id="node5" href="$structcode__attribute.html" title="Struct para a definição do code attribute." alt="" coords="387,188,503,215"/>
+<area shape="rect" id="node4" href="$unionAttribute__info_1_1attribute__info__union.html" title=" " alt="" coords="769,255,944,297"/>
+<area shape="rect" id="node6" href="$structException__table.html" title="Struct para a definição da exception table." alt="" coords="20,188,147,215"/>
+<area shape="rect" id="node7" href="$structLineNumberTable__attribute.html" title="Struct para a definição da line number table attribute." alt="" coords="345,239,544,265"/>
+<area shape="rect" id="node8" href="$structline__number__table.html" title="Struct para a definição da line number table." alt="" coords="12,239,155,265"/>
+<area shape="rect" id="node9" href="$structInnerClasses__attribute.html" title="Struct para a definição das inner classes attribute." alt="" coords="361,289,529,316"/>
+<area shape="rect" id="node10" href="$structinner__classes.html" title="Struct para a definição das inner classes." alt="" coords="28,289,139,316"/>
+<area shape="rect" id="node11" href="$structexceptions__attribute.html" title="Struct para a definição dos exceptions attribute." alt="" coords="367,340,523,367"/>
+<area shape="rect" id="node12" href="$structLocalVariableTable__attribute.html" title="Struct para a definição da local variable table attribute." alt="" coords="373,391,516,433"/>
+<area shape="rect" id="node13" href="$structLocal__variable__table.html" title="Struct para a definição da local variable table." alt="" coords="5,399,161,425"/>
+<area shape="rect" id="node14" href="$classMethodAreaItem.html" title=" " alt="" coords="379,56,510,83"/>
+</map>
