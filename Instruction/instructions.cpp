@@ -2138,7 +2138,7 @@ void jsr (Frame * frame, JVM * jvm) {
   u1 branchbyte1 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   u1 branchbyte2 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
   int16_t jump = (int16_t) (branchbyte1 << 8) | branchbyte2;
-  JvmValue returnAddress = JvmValue(RETURNADDRESS, DataUnion {.u = frame->pc + 3});
+  JvmValue returnAddress = JvmValue(RETURNADDRESS, DataUnion {.u = frame->pc + (u4)3 });
   frame->operandStack.push(returnAddress);
   frame->pc += jump;
 }
@@ -2612,7 +2612,7 @@ void jsr_w (Frame * frame, JVM * jvm) {
   u1 branchbyte3= frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 3];
   u1 branchbyte4 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 4];
   int32_t jump = (int32_t) (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4;
-  JvmValue returnAddress = JvmValue(RETURNADDRESS, DataUnion {.u = frame->pc + 5});
+  JvmValue returnAddress = JvmValue(RETURNADDRESS, DataUnion {.u = frame->pc + (u4)5});
   frame->operandStack.push(returnAddress);
   frame->pc += jump;
 }
