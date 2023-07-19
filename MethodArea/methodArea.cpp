@@ -238,7 +238,9 @@ vector<string> MethodAreaItem::getMethodArgTypesByDescriptorIndex(u2 descriptorI
   vector<string> types; // não usei o tipo PrimitiveType pq o tipo L não é uma string com valor fixo, + array e void
   unsigned int i = 1; // pula o '('
   while (i < descriptor.size() && descriptor[i] != ')') {
-    auto [argType, jump] = getArgType(descriptor, i);
+    auto argTypePair = getArgType(descriptor, i);
+    string argType = argTypePair.first;
+    int jump = argTypePair.second;
     types.push_back(argType);
     i += jump;
   }

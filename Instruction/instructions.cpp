@@ -1191,30 +1191,61 @@ T calculate(T first, T second, Operation op) {
             result = first / second;
             break;
         case AND:
-            if constexpr (std::is_integral_v<T>) {
-                result = first & second;
-                break;
-            } else {
-                throw std::runtime_error("operacao sem suporte para tipos nao inteiros");
-            }
+            result = first & second;
+            break;
         case OR:
-            if constexpr (std::is_integral_v<T>) {
-                result = first | second;
-                break;
-            } else {
-                throw std::runtime_error("operacao sem suporte para tipos nao inteiros");
-            }
+            result = first | second;
+            break;
         case XOR:
-            if constexpr (std::is_integral_v<T>) {
-                result = first ^ second;
-                break;
-            } else {
-                throw std::runtime_error("operacao sem suporte para tipos nao inteiros");
-            }
+            result = first ^ second;
+            break;
         default:
             throw std::runtime_error("operacao nao implementada");
     }
+    return result;
+}
 
+template <>
+float calculate(float first, float second, Operation op) {
+    float result = 0;
+    switch (op) {
+        case ADD:
+            result = first + second;
+            break;
+        case SUB:
+            result = first - second;
+            break;
+        case MUL:
+            result = first * second;
+            break;
+        case DIV:
+            result = first / second;
+            break;
+        default:
+            throw std::runtime_error("operacao nao implementada");
+    }
+    return result;
+}
+
+template <>
+double calculate(double first, double second, Operation op) {
+    double result = 0;
+    switch (op) {
+        case ADD:
+            result = first + second;
+            break;
+        case SUB:
+            result = first - second;
+            break;
+        case MUL:
+            result = first * second;
+            break;
+        case DIV:
+            result = first / second;
+            break;
+        default:
+            throw std::runtime_error("operacao nao implementada");
+    }
     return result;
 }
 
@@ -2378,7 +2409,9 @@ void invokevirtual (Frame * frame, JVM * jvm) {
     return;
   }
   
-  auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName, methodDescriptor);
+  auto invokedFrameArgs = createInvokedFrame(frame, index, methodName, methodDescriptor);
+  Frame * invokedFrame = invokedFrameArgs.first;
+  vector<string> args = invokedFrameArgs.second;
   setInvokedLocalVars(frame, invokedFrame, args);
   jvm->invoke(*invokedFrame);
 
@@ -2396,7 +2429,9 @@ void invokespecial (Frame * frame, JVM * jvm) {
   string methodName = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.name_index);
   string methodDescriptor = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.descriptor_index);
 
-  auto [initFrame, args] = createInvokedFrame(frame, index, methodName, methodDescriptor);
+  auto initFrameArgs = createInvokedFrame(frame, index, methodName, methodDescriptor);
+  Frame * initFrame = initFrameArgs.first;
+  vector<string> args = initFrameArgs.second;
   setInvokedLocalVars(frame, initFrame, args);
   jvm->invoke(*initFrame);
 
@@ -2423,7 +2458,9 @@ void invokestatic (Frame * frame, JVM * jvm) {
   }
 
 
-  auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName, methodDescriptor);
+  auto invokedFrameArgs = createInvokedFrame(frame, index, methodName, methodDescriptor);
+  Frame * invokedFrame = invokedFrameArgs.first;
+  vector<string> args = invokedFrameArgs.second;
   setInvokedLocalVars(frame, invokedFrame, args, true);
   jvm->invoke(*invokedFrame);
 
