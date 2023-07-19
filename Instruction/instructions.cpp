@@ -238,7 +238,7 @@ void store(u2 index, Frame * frame) {
   frame->localVariables[index] = jvmValue;
 }
 
-void javaPrintln(Frame * frame, vector<string> args) {
+void javaPrintln(Frame * frame, vector<string> args, JVM * jvm) {
   string argType = args.size() == 0 ? "VOID" : args[0];
 
   DCOUT << "argType: " << argType << endl;
@@ -298,9 +298,19 @@ void javaPrintln(Frame * frame, vector<string> args) {
   {
     cout << endl;
   }
+  else if (argType == "CHAR[]")
+  {
+    JvmValue arrayref = frame->popOperandStack();
+    int size = jvm->getArraySize(arrayref.data.i);
+    for (int i = 0; i < size; i++) {
+      JvmValue value = jvm->getArrayValue(arrayref.data.i, i);
+      char _char = value.data.u;
+      cout << _char;
+    }
+    cout << endl;
+  }
   else
   {
-  // TODO: print CHAR[]
   // TODO: print OBJECT
     throw std::runtime_error("Tipo não suportado (" + argType + ")");
   }
@@ -1105,9 +1115,6 @@ void pop (Frame * frame, JVM * jvm) {
 void pop2 (Frame * frame, JVM * jvm) {
   DCOUT << "pop2" << endl;
   frame->popOperandStack();
-  // talvez tenha que fazer isso aqui, não sei
-  // if (value.type == LONG || value.type == DOUBLE)
-  //   frame->popOperandStack();
 
   frame->pc += 1;
 }
@@ -2403,7 +2410,7 @@ void invokevirtual (Frame * frame, JVM * jvm) {
     // argTypes.pop_back(); // remove o tipo de retorno
     for (auto arg : argTypes) DCOUT << "arg " << arg << ' ';
     DCOUT << endl;
-    javaPrintln(frame, argTypes);
+    javaPrintln(frame, argTypes, jvm);
 
     frame->pc += 3;
     return;

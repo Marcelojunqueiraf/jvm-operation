@@ -281,7 +281,10 @@ pair<string, int> getArgType(string signature, int index) {
       return {signature.substr(index, asize), asize};
     }
     case '[':
-      // TODO: array
+    {
+      auto arrayRes = getArgType(signature, index + 1);
+      return {arrayRes.first + "[]", arrayRes.second + 1};
+    }
     default:
       throw std::runtime_error("Tipo de argumento não reconhecido \"" + string(1, signature[index]) + "\" no tipo " + signature);
       break;
