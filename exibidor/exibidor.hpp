@@ -32,20 +32,6 @@ void attributes_exibitor(Attribute_info *, u2, ClassFile *, int);
 /// @param classIndex Índice da classe
 string class_decoder(cp_info *, u2);
 
-/// @brief Função que recebe bytes e retorna um float
-/// @param bytes Bytes
-float float_decoder (u4);
-
-/// @brief Função que recebe 2 bytes e retorna um long
-/// @param highBytes Maiores bytes
-/// @param lowBytes Menores bytes
-long long int long_decoder (u8, u8);
-
-/// @brief Função que recebe 2 bytes e retorna um double
-/// @param high_bytes Maiores bytes
-/// @param low_bytes Menores bytes
-double double_decoder (u8, u8);
-
 /// @brief Função que mostra o constant value type
 /// @param cp Ponteiro para o Constant Pool
 /// @param cf Ponteiro para o Class File
