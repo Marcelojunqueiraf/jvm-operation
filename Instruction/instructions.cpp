@@ -2647,8 +2647,80 @@ void wide (Frame * frame, JVM * jvm) {
   notSupported();
 }
 
+int32_t recursiveArrayCreation(Frame * frame, JVM * jvm, vector<int32_t> counts, int32_t top, JVMType type){
+  if(counts.size() > 0){
+    Array * array = new Array(REFERENCE, counts[top]);
+    
+    for(int32_t i = 0; i < counts[top]; i++){
+      JvmValue newArray = JvmValue(REFERENCE, {.i = recursiveArrayCreation(frame, jvm, counts, top-1, type)});
+      array->setArrayValue(i, newArray);
+    }
+    return jvm->pushArray(array);
+  }
+  else {
+    Array * array = new Array(type, counts[top]);
+    return jvm->pushArray(array);
+  }
+}
+
 void multianewarray (Frame * frame, JVM * jvm) {
   DCOUT << "multianewarray" << endl;
+
+  u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+  u2 index = (high_bytes << 8) | low_bytes;
+
+  cp_info * classRef = frame->methodAreaItem->getConstantPoolItem(index);
+
+  string typeName = frame->methodAreaItem->getUtf8(classRef->constant_type_union.Class_info.name_index);
+  while(typeName[0] == '['){
+    typeName.erase(0,1);
+  }
+
+  // get last char
+  JVMType type;
+  switch (typeName[0]){
+    case 'Z':
+      type = BOOL;
+      break;
+    case 'B':
+      type = BYTE;
+      break;
+    case 'C':
+      type = CHAR;
+      break;
+    case 'S':
+      type = SHORT;
+      break;
+    case 'I':
+      type = INT;
+      break;
+    case 'J':
+      type = LONG;
+      break;
+    case 'F':
+      type = FLOAT;
+      break;
+    case 'D':
+      type = DOUBLE;
+      break;
+    case 'L':
+      type = REFERENCE;
+      break;
+    default:
+      throw std::runtime_error("Tipo inválido");
+  }
+  u1 dimensions = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+3];
+  vector<int32_t> counts;
+
+  for (int32_t i = 0; i < dimensions; i++) {
+    counts.push_back(frame->popOperandStack().data.i);
+  }
+  
+  DCOUT << "criando array de tipo " << type << " de " << (int) dimensions << " dimensoes" << endl;
+  int32_t heapIndex = recursiveArrayCreation(frame, jvm, counts, dimensions-1, type);
+  frame->pushOperandStack(JvmValue(REFERENCE, {.i = heapIndex}));
+
   frame->pc += 4;
 }
 

@@ -81,7 +81,8 @@ int32_t JVM::pushObject(Object *heapItem) {
 }
 
 int32_t JVM::pushArray(Array *arrayItem) {
-  return this->heap.pushArrayItem(arrayItem);
+  int32_t arrayIndex = this->heap.pushArrayItem(arrayItem);
+  return arrayIndex;
 }
 
 JvmValue JVM::getField(int32_t heapItemIndex, string fieldName) {
