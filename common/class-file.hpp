@@ -10,24 +10,11 @@
 
 #pragma once
 
+#include "intTypes.hpp"
 #include <stdint.h>
 #include <string>
 
 using namespace std;
-
-
-// definindo os tamanhos
-/// @brief Tipo u1 - 8bits
-typedef uint8_t u1;
-
-/// @brief Tipo u2 - 16bits
-typedef uint16_t u2;
-
-/// @brief Tipo u4 - 32bits
-typedef uint32_t u4;
-
-/// @brief Tipo u8 - 64bits
-typedef uint64_t u8;
 
 // referenciando o attribute
 struct Attribute_info;
