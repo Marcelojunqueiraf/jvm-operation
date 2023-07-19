@@ -30,9 +30,10 @@ class MethodAreaItem {
   string getUtf8(u2 index);
   
   Method_info * getMainMethod();
-  Method_info * getInitMethod();
+  Method_info * getInitMethod(string descriptor);
   Method_info * getStaticBlock();
-  Method_info * getMethodByName(string name);
+  Method_info * getMethodByName(string methodName, string descriptor, bool onlyActualClass = false);
+  MethodAreaItem * getMethodItemByMethodName(string methodName, string descriptor);
 
   JvmValue getStaticField(string fieldName);
   void setStaticField(string fieldName, JvmValue value);
@@ -47,11 +48,14 @@ class MethodArea {
     vector<MethodAreaItem *> methodItems;
     // tabela de nomes e paths aqui
     ClassFile * loadClass(string className);
-    ClassFile * loadClassFromPath(string className);
     void insert (MethodAreaItem * methodAreaItem);
   public:
     MethodArea();
     MethodArea(FrameStack * frameStack);
+
+    void pushStaticBlock(MethodAreaItem * methodAreaItem);
+
+    ClassFile * loadClassFromPath(string className);
 
     MethodAreaItem * getMethodAreaItem (string className);
     MethodAreaItem * getMethodAreaItemFromFile(string path);

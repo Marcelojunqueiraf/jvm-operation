@@ -43,24 +43,34 @@ MethodArea::MethodArea(FrameStack *frameStack) {
   this->frameStack = frameStack;
 }
 
+void MethodArea::pushStaticBlock(MethodAreaItem * methodAreaItem) {
+  Method_info * staticBlock = methodAreaItem->getStaticBlock();
+  if (staticBlock != NULL) {
+    DCOUT << "Inserindo o bloco estático no framestack da " << methodAreaItem->getClassName() << endl;
+    Frame * frame = new Frame(staticBlock, methodAreaItem);
+    this->frameStack->push(*frame);
+  }
+
+  if (methodAreaItem->getClassName() != JAVA_OBJ_CLASSNAME) {
+    this->getMethodAreaItem(methodAreaItem->getSuper());
+  }
+}
+
 MethodAreaItem * MethodArea::getMethodAreaItem (string className) {
-  // check if class is already loaded
+  // procura pela classe na method area
   for (auto methodAreaItem : this->methodItems) {
     if (methodAreaItem->getClassName() == className) {
       return methodAreaItem;
     }
   }
 
+  // se não encontrar, carrega a classe
   ClassFile * classfile = this->loadClass(className);
   MethodAreaItem * newClass = new MethodAreaItem(classfile, this);
   this->insert(newClass);
 
-  // TODO: colocar o bloco estático no framestack
-  Method_info * staticBlock = newClass->getStaticBlock();
-  if (staticBlock != NULL) {
-    Frame * frame = new Frame(staticBlock, newClass);
-    this->frameStack->push(*frame);
-  }
+  this->pushStaticBlock(newClass);
+
   DCOUT << "Classe " << className << ".class" <<" carregada na method area" <<endl;
 
   return newClass;
@@ -69,6 +79,7 @@ MethodAreaItem * MethodArea::getMethodAreaItem (string className) {
 MethodAreaItem * MethodArea::getMethodAreaItemFromFile(string path) {
   ClassFile * classfile = this->loadClassFromPath(path);
   MethodAreaItem * methodAreaItem = new MethodAreaItem(classfile, this);
+  this->insert(methodAreaItem);
   
   return methodAreaItem;
 }
@@ -111,16 +122,17 @@ string MethodAreaItem::getSuper() {
 }
 
 Method_info * MethodAreaItem::getMainMethod() {
-  auto method = this->getMethodByName("main");
-  if (method == NULL) {
-    throw std::runtime_error("Method not found: " + this->getClassName() + ".main");
+  for (int i = 0; i < this->classfile->methods_count; i++) {
+    Method_info * actual = &this->classfile->methods[i];
+    string actualName = this->getUtf8(actual->name_index);
+    if (actualName == "main") return actual;
   }
 
-  return method;
+  throw std::runtime_error("Method not found: " + this->getClassName() + ".main");
 }
 
-Method_info * MethodAreaItem::getInitMethod() {
-  auto method = this->getMethodByName("<init>");
+Method_info * MethodAreaItem::getInitMethod(string descriptor) {
+  auto method = this->getMethodByName("<init>", descriptor, true);
   if (method == NULL) {
     throw std::runtime_error("Method not found: " + this->getClassName() + ".<init>");
   }
@@ -129,14 +141,40 @@ Method_info * MethodAreaItem::getInitMethod() {
 }
 
 Method_info * MethodAreaItem::getStaticBlock() {
-  return this->getMethodByName("<clinit>");
+  return this->getMethodByName("<clinit>", "()V", true);
 }
 
-Method_info * MethodAreaItem::getMethodByName(string name) {
+Method_info * MethodAreaItem::getMethodByName(string methodName, string descriptor, bool onlyActualClass) {
   for (int i = 0; i < this->classfile->methods_count; i++) {
     Method_info * actual = &this->classfile->methods[i];
     string actualName = this->getUtf8(actual->name_index);
-    if (actualName == name) return actual;
+    string actualDescriptor = this->getUtf8(actual->descriptor_index);
+    if (actualName == methodName && actualDescriptor == descriptor) return actual;
+  }
+
+  if (onlyActualClass) return NULL;
+
+  if (this->getClassName() != JAVA_OBJ_CLASSNAME) {
+    string supername = this->getSuper();
+    MethodAreaItem * superClass = this->methodArea->getMethodAreaItem(supername);
+    return superClass->getMethodByName(methodName, descriptor);
+  }
+
+  return NULL;
+}
+
+MethodAreaItem * MethodAreaItem::getMethodItemByMethodName(string methodName, string descriptor) {
+  for (int i = 0; i < this->classfile->methods_count; i++) {
+    Method_info * actual = &this->classfile->methods[i];
+    string actualName = this->getUtf8(actual->name_index);
+    string actualDescriptor = this->getUtf8(actual->descriptor_index);
+    if (actualName == methodName && actualDescriptor == descriptor) return this;
+  }
+
+  if (this->getClassName() != JAVA_OBJ_CLASSNAME) {
+    string supername = this->getSuper();
+    MethodAreaItem * superClass = this->methodArea->getMethodAreaItem(supername);
+    return superClass->getMethodItemByMethodName(methodName, descriptor);
   }
 
   return NULL;

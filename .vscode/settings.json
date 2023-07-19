@@ -1,8 +1,22 @@
 {
   "files.associations": {
+    "*.mjml": "mjml",
+    "*.asm": "nasm",
     "deque": "cpp",
     "string": "cpp",
     "vector": "cpp",
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "optional": "cpp",
+    "istream": "cpp",
+    "ostream": "cpp",
+    "ratio": "cpp",
+    "system_error": "cpp",
+    "array": "cpp",
+    "functional": "cpp",
+    "tuple": "cpp",
+    "type_traits": "cpp",
+    "utility": "cpp",
+    "variant": "cpp",
+    "stdexcept": "cpp"
   }
 }

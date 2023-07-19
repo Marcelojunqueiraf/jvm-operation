@@ -1,7 +1,17 @@
+/**
+ * @file classfile.hpp
+ * @author Marcelo Piano
+ * @author Marcelo Junqueira
+ * @author Gabriel Borges
+ * @author Maycon Vinnicyus
+ * @author Edson Sales
+ * @brief Arquivo que define a estrutura do class file
+ */
+
+#pragma once
+
 #include <stdint.h>
 #include <string>
-#ifndef TYPESH
-#define TYPESH
 
 using namespace std;
 
@@ -105,7 +115,6 @@ typedef struct exceptions_attribute {
 
 // ---------------------------- CODE ATTRIBUTE ----------------------------- //
 
-// se for abstract ou native nao tem codigo... se não, temos que ter apenas um atributo de código
 /// @brief Struct para a definição do code attribute
 typedef struct code_attribute{
     u2 max_stack;
@@ -251,7 +260,7 @@ typedef struct ClassFile
 } ClassFile;
 
 
-/// @brief Struct Enum para [POOL DE CONSTANTES TIPOS VÁLIDOS DE TAGS]
+/// @brief Enum com as tags válidas do constant pool
 enum tag_to_class
 {
     CONSTANT_Class_info = 7,
@@ -269,5 +278,3 @@ enum tag_to_class
     CONSTANT_InvokeDynamic_info = 18,
     CONSTANT_Utf8_info = 1,
 };
-
-#endif

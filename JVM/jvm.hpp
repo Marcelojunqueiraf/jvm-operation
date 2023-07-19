@@ -6,6 +6,7 @@
 #include "../MethodArea/methodArea.hpp"
 #include "../Heap/heap.hpp"
 #include "../Instruction/instructions.hpp"
+#include "../exibidor/exibidor.hpp"
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -25,13 +26,13 @@ class JVM {
     MethodArea methodArea;
     InstructionsMap instructionsMap;
     void * pc;
-    void initClass(MethodAreaItem * methodAreaItem);
     void executeFrame(Frame * frame);
     void executeInstruction(u1 * instruction, Frame * frame);
 
   public:
     JVM();
     void initialize(string classPath);
+    void showClass(string classPath);
     void run();
     
     void invoke(Frame frame);

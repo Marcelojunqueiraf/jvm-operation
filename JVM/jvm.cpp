@@ -1,12 +1,5 @@
 #include "jvm.hpp"
 
-void JVM::initClass(MethodAreaItem * methodAreaItem) {
-  if (methodAreaItem->getClassName() == JAVA_OBJ_CLASSNAME) return;
-  MethodAreaItem * superClass = this->methodArea.getMethodAreaItem(methodAreaItem->getSuper());
-
-  this->initClass(superClass);
-}
-
 void JVM::initialize(string classPath) {
   MethodAreaItem * firstClass = this->methodArea.getMethodAreaItemFromFile(classPath);
 
@@ -14,8 +7,14 @@ void JVM::initialize(string classPath) {
   Frame * frame = new Frame(mainMethod, firstClass);
 
   this->frameStack.push(*frame);
-  this->initClass(firstClass);
+  this->methodArea.pushStaticBlock(firstClass);
 }
+
+void JVM::showClass(string classPath) {
+  ClassFile * classfile = this->methodArea.loadClassFromPath(classPath);
+  class_exibitor(classfile);
+}
+
 
 code_attribute * getCode(Method_info * method_info, MethodAreaItem * methodAreaItem) {
   for (int i = 0; i < method_info->attributes_count; i++) {
@@ -39,7 +38,7 @@ void JVM::executeFrame(Frame * frame) {
   code_attribute * codeAtt = getCode(frame->method_info, frame->methodAreaItem);
   
   if (frame->pc == 0) {
-    DCOUT << "executeFrame #" <<  frame->method_info->name_index << ' ' << methodName << " from " << frame->methodAreaItem->getClassName() << ".class" <<endl;
+    DCOUT << "executeFrame #" <<  frame->method_info->name_index << ' ' << methodName << " from " << frame->methodAreaItem->getClassName() << ".class" << endl;
     DCOUT << "code len: " << codeAtt->code_length << endl;
   }
   

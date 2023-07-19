@@ -1,4 +1,5 @@
 #include "instructions.hpp"
+#include "../common/converters.hpp"
 
 void loadInstructions(InstructionsMap * instructionsMap) {
   (*instructionsMap)[0x00] = &nop;
@@ -208,137 +209,6 @@ void loadInstructions(InstructionsMap * instructionsMap) {
   (*instructionsMap)[0xff] = &impdep2;
 };
 
-#pragma region aux
-
-#pragma region u4ToType
-
-int32_t u4ToInt (u4 value) {
-  return (int32_t) value;
-}
-
-int64_t u4ToLong (u4 low, u4 high) {
-  return ((int64_t) high << 32) | (int64_t) low;
-}
-
-float u4ToFloat (u4 value) {
-    int sinal = ((value >> 31) == 0) ? 1 : -1;
-    int expon = ((value >> 23) & 0xff);
-    int mant = (expon == 0) ? (value & 0x7fffff) << 1 : (value & 0x7fffff) | 0x800000;
-    float result = (sinal) * (mant) * (pow(2, expon - 150));
-    return result;
-}
-
-double u4ToDouble(u4 low, u4 high) {
-    uint64_t valor = ((uint64_t)high << 32) | (uint64_t)low;
-    // int sinal = ((valor >> 63) == 0) ? 1 : -1;
-    // int expon = ((valor >> 52) & 0x7ffL);
-    // long mant = (expon == 0) ? ((valor & 0xfffffffffffffL) << 1) : ((valor & 0xfffffffffffffL) | 0x10000000000000L);
-
-    // double retorno = sinal * mant * (pow(2, expon - 1075));
-    // return retorno;
-
-    double d;
-    memcpy(&d, &valor, sizeof(d));
-    return d;
-}
-
-#pragma endregion
-
-#pragma region typeToU4
-
-u4 intToU4(int32_t value) {
-  return (u4) value;
-}
-
-pair<u4, u4> longToU8(int64_t value) {
-  u4 low = (u4) value;
-  u4 high = (u4) (value >> 32);
-
-  return {low, high};
-}
-
-u4 floatToU4(float value) {
-  u4 result = 0;
-  int sinal = (value < 0) ? 1 : 0;
-  int expoente = 0;
-  float mantissa = 0;
-
-  if (value == 0) {
-    return 0;
-  }
-
-  if (value == INFINITY) {
-    return 0x7f800000;
-  }
-
-  if (value == -INFINITY) {
-    return 0xff800000;
-  }
-
-  if (isnan(value)) {
-    return 0x7fc00000;
-  }
-
-  if (value < 0) {
-    value = -value;
-  }
-
-  mantissa = frexp(value, &expoente);
-
-  expoente += 126;
-  mantissa *= 2;
-  if (mantissa >= 1) {
-    mantissa -= 1;
-  }
-
-  result = (sinal << 31) | (expoente << 23) | ((int) (mantissa * pow(2, 23)));
-
-  return result;
-}
-
-pair<u4,u4> doubleToU8(double value) {
-
-  int sinal = (value < 0) ? 1 : 0;
-  int expoente = 0;
-  double mantissa = 0;
-
-  if (value == 0) {
-    return {0, 0};
-  }
-
-  if (value == INFINITY) {
-    return {0, 0x7ff00000}; // 0x7ff0000000000000
-  }
-
-  if (value == -INFINITY) {
-    return {0, 0xfff00000}; // 0xfff0000000000000
-  }
-
-  if (isnan(value)) {
-    return {0, 0x7ff80000}; // 0x7ff8000000000000
-  }
-
-  if (value < 0) {
-    value = -value;
-  }
-
-  mantissa = frexp(value, &expoente);
-
-  expoente += 1022;
-  mantissa *= 2;
-  if (mantissa >= 1) {
-    mantissa -= 1;
-  }
-
-  u8 result = ((u8) sinal << 63) | ((u8) expoente << 52) | ((u8) (mantissa * pow(2, 52)));
-
-  u4 low = result & 0xffffffff;
-  u4 high = result >> 32;
-  return {low, high};
-}
-
-#pragma endregion
-
 void iconst(u4 value, Frame * frame) {
   int32_t integer = u4ToInt(value);
   frame->pushOperandStack(JvmValue(INT, {.i = integer}));
@@ -446,24 +316,25 @@ string getFieldName(Frame * frame, u2 index) {
   return fieldName;
 }
 
-pair<Frame *, vector<string>> createInvokedFrame(Frame * frame, u2 index, string methodName) {
+pair<Frame *, vector<string>> createInvokedFrame(Frame * frame, u2 index, string methodName, string methodDescriptor) {
   cp_info * classRef = frame->methodAreaItem->getConstantPoolItem(index);
   string classname = frame->methodAreaItem->getUtf8(classRef->constant_type_union.Class_info.name_index);
 
   MethodArea  * methodAreaRef = frame->methodAreaItem->getMethodArea();
   MethodAreaItem * classMethodAreaItem = methodAreaRef->getMethodAreaItem(classname);
-  Method_info * invokedMethod = classMethodAreaItem->getMethodByName(methodName);
+  Method_info * invokedMethod = classMethodAreaItem->getMethodByName(methodName, methodDescriptor);
+  MethodAreaItem * invokedMethodAreaItem = classMethodAreaItem->getMethodItemByMethodName(methodName, methodDescriptor);
 
   // TODO: lidar com as exceções que a especificação diz que podem acontecer
 
-  vector<string> argTypes = classMethodAreaItem->getMethodArgTypesByDescriptorIndex(invokedMethod->descriptor_index);
+  vector<string> argTypes = invokedMethodAreaItem->getMethodArgTypesByDescriptorIndex(invokedMethod->descriptor_index);
   // string returnType = argTypes.back(); caso precise, é assim que pega o tipo do retorno
   argTypes.pop_back(); // tira o tipo do retorno
   
   DCOUT << "method " << classname << '.' << methodName << ", nargs " << argTypes.size() << endl;
   for (string argType : argTypes) DCOUT << "argType " << argType << endl;
 
-  Frame * invokedFrame = new Frame(invokedMethod, classMethodAreaItem);
+  Frame * invokedFrame = new Frame(invokedMethod, invokedMethodAreaItem);
 
   return {invokedFrame, argTypes};
 }
@@ -645,7 +516,7 @@ void bipush (Frame * frame, JVM * jvm) {
   int8_t bytesSigned = bytes;
 
   frame->pushOperandStack(JvmValue(INT, {.i = bytesSigned}));
-  DCOUT << "valor empilhado: " << bytesSigned << endl;
+  DCOUT << "valor empilhado: " << (int) bytesSigned << endl;
   frame->pc += 2;
 }
 
@@ -658,7 +529,7 @@ void sipush (Frame * frame, JVM * jvm) {
   int16_t bytesSigned = (int16_t) bytes;
 
   frame->pushOperandStack(JvmValue(INT, {.i = bytesSigned}));
-  DCOUT << "valor empilhado: " << bytesSigned << endl;
+  DCOUT << "valor empilhado: " << (int) bytesSigned << endl;
   frame->pc += 3;
 }
 
@@ -2267,7 +2138,7 @@ void jsr (Frame * frame, JVM * jvm) {
   u1 branchbyte1 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
   u1 branchbyte2 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
   int16_t jump = (int16_t) (branchbyte1 << 8) | branchbyte2;
-  JvmValue returnAddress = JvmValue(RETURNADDRESS, DataUnion {.i = frame->pc + 3});
+  JvmValue returnAddress = JvmValue(RETURNADDRESS, DataUnion {.u = frame->pc + (u4)3 });
   frame->operandStack.push(returnAddress);
   frame->pc += jump;
 }
@@ -2483,19 +2354,21 @@ void putfield (Frame * frame, JVM * jvm) {
 #pragma region invoke
 
 void invokevirtual (Frame * frame, JVM * jvm) {
-  DCOUT << "invokevirtual" << endl;
-  u1 first_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
-  u1 second_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
-  u2 index = (first_bytes << 8) | second_bytes;
+  u1 highBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
+  u1 lowBytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
+  u2 index = (highBytes << 8) | lowBytes;
+  DCOUT << "invokevirtual #" << index << endl;
 
-  cp_info * method_ref = frame->methodAreaItem->getConstantPoolItem(index);
-  string className = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.class_index);
-  string methodName = frame->methodAreaItem->getUtf8(method_ref->constant_type_union.Methodref_info.name_and_type_index);
+  cp_info * methodRef = frame->methodAreaItem->getConstantPoolItem(index);
+  cp_info * nameAndTypeRef = frame->methodAreaItem->getConstantPoolItem(methodRef->constant_type_union.Methodref_info.name_and_type_index);
+  string methodName = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.name_index);
+  string methodDescriptor = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.descriptor_index);
 
+  string className = frame->methodAreaItem->getUtf8(methodRef->constant_type_union.Methodref_info.class_index);
   if (className == JAVA_PRINT_CLASSNAME) {
     DCOUT << className << "." << methodName << endl;
 
-    vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(method_ref->constant_type_union.Methodref_info.name_and_type_index);
+    vector<string> argTypes = frame->methodAreaItem->getMethodArgTypesByNameAndTypeIndex(methodRef->constant_type_union.Methodref_info.name_and_type_index);
     // argTypes.pop_back(); // remove o tipo de retorno
     for (auto arg : argTypes) DCOUT << "arg " << arg << ' ';
     DCOUT << endl;
@@ -2505,7 +2378,7 @@ void invokevirtual (Frame * frame, JVM * jvm) {
     return;
   }
   
-  auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName);
+  auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName, methodDescriptor);
   setInvokedLocalVars(frame, invokedFrame, args);
   jvm->invoke(*invokedFrame);
 
@@ -2518,7 +2391,12 @@ void invokespecial (Frame * frame, JVM * jvm) {
   u4 index = (high_bytes << 8) | low_bytes;
   DCOUT << "invokespecial #" << index << endl;
 
-  auto [initFrame, args] = createInvokedFrame(frame, index, "<init>");
+  cp_info * methodRef = frame->methodAreaItem->getConstantPoolItem(index);
+  cp_info * nameAndTypeRef = frame->methodAreaItem->getConstantPoolItem(methodRef->constant_type_union.Methodref_info.name_and_type_index);
+  string methodName = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.name_index);
+  string methodDescriptor = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.descriptor_index);
+
+  auto [initFrame, args] = createInvokedFrame(frame, index, methodName, methodDescriptor);
   setInvokedLocalVars(frame, initFrame, args);
   jvm->invoke(*initFrame);
 
@@ -2532,8 +2410,11 @@ void invokestatic (Frame * frame, JVM * jvm) {
   u2 index = (highBytes << 8) | lowBytes;
   
   cp_info * methodRef = frame->methodAreaItem->getConstantPoolItem(index);
+  cp_info * nameAndTypeRef = frame->methodAreaItem->getConstantPoolItem(methodRef->constant_type_union.Methodref_info.name_and_type_index);
+  string methodName = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.name_index);
+  string methodDescriptor = frame->methodAreaItem->getUtf8(nameAndTypeRef->constant_type_union.NameAndType.descriptor_index);
+
   string classname = frame->methodAreaItem->getUtf8(methodRef->constant_type_union.Methodref_info.class_index);
-  
   if (classname == JAVA_OBJ_CLASSNAME) {
     // se for java/lang/Object, não fazer nada
     DCOUT << "é um invokestatic para o Object.class IGNORADO!" << endl;
@@ -2541,9 +2422,8 @@ void invokestatic (Frame * frame, JVM * jvm) {
     return;
   }
 
-  string methodName = frame->methodAreaItem->getUtf8(methodRef->constant_type_union.Methodref_info.name_and_type_index); 
 
-  auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName);
+  auto [invokedFrame, args] = createInvokedFrame(frame, index, methodName, methodDescriptor);
   setInvokedLocalVars(frame, invokedFrame, args, true);
   jvm->invoke(*invokedFrame);
 
@@ -2751,7 +2631,13 @@ void ifnonnull (Frame * frame, JVM * jvm) {
 
 void goto_w (Frame * frame, JVM * jvm) {
   DCOUT << "goto_w" << endl;
-  frame->pc += 5;
+  u1 branchbyte1 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 1];
+  u1 branchbyte2 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 2];
+  u1 branchbyte3= frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 3];
+  u1 branchbyte4 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 4];
+  int32_t jump = (int32_t) (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4;
+  DCOUT << "jump to pc " << frame->pc + jump << endl;
+  frame->pc += jump;
 }
 
 void jsr_w (Frame * frame, JVM * jvm) {
@@ -2761,7 +2647,7 @@ void jsr_w (Frame * frame, JVM * jvm) {
   u1 branchbyte3= frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 3];
   u1 branchbyte4 = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc + 4];
   int32_t jump = (int32_t) (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4;
-  JvmValue returnAddress = JvmValue(RETURNADDRESS, DataUnion {.i = frame->pc + 5});
+  JvmValue returnAddress = JvmValue(RETURNADDRESS, DataUnion {.u = frame->pc + (u4)5});
   frame->operandStack.push(returnAddress);
   frame->pc += jump;
 }
