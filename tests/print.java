@@ -11,10 +11,9 @@ public class print{
     System.out.println("CHAR");
     System.out.println(myChar);
 
-    // TODO: array not supported
-    // char[] myChars = {'A', 'W', 'P'};
-    // System.out.println("CHAR[]");
-    // System.out.println(myChars);
+    char[] myChars = {'A', 'W', 'P'};
+    System.out.println("CHAR[]");
+    System.out.println(myChars);
     
     System.out.println("DOUBLE");
     System.out.println(3.14159265358979323846);
