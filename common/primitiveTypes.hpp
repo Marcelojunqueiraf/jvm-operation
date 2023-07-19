@@ -1,9 +1,18 @@
+/**
+ * @file classfile.hpp
+ * @author Marcelo Piano
+ * @author Marcelo Junqueira
+ * @author Gabriel Borges
+ * @author Maycon Vinnicyus
+ * @author Edson Sales
+ * @brief Arquivo que define os tipos da JVM
+ */
 
-#ifndef PRIMITIVE_TYPES_H 
-#define PRIMITIVE_TYPES_H
+#pragma once
 
 #include <string>
 
+/// @brief Enum que define os tipos usados na JVM
 typedef enum {
     BYTE,
     SHORT,
@@ -18,6 +27,7 @@ typedef enum {
     RETURNADDRESS
   } JVMType;
 
+/// @brief Tipos dos dados armazenados
 typedef union 
   {
     uint32_t u;
@@ -27,7 +37,7 @@ typedef union
     double d;
   } DataUnion;
 
-
+/// @brief Classe que armazena os dados de algum tipo da JVM
 class JvmValue
 {
   public:
@@ -46,5 +56,3 @@ class JvmValue
     this->s = s;
   }
 };
-
-#endif

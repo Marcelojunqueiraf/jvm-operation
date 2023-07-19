@@ -1,3 +1,13 @@
+/**
+ * @file classfile.hpp
+ * @author Marcelo Piano
+ * @author Marcelo Junqueira
+ * @author Gabriel Borges
+ * @author Maycon Vinnicyus
+ * @author Edson Sales
+ * @brief Arquivo com as funções utilizadas no exibidor
+ */
+
 #pragma once
 
 #include "../common/index.hpp"

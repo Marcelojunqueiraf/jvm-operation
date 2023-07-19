@@ -1,3 +1,13 @@
+/**
+ * @file classfile.hpp
+ * @author Marcelo Piano
+ * @author Marcelo Junqueira
+ * @author Gabriel Borges
+ * @author Maycon Vinnicyus
+ * @author Edson Sales
+ * @brief Arquivo com as funções de conversão dos tipos numéricos
+ */
+
 #pragma once
 
 #include "intTypes.hpp"
