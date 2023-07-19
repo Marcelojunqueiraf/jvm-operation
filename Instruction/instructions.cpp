@@ -2512,6 +2512,35 @@ void _new (Frame * frame, JVM * jvm) {
   frame->pc += 3;
 }
 
+JVMType getArrayType(string atype) {
+  while(atype[0] == '['){
+    atype.erase(0,1);
+  }
+
+  switch (atype[0]) {
+    case 'Z':
+      return BOOL;
+    case 'B':
+      return BYTE;
+    case 'C':
+      return CHAR;
+    case 'S':
+      return SHORT;
+    case 'I':
+      return INT;
+    case 'J':
+      return LONG;
+    case 'F':
+      return FLOAT;
+    case 'D':
+      return DOUBLE;
+    case 'L':
+      return REFERENCE;
+    default:
+      throw std::runtime_error("Tipo inválido");
+  }
+}
+
 void newarray (Frame * frame, JVM * jvm) {
   DCOUT << "newarray" << endl;
   u1 atype = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
@@ -2563,6 +2592,7 @@ void newarray (Frame * frame, JVM * jvm) {
 
 void anewarray (Frame * frame, JVM * jvm) {
   DCOUT << "anewarray" << endl;
+  // TODO: later
   // u1 high_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
   // u1 low_bytes = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
   // u2 index = (high_bytes << 8) | low_bytes;
@@ -2673,43 +2703,8 @@ void multianewarray (Frame * frame, JVM * jvm) {
   cp_info * classRef = frame->methodAreaItem->getConstantPoolItem(index);
 
   string typeName = frame->methodAreaItem->getUtf8(classRef->constant_type_union.Class_info.name_index);
-  while(typeName[0] == '['){
-    typeName.erase(0,1);
-  }
+  JVMType type = getArrayType(typeName);
 
-  // get last char
-  JVMType type;
-  switch (typeName[0]){
-    case 'Z':
-      type = BOOL;
-      break;
-    case 'B':
-      type = BYTE;
-      break;
-    case 'C':
-      type = CHAR;
-      break;
-    case 'S':
-      type = SHORT;
-      break;
-    case 'I':
-      type = INT;
-      break;
-    case 'J':
-      type = LONG;
-      break;
-    case 'F':
-      type = FLOAT;
-      break;
-    case 'D':
-      type = DOUBLE;
-      break;
-    case 'L':
-      type = REFERENCE;
-      break;
-    default:
-      throw std::runtime_error("Tipo inválido");
-  }
   u1 dimensions = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+3];
   vector<int32_t> counts;
 
