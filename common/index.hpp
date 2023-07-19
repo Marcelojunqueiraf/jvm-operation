@@ -16,5 +16,5 @@
 #include "converters.hpp"
 #include <iostream>
 
-#define DEBUG 1
+extern bool DEBUG;
 #define DCOUT if (DEBUG) std::cout << "DEBUG: "

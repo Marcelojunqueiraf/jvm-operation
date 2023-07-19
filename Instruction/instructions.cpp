@@ -1178,6 +1178,7 @@ enum Operation {
   AND,
   OR,
   XOR,
+  REM,
 };
 
 template<typename T>
@@ -1206,6 +1207,8 @@ T calculate(T first, T second, Operation op) {
         case XOR:
             result = first ^ second;
             break;
+        case REM:
+            result = first % second;
         default:
             throw std::runtime_error("operacao nao implementada");
     }
@@ -1228,6 +1231,8 @@ float calculate(float first, float second, Operation op) {
         case DIV:
             result = first / second;
             break;
+        case REM:
+            result = fmod(first, second);
         default:
             throw std::runtime_error("operacao nao implementada");
     }
@@ -1250,6 +1255,8 @@ double calculate(double first, double second, Operation op) {
         case DIV:
             result = first / second;
             break;
+        case REM:
+            result = fmod(first, second);
         default:
             throw std::runtime_error("operacao nao implementada");
     }
@@ -1415,22 +1422,26 @@ void ddiv (Frame * frame, JVM * jvm) {
 #pragma region rem
 
 void irem (Frame * frame, JVM * jvm) {
-  cout << "irem" << endl;
+  DCOUT << "irem" << endl;
+  operate(frame, REM, INT);
   frame->pc += 1;
 }
 
 void lrem (Frame * frame, JVM * jvm) {
-  cout << "lrem" << endl;
+  DCOUT << "lrem" << endl;
+  operate(frame, REM, LONG);
   frame->pc += 1;
 }
 
 void frem (Frame * frame, JVM * jvm) {
-  cout << "frem" << endl;
+  DCOUT << "frem" << endl;
+  operate(frame, REM, FLOAT);
   frame->pc += 1;
 }
 
 void drem (Frame * frame, JVM * jvm) {
-  cout << "drem" << endl;
+  DCOUT << "drem" << endl;
+  operate(frame, REM, DOUBLE);
   frame->pc += 1;
 }
 

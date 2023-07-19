@@ -15,6 +15,7 @@
 #include <iostream>
 #include <iomanip> // std::setprecision
 #include <cstring>
+#include <cmath>
 
 class JVM;
 
