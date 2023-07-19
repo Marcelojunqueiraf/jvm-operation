@@ -1,8 +1,18 @@
+/**
+ * @file classfile.hpp
+ * @author Marcelo Piano
+ * @author Marcelo Junqueira
+ * @author Gabriel Borges
+ * @author Maycon Vinnicyus
+ * @author Edson Sales
+ * @brief Arquivo com as funções utilizados no leitor
+*/
+
+#pragma once
+
 #include "../common/class-file.hpp"
 #include "utf8.hpp"
 #include <cstdio>
-#ifndef LEITORH
-#define LEITORH
 
 // sempre que tiver um INDEX é um indice do constant pool
 
@@ -57,6 +67,3 @@ void read_cp_info(FILE *,ClassFile *);
 /// @param fd Ponteiro para Byte do arquivo .Class lido
 /// @param cf Ponteiro para o Class File
 void class_reader(FILE *,ClassFile *);
-
-
-#endif

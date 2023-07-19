@@ -76,31 +76,30 @@ void JVM::run() {
   }
 }
 
-int32_t JVM::pushObject(Object *heapItem) {
+u4 JVM::pushObject(Object *heapItem) {
   return this->heap.pushHeapItem(heapItem);
 }
 
-int32_t JVM::pushArray(Array *arrayItem) {
-  int32_t arrayIndex = this->heap.pushArrayItem(arrayItem);
-  return arrayIndex;
+u4 JVM::pushArray(Array *arrayItem) {
+  return this->heap.pushArrayItem(arrayItem);
 }
 
-JvmValue JVM::getField(int32_t heapItemIndex, string fieldName) {
+JvmValue JVM::getField(u4 heapItemIndex, string fieldName) {
   Object * heapItem = this->heap.getHeapItem(heapItemIndex);
   return heapItem->getFieldValue(fieldName);
 }
 
-JvmValue JVM::getArrayValue(int32_t arrayItemIndex, int32_t index) {
+JvmValue JVM::getArrayValue(u4 arrayItemIndex, u4 index) {
   Array * arrayItem = this->heap.getArrayItem(arrayItemIndex);
   return arrayItem->getArrayValue(index);
 }
 
-void JVM::setArrayValue(int32_t arrayItemIndex, int32_t index, JvmValue value) {
+void JVM::setArrayValue(u4 arrayItemIndex, u4 index, JvmValue value) {
   Array * arrayItem = this->heap.getArrayItem(arrayItemIndex);
   arrayItem->setArrayValue(index, value);
 }
 
-int32_t JVM::getArraySize(int32_t arrayItemIndex) {
+u4 JVM::getArraySize(u4 arrayItemIndex) {
   Array * arrayItem = this->heap.getArrayItem(arrayItemIndex);
   return arrayItem->getArraySize();
 }
@@ -110,7 +109,7 @@ JvmValue JVM::getStaticField(string classname, string fieldName) {
   return methodAreaItem->getStaticField(fieldName);
 }
 
-void JVM::setField(int32_t heapItemIndex, string fieldName, JvmValue value) {
+void JVM::setField(u4 heapItemIndex, string fieldName, JvmValue value) {
   Object * heapItem = this->heap.getHeapItem(heapItemIndex);
   heapItem->setFieldValue(fieldName, value);
 }

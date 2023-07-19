@@ -27,7 +27,7 @@ void cp_info_exibitor(ClassFile *);
 /// @param tabs_count Variável para organização na hora dos prints
 void attributes_exibitor(Attribute_info *, u2, ClassFile *, int);
 
-/// @brief Função que
+/// @brief Função que retorna o nome da classe (utf8)
 /// @param cp Ponteiro para o Constant Pool
 /// @param classIndex Índice da classe
 string class_decoder(cp_info *, u2);
@@ -119,7 +119,7 @@ typedef enum array_code_attr_to_type{
 }array_code_attr_to_type;
 
 
-/// @brief Enum que une o valor do upcode ao opcode
+/// @brief Enum que une o valor do opcode ao opcode
 namespace exibidor 
 {
 typedef enum value_to_opcode
