@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['neg_75',['neg',['../classneg.html',1,'']]]
+  ['neg_0',['neg',['../classneg.html',1,'']]]
 ];

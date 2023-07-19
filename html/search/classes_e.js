@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tableswitch_81',['TableSwitch',['../classTableSwitch.html',1,'']]]
+  ['tableswitch_0',['TableSwitch',['../classTableSwitch.html',1,'']]]
 ];
