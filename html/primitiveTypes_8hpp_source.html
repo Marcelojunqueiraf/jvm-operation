@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JVM - Softare básico: common/primitiveTypes.hpp Source File</title>
+<title>JVM - Software básico: common/primitiveTypes.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JVM - Softare básico
+   <div id="projectname">JVM - Software básico
    </div>
    <div id="projectbrief">JMV simplificada implementada em C++ para a disciplina de Software Básico</div>
   </td>
@@ -77,54 +77,77 @@ $(function() {
   <div class="headertitle"><div class="title">primitiveTypes.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<a href="primitiveTypes_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    BYTE,</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    SHORT,</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    INT,</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    LONG,</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    CHAR,</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    FLOAT,</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    DOUBLE,</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    BOOL,</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    REFERENCE,</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    STRING,</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    RETURNADDRESS</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  } JVMType;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3">   16</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aa7f492d725033c06576ac4ba21007297">   17</a></span>    <a class="code hl_enumvalue" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aa7f492d725033c06576ac4ba21007297">BYTE</a>,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a7a1fe3ba88f0c16cb494922948a9597d">   18</a></span>    <a class="code hl_enumvalue" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a7a1fe3ba88f0c16cb494922948a9597d">SHORT</a>,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3afd5a5f51ce25953f3db2c7e93eb7864a">   19</a></span>    <a class="code hl_enumvalue" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3afd5a5f51ce25953f3db2c7e93eb7864a">INT</a>,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aaee055c4a5aba7d55774e4f1c01dacea">   20</a></span>    <a class="code hl_enumvalue" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aaee055c4a5aba7d55774e4f1c01dacea">LONG</a>,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a4618cf21306b3c647741afa7ebefcab8">   21</a></span>    <a class="code hl_enumvalue" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a4618cf21306b3c647741afa7ebefcab8">CHAR</a>,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a9cf4a0866224b0bb4a7a895da27c9c4c">   22</a></span>    <a class="code hl_enumvalue" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a9cf4a0866224b0bb4a7a895da27c9c4c">FLOAT</a>,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a33465d1d419b1074fb259ef444609e92">   23</a></span>    <a class="code hl_enumvalue" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a33465d1d419b1074fb259ef444609e92">DOUBLE</a>,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3ae663dbb8f8244e122acb5bd6b2c216e1">   24</a></span>    <a class="code hl_enumvalue" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3ae663dbb8f8244e122acb5bd6b2c216e1">BOOL</a>,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a4dc014d38d8f5ea326043e8491cfb6a3">   25</a></span>    <a class="code hl_enumvalue" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a4dc014d38d8f5ea326043e8491cfb6a3">REFERENCE</a>,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aee847e634a4297b274316de8a8ca9921">   26</a></span>    <a class="code hl_enumvalue" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aee847e634a4297b274316de8a8ca9921">STRING</a>,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_enumvalue" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aadbc5c0caa58907cea90dbda90ccb400">RETURNADDRESS</a></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aadbc5c0caa58907cea90dbda90ccb400">   28</a></span>  } <a class="code hl_enumeration" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3">JVMType</a>;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="unionDataUnion.html">   31</a></span><span class="keyword">typedef</span> <span class="keyword">union </span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  {</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    uint32_t u;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    int32_t i;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    int64_t l; <span class="comment">// long</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">float</span> f;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">double</span> d;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="unionDataUnion.html#a9a6fce52baeebe2c5a7a256bcdf1e002">   33</a></span>    uint32_t <a class="code hl_variable" href="unionDataUnion.html#a9a6fce52baeebe2c5a7a256bcdf1e002">u</a>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="unionDataUnion.html#a3aeba06c284a7ebdf07c2b2e9ac315e3">   34</a></span>    int32_t <a class="code hl_variable" href="unionDataUnion.html#a3aeba06c284a7ebdf07c2b2e9ac315e3">i</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="unionDataUnion.html#adee1ec2bacfdb39aa2e8501d90bb75ed">   35</a></span>    int64_t <a class="code hl_variable" href="unionDataUnion.html#adee1ec2bacfdb39aa2e8501d90bb75ed">l</a>; <span class="comment">// long</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="unionDataUnion.html#a3a29a815f89135a8a400ed01dc811f22">   36</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="unionDataUnion.html#a3a29a815f89135a8a400ed01dc811f22">f</a>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="unionDataUnion.html#a294afa0a262c19bfa14f280a9b09baab">   37</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="unionDataUnion.html#a294afa0a262c19bfa14f280a9b09baab">d</a>;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  } <a class="code hl_union" href="unionDataUnion.html">DataUnion</a>;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classJvmValue.html">   41</a></span><span class="keyword">class </span><a class="code hl_class" href="classJvmValue.html">JvmValue</a></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  JVMType type;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <a class="code hl_union" href="unionDataUnion.html">DataUnion</a> data;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  std::string s;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classJvmValue.html#a747ce18dbd1b8bbbf8e211705c67e1b5">   44</a></span>  <a class="code hl_enumeration" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3">JVMType</a> <a class="code hl_variable" href="classJvmValue.html#a747ce18dbd1b8bbbf8e211705c67e1b5">type</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classJvmValue.html#a397ca6b8888440b0408d9d74c3fdba90">   45</a></span>  <a class="code hl_union" href="unionDataUnion.html">DataUnion</a> <a class="code hl_variable" href="classJvmValue.html#a397ca6b8888440b0408d9d74c3fdba90">data</a>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classJvmValue.html#aabb0baf2cb7376963c756c99d7eabc82">   46</a></span>  std::string <a class="code hl_variable" href="classJvmValue.html#aabb0baf2cb7376963c756c99d7eabc82">s</a>;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <a class="code hl_class" href="classJvmValue.html">JvmValue</a>() {}</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classJvmValue.html#a7a5ff85ee1ee9a2eeb71befdd33cdd61">   48</a></span>  <a class="code hl_function" href="classJvmValue.html#a7a5ff85ee1ee9a2eeb71befdd33cdd61">JvmValue</a>() {}</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <a class="code hl_class" href="classJvmValue.html">JvmValue</a>(JVMType type, <a class="code hl_union" href="unionDataUnion.html">DataUnion</a> data) {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    this-&gt;type = type;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    this-&gt;data = data;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classJvmValue.html#a1b4aac95bc5274466e1694d78cdb53da">   50</a></span>  <a class="code hl_function" href="classJvmValue.html#a1b4aac95bc5274466e1694d78cdb53da">JvmValue</a>(<a class="code hl_enumeration" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3">JVMType</a> <a class="code hl_variable" href="classJvmValue.html#a747ce18dbd1b8bbbf8e211705c67e1b5">type</a>, <a class="code hl_union" href="unionDataUnion.html">DataUnion</a> <a class="code hl_variable" href="classJvmValue.html#a397ca6b8888440b0408d9d74c3fdba90">data</a>) {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    this-&gt;type = <a class="code hl_variable" href="classJvmValue.html#a747ce18dbd1b8bbbf8e211705c67e1b5">type</a>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    this-&gt;data = <a class="code hl_variable" href="classJvmValue.html#a397ca6b8888440b0408d9d74c3fdba90">data</a>;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <a class="code hl_class" href="classJvmValue.html">JvmValue</a>(JVMType type, std::string s) {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    this-&gt;type = type;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    this-&gt;s = s;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classJvmValue.html#acfeeea71c2aca2fff36728a208baf6b7">   54</a></span>  <a class="code hl_function" href="classJvmValue.html#acfeeea71c2aca2fff36728a208baf6b7">JvmValue</a>(<a class="code hl_enumeration" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3">JVMType</a> <a class="code hl_variable" href="classJvmValue.html#a747ce18dbd1b8bbbf8e211705c67e1b5">type</a>, std::string <a class="code hl_variable" href="classJvmValue.html#aabb0baf2cb7376963c756c99d7eabc82">s</a>) {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    this-&gt;type = <a class="code hl_variable" href="classJvmValue.html#a747ce18dbd1b8bbbf8e211705c67e1b5">type</a>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    this-&gt;s = <a class="code hl_variable" href="classJvmValue.html#aabb0baf2cb7376963c756c99d7eabc82">s</a>;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  }</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>};</div>
 <div class="ttc" id="aclassJvmValue_html"><div class="ttname"><a href="classJvmValue.html">JvmValue</a></div><div class="ttdoc">Classe que armazena os dados de algum tipo da JVM.</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:42</div></div>
+<div class="ttc" id="aclassJvmValue_html_a1b4aac95bc5274466e1694d78cdb53da"><div class="ttname"><a href="classJvmValue.html#a1b4aac95bc5274466e1694d78cdb53da">JvmValue::JvmValue</a></div><div class="ttdeci">JvmValue(JVMType type, DataUnion data)</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:50</div></div>
+<div class="ttc" id="aclassJvmValue_html_a397ca6b8888440b0408d9d74c3fdba90"><div class="ttname"><a href="classJvmValue.html#a397ca6b8888440b0408d9d74c3fdba90">JvmValue::data</a></div><div class="ttdeci">DataUnion data</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:45</div></div>
+<div class="ttc" id="aclassJvmValue_html_a747ce18dbd1b8bbbf8e211705c67e1b5"><div class="ttname"><a href="classJvmValue.html#a747ce18dbd1b8bbbf8e211705c67e1b5">JvmValue::type</a></div><div class="ttdeci">JVMType type</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:44</div></div>
+<div class="ttc" id="aclassJvmValue_html_a7a5ff85ee1ee9a2eeb71befdd33cdd61"><div class="ttname"><a href="classJvmValue.html#a7a5ff85ee1ee9a2eeb71befdd33cdd61">JvmValue::JvmValue</a></div><div class="ttdeci">JvmValue()</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:48</div></div>
+<div class="ttc" id="aclassJvmValue_html_aabb0baf2cb7376963c756c99d7eabc82"><div class="ttname"><a href="classJvmValue.html#aabb0baf2cb7376963c756c99d7eabc82">JvmValue::s</a></div><div class="ttdeci">std::string s</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:46</div></div>
+<div class="ttc" id="aclassJvmValue_html_acfeeea71c2aca2fff36728a208baf6b7"><div class="ttname"><a href="classJvmValue.html#acfeeea71c2aca2fff36728a208baf6b7">JvmValue::JvmValue</a></div><div class="ttdeci">JvmValue(JVMType type, std::string s)</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:54</div></div>
+<div class="ttc" id="aprimitiveTypes_8hpp_html_a699e7dc0ee60dcef15daf41ee09510a3"><div class="ttname"><a href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3">JVMType</a></div><div class="ttdeci">JVMType</div><div class="ttdoc">Enum que define os tipos usados na JVM.</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:16</div></div>
+<div class="ttc" id="aprimitiveTypes_8hpp_html_a699e7dc0ee60dcef15daf41ee09510a3a33465d1d419b1074fb259ef444609e92"><div class="ttname"><a href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a33465d1d419b1074fb259ef444609e92">DOUBLE</a></div><div class="ttdeci">@ DOUBLE</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:23</div></div>
+<div class="ttc" id="aprimitiveTypes_8hpp_html_a699e7dc0ee60dcef15daf41ee09510a3a4618cf21306b3c647741afa7ebefcab8"><div class="ttname"><a href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a4618cf21306b3c647741afa7ebefcab8">CHAR</a></div><div class="ttdeci">@ CHAR</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:21</div></div>
+<div class="ttc" id="aprimitiveTypes_8hpp_html_a699e7dc0ee60dcef15daf41ee09510a3a4dc014d38d8f5ea326043e8491cfb6a3"><div class="ttname"><a href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a4dc014d38d8f5ea326043e8491cfb6a3">REFERENCE</a></div><div class="ttdeci">@ REFERENCE</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:25</div></div>
+<div class="ttc" id="aprimitiveTypes_8hpp_html_a699e7dc0ee60dcef15daf41ee09510a3a7a1fe3ba88f0c16cb494922948a9597d"><div class="ttname"><a href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a7a1fe3ba88f0c16cb494922948a9597d">SHORT</a></div><div class="ttdeci">@ SHORT</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:18</div></div>
+<div class="ttc" id="aprimitiveTypes_8hpp_html_a699e7dc0ee60dcef15daf41ee09510a3a9cf4a0866224b0bb4a7a895da27c9c4c"><div class="ttname"><a href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3a9cf4a0866224b0bb4a7a895da27c9c4c">FLOAT</a></div><div class="ttdeci">@ FLOAT</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:22</div></div>
+<div class="ttc" id="aprimitiveTypes_8hpp_html_a699e7dc0ee60dcef15daf41ee09510a3aa7f492d725033c06576ac4ba21007297"><div class="ttname"><a href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aa7f492d725033c06576ac4ba21007297">BYTE</a></div><div class="ttdeci">@ BYTE</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:17</div></div>
+<div class="ttc" id="aprimitiveTypes_8hpp_html_a699e7dc0ee60dcef15daf41ee09510a3aadbc5c0caa58907cea90dbda90ccb400"><div class="ttname"><a href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aadbc5c0caa58907cea90dbda90ccb400">RETURNADDRESS</a></div><div class="ttdeci">@ RETURNADDRESS</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:27</div></div>
+<div class="ttc" id="aprimitiveTypes_8hpp_html_a699e7dc0ee60dcef15daf41ee09510a3aaee055c4a5aba7d55774e4f1c01dacea"><div class="ttname"><a href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aaee055c4a5aba7d55774e4f1c01dacea">LONG</a></div><div class="ttdeci">@ LONG</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:20</div></div>
+<div class="ttc" id="aprimitiveTypes_8hpp_html_a699e7dc0ee60dcef15daf41ee09510a3ae663dbb8f8244e122acb5bd6b2c216e1"><div class="ttname"><a href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3ae663dbb8f8244e122acb5bd6b2c216e1">BOOL</a></div><div class="ttdeci">@ BOOL</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:24</div></div>
+<div class="ttc" id="aprimitiveTypes_8hpp_html_a699e7dc0ee60dcef15daf41ee09510a3aee847e634a4297b274316de8a8ca9921"><div class="ttname"><a href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aee847e634a4297b274316de8a8ca9921">STRING</a></div><div class="ttdeci">@ STRING</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:26</div></div>
+<div class="ttc" id="aprimitiveTypes_8hpp_html_a699e7dc0ee60dcef15daf41ee09510a3afd5a5f51ce25953f3db2c7e93eb7864a"><div class="ttname"><a href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3afd5a5f51ce25953f3db2c7e93eb7864a">INT</a></div><div class="ttdeci">@ INT</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:19</div></div>
 <div class="ttc" id="aunionDataUnion_html"><div class="ttname"><a href="unionDataUnion.html">DataUnion</a></div><div class="ttdoc">Tipos dos dados armazenados.</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:32</div></div>
+<div class="ttc" id="aunionDataUnion_html_a294afa0a262c19bfa14f280a9b09baab"><div class="ttname"><a href="unionDataUnion.html#a294afa0a262c19bfa14f280a9b09baab">DataUnion::d</a></div><div class="ttdeci">double d</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:37</div></div>
+<div class="ttc" id="aunionDataUnion_html_a3a29a815f89135a8a400ed01dc811f22"><div class="ttname"><a href="unionDataUnion.html#a3a29a815f89135a8a400ed01dc811f22">DataUnion::f</a></div><div class="ttdeci">float f</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:36</div></div>
+<div class="ttc" id="aunionDataUnion_html_a3aeba06c284a7ebdf07c2b2e9ac315e3"><div class="ttname"><a href="unionDataUnion.html#a3aeba06c284a7ebdf07c2b2e9ac315e3">DataUnion::i</a></div><div class="ttdeci">int32_t i</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:34</div></div>
+<div class="ttc" id="aunionDataUnion_html_a9a6fce52baeebe2c5a7a256bcdf1e002"><div class="ttname"><a href="unionDataUnion.html#a9a6fce52baeebe2c5a7a256bcdf1e002">DataUnion::u</a></div><div class="ttdeci">uint32_t u</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:33</div></div>
+<div class="ttc" id="aunionDataUnion_html_adee1ec2bacfdb39aa2e8501d90bb75ed"><div class="ttname"><a href="unionDataUnion.html#adee1ec2bacfdb39aa2e8501d90bb75ed">DataUnion::l</a></div><div class="ttdeci">int64_t l</div><div class="ttdef"><b>Definition</b> primitiveTypes.hpp:35</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

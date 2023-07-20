@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JVM - Softare básico: array Class Reference</title>
+<title>JVM - Software básico: Array Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JVM - Softare básico
+   <div id="projectname">JVM - Software básico
    </div>
    <div id="projectbrief">JMV simplificada implementada em C++ para a disciplina de Software Básico</div>
   </td>
@@ -71,20 +71,219 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="classarray-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">array Class Reference</div></div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="classArray-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">Array Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Classe que define a estrutura de um array no heap.  
+ <a href="classArray.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="heap_8hpp_source.html">heap.hpp</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae24112b961285ff0bfe7e905634e3086"><td class="memItemLeft" align="right" valign="top"><a id="ae24112b961285ff0bfe7e905634e3086" name="ae24112b961285ff0bfe7e905634e3086"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (String[] args)</td></tr>
-<tr class="separator:ae24112b961285ff0bfe7e905634e3086"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:af963130d53ec5bcb10dbaeea09c45d83"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArray.html#af963130d53ec5bcb10dbaeea09c45d83">Array</a> (<a class="el" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3">JVMType</a> <a class="el" href="classArray.html#af752961886bf5f8c261f7a647e0ef764">type</a>, <a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> size)</td></tr>
+<tr class="memdesc:af963130d53ec5bcb10dbaeea09c45d83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instanciador de classe.  <br /></td></tr>
+<tr class="separator:af963130d53ec5bcb10dbaeea09c45d83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9b5da6b73882fb55c6a1fac730327f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classJvmValue.html">JvmValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArray.html#af9b5da6b73882fb55c6a1fac730327f4">getArrayValue</a> (<a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> index)</td></tr>
+<tr class="memdesc:af9b5da6b73882fb55c6a1fac730327f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que retorna um elemento do array através de um índice passado.  <br /></td></tr>
+<tr class="separator:af9b5da6b73882fb55c6a1fac730327f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20793ecbf98e8ce69ddc603bfc974f6e"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArray.html#a20793ecbf98e8ce69ddc603bfc974f6e">getArraySize</a> ()</td></tr>
+<tr class="memdesc:a20793ecbf98e8ce69ddc603bfc974f6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que retorna o tamanho do array.  <br /></td></tr>
+<tr class="separator:a20793ecbf98e8ce69ddc603bfc974f6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e1e0cded3cdc6ed791a514122338eb8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArray.html#a0e1e0cded3cdc6ed791a514122338eb8">setArrayValue</a> (<a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> index, <a class="el" href="classJvmValue.html">JvmValue</a> value)</td></tr>
+<tr class="memdesc:a0e1e0cded3cdc6ed791a514122338eb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que coloca o elemento passado no índice informado.  <br /></td></tr>
+<tr class="separator:a0e1e0cded3cdc6ed791a514122338eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:aa03fdf76c626516e79f7603a4604bcba"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classJvmValue.html">JvmValue</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArray.html#aa03fdf76c626516e79f7603a4604bcba">array</a></td></tr>
+<tr class="memdesc:aa03fdf76c626516e79f7603a4604bcba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vetor com os elementos que serão armazenados no array.  <br /></td></tr>
+<tr class="separator:aa03fdf76c626516e79f7603a4604bcba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af752961886bf5f8c261f7a647e0ef764"><td class="memItemLeft" align="right" valign="top"><a class="el" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3">JVMType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArray.html#af752961886bf5f8c261f7a647e0ef764">type</a></td></tr>
+<tr class="memdesc:af752961886bf5f8c261f7a647e0ef764"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tipo dos elementos que serão armazenados no array.  <br /></td></tr>
+<tr class="separator:af752961886bf5f8c261f7a647e0ef764"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>tests/array.java</li>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Classe que define a estrutura de um array no heap. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="af963130d53ec5bcb10dbaeea09c45d83" name="af963130d53ec5bcb10dbaeea09c45d83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af963130d53ec5bcb10dbaeea09c45d83">&#9670;&#160;</a></span>Array()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Array::Array </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3">JVMType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Instanciador de classe. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Tipo dos elementos </td></tr>
+    <tr><td class="paramname">size</td><td>Tamanho do array </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a20793ecbf98e8ce69ddc603bfc974f6e" name="a20793ecbf98e8ce69ddc603bfc974f6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20793ecbf98e8ce69ddc603bfc974f6e">&#9670;&#160;</a></span>getArraySize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t Array::getArraySize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Função que retorna o tamanho do array. </p>
+<dl class="section return"><dt>Returns</dt><dd>Tamanho como int32_t </dd></dl>
+
+</div>
+</div>
+<a id="af9b5da6b73882fb55c6a1fac730327f4" name="af9b5da6b73882fb55c6a1fac730327f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9b5da6b73882fb55c6a1fac730327f4">&#9670;&#160;</a></span>getArrayValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classJvmValue.html">JvmValue</a> Array::getArrayValue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Função que retorna um elemento do array através de um índice passado. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>Índice do array </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Elemento armazenado no índice passado </dd></dl>
+
+</div>
+</div>
+<a id="a0e1e0cded3cdc6ed791a514122338eb8" name="a0e1e0cded3cdc6ed791a514122338eb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e1e0cded3cdc6ed791a514122338eb8">&#9670;&#160;</a></span>setArrayValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Array::setArrayValue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classJvmValue.html">JvmValue</a>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Função que coloca o elemento passado no índice informado. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>Índice do array </td></tr>
+    <tr><td class="paramname">value</td><td>Elemento a ser colocado no array </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa03fdf76c626516e79f7603a4604bcba" name="aa03fdf76c626516e79f7603a4604bcba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa03fdf76c626516e79f7603a4604bcba">&#9670;&#160;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;<a class="el" href="classJvmValue.html">JvmValue</a>&gt; Array::array</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Vetor com os elementos que serão armazenados no array. </p>
+
+</div>
+</div>
+<a id="af752961886bf5f8c261f7a647e0ef764" name="af752961886bf5f8c261f7a647e0ef764"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af752961886bf5f8c261f7a647e0ef764">&#9670;&#160;</a></span>type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3">JVMType</a> Array::type</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tipo dos elementos que serão armazenados no array. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>Heap/<a class="el" href="heap_8hpp_source.html">heap.hpp</a></li>
+<li>Heap/<a class="el" href="heap_8cpp.html">heap.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

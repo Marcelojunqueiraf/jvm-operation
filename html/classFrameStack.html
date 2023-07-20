@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JVM - Softare básico: FrameStack Class Reference</title>
+<title>JVM - Software básico: FrameStack Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JVM - Softare básico
+   <div id="projectname">JVM - Software básico
    </div>
    <div id="projectbrief">JMV simplificada implementada em C++ para a disciplina de Software Básico</div>
   </td>
@@ -72,6 +72,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="classFrameStack-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">FrameStack Class Reference</div></div>
 </div><!--header-->
@@ -84,13 +85,11 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a73bf00bdbb9e7b6b4348a15ecfeb5231"><td class="memItemLeft" align="right" valign="top"><a id="a73bf00bdbb9e7b6b4348a15ecfeb5231" name="a73bf00bdbb9e7b6b4348a15ecfeb5231"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FrameStack</b> ()</td></tr>
-<tr class="memdesc:a73bf00bdbb9e7b6b4348a15ecfeb5231"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instanciador de classe. <br /></td></tr>
+<tr class="memitem:a73bf00bdbb9e7b6b4348a15ecfeb5231"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFrameStack.html#a73bf00bdbb9e7b6b4348a15ecfeb5231">FrameStack</a> ()</td></tr>
+<tr class="memdesc:a73bf00bdbb9e7b6b4348a15ecfeb5231"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instanciador de classe.  <br /></td></tr>
 <tr class="separator:a73bf00bdbb9e7b6b4348a15ecfeb5231"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7da31bde9fe2f7cf6a4e2497445223a5"><td class="memItemLeft" align="right" valign="top"><a id="a7da31bde9fe2f7cf6a4e2497445223a5" name="a7da31bde9fe2f7cf6a4e2497445223a5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>pop</b> ()</td></tr>
-<tr class="memdesc:a7da31bde9fe2f7cf6a4e2497445223a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retira o útimo frame da pilha. <br /></td></tr>
+<tr class="memitem:a7da31bde9fe2f7cf6a4e2497445223a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFrameStack.html#a7da31bde9fe2f7cf6a4e2497445223a5">pop</a> ()</td></tr>
+<tr class="memdesc:a7da31bde9fe2f7cf6a4e2497445223a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retira o útimo frame da pilha.  <br /></td></tr>
 <tr class="separator:a7da31bde9fe2f7cf6a4e2497445223a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a678cbc7644cf3ead64b7a14c0b820d5d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFrame.html">Frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFrameStack.html#a678cbc7644cf3ead64b7a14c0b820d5d">top</a> ()</td></tr>
 <tr class="memdesc:a678cbc7644cf3ead64b7a14c0b820d5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retorna último frame da pilha sem retirar.  <br /></td></tr>
@@ -101,10 +100,36 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>pop</b> ()</td></tr>
 <tr class="memitem:a9cc0ef419fb490bcff6ef64d29092ae8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFrameStack.html#a9cc0ef419fb490bcff6ef64d29092ae8">getStackSize</a> ()</td></tr>
 <tr class="memdesc:a9cc0ef419fb490bcff6ef64d29092ae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retorna o tamanho de pilha de frames.  <br /></td></tr>
 <tr class="separator:a9cc0ef419fb490bcff6ef64d29092ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:ae673f1e8ec742b09f7291c390bb5ee6b"><td class="memItemLeft" align="right" valign="top">static stack&lt; <a class="el" href="structFrame.html">Frame</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFrameStack.html#ae673f1e8ec742b09f7291c390bb5ee6b">data</a> = stack&lt;<a class="el" href="structFrame.html">Frame</a>&gt;()</td></tr>
+<tr class="memdesc:ae673f1e8ec742b09f7291c390bb5ee6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pilha de frames.  <br /></td></tr>
+<tr class="separator:ae673f1e8ec742b09f7291c390bb5ee6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Classe que manipula a pilha de frames. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a73bf00bdbb9e7b6b4348a15ecfeb5231" name="a73bf00bdbb9e7b6b4348a15ecfeb5231"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73bf00bdbb9e7b6b4348a15ecfeb5231">&#9670;&#160;</a></span>FrameStack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FrameStack::FrameStack </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Instanciador de classe. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9cc0ef419fb490bcff6ef64d29092ae8" name="a9cc0ef419fb490bcff6ef64d29092ae8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9cc0ef419fb490bcff6ef64d29092ae8">&#9670;&#160;</a></span>getStackSize()</h2>
 
@@ -122,6 +147,25 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>pop</b> ()</td></tr>
 
 <p>Retorna o tamanho de pilha de frames. </p>
 <dl class="section return"><dt>Returns</dt><dd>Tamanho da pilha de frames como int </dd></dl>
+
+</div>
+</div>
+<a id="a7da31bde9fe2f7cf6a4e2497445223a5" name="a7da31bde9fe2f7cf6a4e2497445223a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7da31bde9fe2f7cf6a4e2497445223a5">&#9670;&#160;</a></span>pop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FrameStack::pop </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retira o útimo frame da pilha. </p>
 
 </div>
 </div>
@@ -171,9 +215,34 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>pop</b> ()</td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ae673f1e8ec742b09f7291c390bb5ee6b" name="ae673f1e8ec742b09f7291c390bb5ee6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae673f1e8ec742b09f7291c390bb5ee6b">&#9670;&#160;</a></span>data</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">stack&lt; <a class="el" href="structFrame.html">Frame</a> &gt; FrameStack::data = stack&lt;<a class="el" href="structFrame.html">Frame</a>&gt;()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pilha de frames. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>FrameStack/<a class="el" href="frameStack_8hpp_source.html">frameStack.hpp</a></li>
-<li>FrameStack/frameStack.cpp</li>
+<li>FrameStack/<a class="el" href="frameStack_8cpp.html">frameStack.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

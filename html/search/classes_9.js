@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['method_5finfo_0',['Method_info',['../structMethod__info.html',1,'']]],
-  ['methodarea_1',['MethodArea',['../classMethodArea.html',1,'']]],
-  ['methodareaitem_2',['MethodAreaItem',['../classMethodAreaItem.html',1,'']]]
+  ['maluco_0',['maluco',['../classmaluco.html',1,'']]],
+  ['method_5finfo_1',['Method_info',['../structMethod__info.html',1,'']]],
+  ['methodarea_2',['MethodArea',['../classMethodArea.html',1,'']]],
+  ['methodareaitem_3',['MethodAreaItem',['../classMethodAreaItem.html',1,'']]]
 ];

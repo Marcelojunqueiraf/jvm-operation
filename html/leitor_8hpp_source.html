@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JVM - Softare básico: leitor/leitor.hpp Source File</title>
+<title>JVM - Software básico: leitor/leitor.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JVM - Softare básico
+   <div id="projectname">JVM - Software básico
    </div>
    <div id="projectbrief">JMV simplificada implementada em C++ para a disciplina de Software Básico</div>
   </td>
@@ -77,42 +77,57 @@ $(function() {
   <div class="headertitle"><div class="title">leitor.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<a href="leitor_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;../common/class-file.hpp&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;utf8.hpp&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="utf8_8hpp.html">utf8.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;cstdio&gt;</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">// sempre que tiver um INDEX é um indice do constant pool</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// Funções de leitura de 8, 16, 32 e 64 bits</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>u1 u1Read(FILE * fd);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><a class="code hl_typedef" href="intTypes_8hpp.html#ad9f4cdb6757615aae2fad89dab3c5470">u1</a> <a class="code hl_function" href="leitor_8hpp.html#a77853ce0387c0b914b5a106ff7cf9ae9">u1Read</a>(FILE * fd);</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>u2 u2Read(FILE * fd);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><a class="code hl_typedef" href="intTypes_8hpp.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> <a class="code hl_function" href="leitor_8hpp.html#a73788d4e3c1c3577021c1dbf4ca75cc1">u2Read</a>(FILE * fd);</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>u4 u4Read(FILE * fd);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><a class="code hl_typedef" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> <a class="code hl_function" href="leitor_8hpp.html#a4cba9f2733d339d7287d10d160c39e79">u4Read</a>(FILE * fd);</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>u8 u8Read(FILE * fd);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="leitor_8hpp.html#a64054890090e8cbb9a9875f462796bab">   35</a></span><a class="code hl_typedef" href="intTypes_8hpp.html#ae4d1c3d548028e31400378ec81026110">u8</a> <a class="code hl_function" href="leitor_8hpp.html#a64054890090e8cbb9a9875f462796bab">u8Read</a>(FILE * fd);</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keywordtype">void</span> read_attribute_code_exception_table(FILE *fd, <a class="code hl_struct" href="structException__table.html">Exception_table</a> * <a class="code hl_struct" href="structException__table.html">Exception_table</a>, u2 exception_table_length);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keywordtype">void</span> <a class="code hl_function" href="leitor_8hpp.html#aba89e81728878c7ebabb377c631162f5">read_attribute_code_exception_table</a>(FILE *fd, <a class="code hl_struct" href="structException__table.html">Exception_table</a> * <a class="code hl_struct" href="structException__table.html">Exception_table</a>, <a class="code hl_typedef" href="intTypes_8hpp.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> exception_table_length);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keywordtype">void</span> read_exception_table(FILE *fd, <a class="code hl_struct" href="structException__table.html">Exception_table</a> *<a class="code hl_struct" href="structException__table.html">Exception_table</a>, u2 exception_table_length);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="leitor_8hpp.html#a8c2debbd3c32c39b662bfe6d294108b9">   46</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="leitor_8hpp.html#a8c2debbd3c32c39b662bfe6d294108b9">read_exception_table</a>(FILE *fd, <a class="code hl_struct" href="structException__table.html">Exception_table</a> *<a class="code hl_struct" href="structException__table.html">Exception_table</a>, <a class="code hl_typedef" href="intTypes_8hpp.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> exception_table_length);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keywordtype">void</span> read_attributes(FILE *,<a class="code hl_struct" href="structAttribute__info.html">Attribute_info</a> *, u2 ,<a class="code hl_struct" href="structcp__info.html">cp_info</a> *);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keywordtype">void</span> <a class="code hl_function" href="leitor_8hpp.html#a2267975cf88119064a392ba5e6820c79">read_attributes</a>(FILE *,<a class="code hl_struct" href="structAttribute__info.html">Attribute_info</a> *, <a class="code hl_typedef" href="intTypes_8hpp.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> ,<a class="code hl_struct" href="structcp__info.html">cp_info</a> *);</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keywordtype">void</span> read_fields(FILE *,<a class="code hl_struct" href="structClassFile.html">ClassFile</a> *);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keywordtype">void</span> <a class="code hl_function" href="leitor_8hpp.html#a9f813a0d8a7d6320a8e19ae2af92f095">read_fields</a>(FILE *,<a class="code hl_struct" href="structClassFile.html">ClassFile</a> *);</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keywordtype">void</span> read_cp_info(FILE *,<a class="code hl_struct" href="structClassFile.html">ClassFile</a> *);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keywordtype">void</span> <a class="code hl_function" href="leitor_8hpp.html#afc225ef0cfdf1714f184ea305029db43">read_cp_info</a>(FILE *,<a class="code hl_struct" href="structClassFile.html">ClassFile</a> *);</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keywordtype">void</span> class_reader(FILE *,<a class="code hl_struct" href="structClassFile.html">ClassFile</a> *);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keywordtype">void</span> <a class="code hl_function" href="leitor_8hpp.html#a2a844f0dd25a1a73767b492f1165a6f9">class_reader</a>(FILE *,<a class="code hl_struct" href="structClassFile.html">ClassFile</a> *);</div>
+<div class="ttc" id="aintTypes_8hpp_html_a732cde1300aafb73b0ea6c2558a7a54f"><div class="ttname"><a href="intTypes_8hpp.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a></div><div class="ttdeci">uint16_t u2</div><div class="ttdoc">2 bytes sem sinal</div><div class="ttdef"><b>Definition</b> intTypes.hpp:17</div></div>
+<div class="ttc" id="aintTypes_8hpp_html_ad9f4cdb6757615aae2fad89dab3c5470"><div class="ttname"><a href="intTypes_8hpp.html#ad9f4cdb6757615aae2fad89dab3c5470">u1</a></div><div class="ttdeci">uint8_t u1</div><div class="ttdoc">1 byte sem sinal</div><div class="ttdef"><b>Definition</b> intTypes.hpp:15</div></div>
+<div class="ttc" id="aintTypes_8hpp_html_ae4d1c3d548028e31400378ec81026110"><div class="ttname"><a href="intTypes_8hpp.html#ae4d1c3d548028e31400378ec81026110">u8</a></div><div class="ttdeci">uint64_t u8</div><div class="ttdoc">8 bytes sem sinal</div><div class="ttdef"><b>Definition</b> intTypes.hpp:21</div></div>
+<div class="ttc" id="aintTypes_8hpp_html_ae5be1f726785414dd1b77d60df074c9d"><div class="ttname"><a href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a></div><div class="ttdeci">uint32_t u4</div><div class="ttdoc">4 bytes sem sinal</div><div class="ttdef"><b>Definition</b> intTypes.hpp:19</div></div>
+<div class="ttc" id="aleitor_8hpp_html_a2267975cf88119064a392ba5e6820c79"><div class="ttname"><a href="leitor_8hpp.html#a2267975cf88119064a392ba5e6820c79">read_attributes</a></div><div class="ttdeci">void read_attributes(FILE *, Attribute_info *, u2, cp_info *)</div><div class="ttdoc">Funçao que le o arquivo.</div><div class="ttdef"><b>Definition</b> leitor.cpp:164</div></div>
+<div class="ttc" id="aleitor_8hpp_html_a2a844f0dd25a1a73767b492f1165a6f9"><div class="ttname"><a href="leitor_8hpp.html#a2a844f0dd25a1a73767b492f1165a6f9">class_reader</a></div><div class="ttdeci">void class_reader(FILE *, ClassFile *)</div><div class="ttdoc">Funçao que le o arquivo.</div><div class="ttdef"><b>Definition</b> leitor.cpp:424</div></div>
+<div class="ttc" id="aleitor_8hpp_html_a4cba9f2733d339d7287d10d160c39e79"><div class="ttname"><a href="leitor_8hpp.html#a4cba9f2733d339d7287d10d160c39e79">u4Read</a></div><div class="ttdeci">u4 u4Read(FILE *fd)</div><div class="ttdoc">lê o tipo de dado u4</div><div class="ttdef"><b>Definition</b> leitor.cpp:32</div></div>
+<div class="ttc" id="aleitor_8hpp_html_a64054890090e8cbb9a9875f462796bab"><div class="ttname"><a href="leitor_8hpp.html#a64054890090e8cbb9a9875f462796bab">u8Read</a></div><div class="ttdeci">u8 u8Read(FILE *fd)</div><div class="ttdoc">lê o tipo de dado u8</div></div>
+<div class="ttc" id="aleitor_8hpp_html_a73788d4e3c1c3577021c1dbf4ca75cc1"><div class="ttname"><a href="leitor_8hpp.html#a73788d4e3c1c3577021c1dbf4ca75cc1">u2Read</a></div><div class="ttdeci">u2 u2Read(FILE *fd)</div><div class="ttdoc">lê o tipo de dado u2</div><div class="ttdef"><b>Definition</b> leitor.cpp:25</div></div>
+<div class="ttc" id="aleitor_8hpp_html_a77853ce0387c0b914b5a106ff7cf9ae9"><div class="ttname"><a href="leitor_8hpp.html#a77853ce0387c0b914b5a106ff7cf9ae9">u1Read</a></div><div class="ttdeci">u1 u1Read(FILE *fd)</div><div class="ttdoc">lê o tipo de dado u1</div><div class="ttdef"><b>Definition</b> leitor.cpp:19</div></div>
+<div class="ttc" id="aleitor_8hpp_html_a8c2debbd3c32c39b662bfe6d294108b9"><div class="ttname"><a href="leitor_8hpp.html#a8c2debbd3c32c39b662bfe6d294108b9">read_exception_table</a></div><div class="ttdeci">void read_exception_table(FILE *fd, Exception_table *Exception_table, u2 exception_table_length)</div><div class="ttdoc">Funçao que le a exception table.</div></div>
+<div class="ttc" id="aleitor_8hpp_html_a9f813a0d8a7d6320a8e19ae2af92f095"><div class="ttname"><a href="leitor_8hpp.html#a9f813a0d8a7d6320a8e19ae2af92f095">read_fields</a></div><div class="ttdeci">void read_fields(FILE *, ClassFile *)</div><div class="ttdoc">Funçao que le o arquivo.</div><div class="ttdef"><b>Definition</b> leitor.cpp:252</div></div>
+<div class="ttc" id="aleitor_8hpp_html_aba89e81728878c7ebabb377c631162f5"><div class="ttname"><a href="leitor_8hpp.html#aba89e81728878c7ebabb377c631162f5">read_attribute_code_exception_table</a></div><div class="ttdeci">void read_attribute_code_exception_table(FILE *fd, Exception_table *Exception_table, u2 exception_table_length)</div><div class="ttdoc">lê do arquivo .class e preenche a tabela de excessoes do attributo code em questão.</div><div class="ttdef"><b>Definition</b> leitor.cpp:44</div></div>
+<div class="ttc" id="aleitor_8hpp_html_afc225ef0cfdf1714f184ea305029db43"><div class="ttname"><a href="leitor_8hpp.html#afc225ef0cfdf1714f184ea305029db43">read_cp_info</a></div><div class="ttdeci">void read_cp_info(FILE *, ClassFile *)</div><div class="ttdoc">Funçao que le o arquivo.</div><div class="ttdef"><b>Definition</b> leitor.cpp:307</div></div>
 <div class="ttc" id="astructAttribute__info_html"><div class="ttname"><a href="structAttribute__info.html">Attribute_info</a></div><div class="ttdoc">Struct para a definição do attribute info.</div><div class="ttdef"><b>Definition</b> class-file.hpp:120</div></div>
 <div class="ttc" id="astructClassFile_html"><div class="ttname"><a href="structClassFile.html">ClassFile</a></div><div class="ttdoc">Struct para a definição da ClassFile.</div><div class="ttdef"><b>Definition</b> class-file.hpp:228</div></div>
 <div class="ttc" id="astructException__table_html"><div class="ttname"><a href="structException__table.html">Exception_table</a></div><div class="ttdoc">Struct para a definição da exception table.</div><div class="ttdef"><b>Definition</b> class-file.hpp:86</div></div>
 <div class="ttc" id="astructcp__info_html"><div class="ttname"><a href="structcp__info.html">cp_info</a></div><div class="ttdoc">Struct para a definição do cp_info.</div><div class="ttdef"><b>Definition</b> class-file.hpp:161</div></div>
+<div class="ttc" id="autf8_8hpp_html"><div class="ttname"><a href="utf8_8hpp.html">utf8.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

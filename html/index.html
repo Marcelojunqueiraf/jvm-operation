@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JVM - Softare básico: jvm para a disciplina Software básico com o professor ladeira</title>
+<title>JVM - Software básico: JVM para a disciplina Software básico com o professor Ladeira</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JVM - Softare básico
+   <div id="projectname">JVM - Software básico
    </div>
    <div id="projectbrief">JMV simplificada implementada em C++ para a disciplina de Software Básico</div>
   </td>
@@ -70,10 +70,63 @@ $(function() {
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">jvm para a disciplina Software básico com o professor ladeira </div></div>
+  <div class="headertitle"><div class="title"><a class="el" href="classJVM.html" title="Classe que define a estrutura da JVM.">JVM</a> para a disciplina Software básico com o professor Ladeira </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a></p>
+<h2><a class="anchor" id="autotoc_md4"></a>
+Alunos:</h2>
+<ul>
+<li>Marcelo Piano - 200049496</li>
+<li>Marcelo Junqueira - 200023624</li>
+<li>Gabriel Borges - 202006401</li>
+<li>Maycon Fabio - 200059742</li>
+<li>Edson Sales - 190105399</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md5"></a>
+Como configurar o projeto</h1>
+<p>Rodar o comando <code>make</code> para compilar o projeto</p>
+<h1><a class="anchor" id="autotoc_md6"></a>
+Como rodar o projeto</h1>
+<h2><a class="anchor" id="autotoc_md7"></a>
+Modo leitor-exibidor</h2>
+<div class="fragment"><div class="line">/jvmSB arquivo.class -leitor</div>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md8"></a>
+Modo execução</h2>
+<div class="fragment"><div class="line">/jvmSB arquivo.class</div>
+</div><!-- fragment --><p> (sem flags) </p>
+<h2><a class="anchor" id="autotoc_md9"></a>
+Modo execução com debug</h2>
+<div class="fragment"><div class="line">/jvmSB arquivo.class -debug</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md10"></a>
+Organização do projeto</h1>
+<p><img src="./diagram.png" alt="Diagrama" class="inline"/> </p>
+<h2><a class="anchor" id="autotoc_md11"></a>
+Módulos:</h2>
+<h3><a class="anchor" id="autotoc_md12"></a>
+JVM</h3>
+<p>Se comunica com os outros módulos e gerencia a execução do programa. </p>
+<h3><a class="anchor" id="autotoc_md13"></a>
+Common</h3>
+<p>Contém as estruturas de dados e funções comuns a quase todos os módulos.</p>
+<h3><a class="anchor" id="autotoc_md14"></a>
+Leitor</h3>
+<p>Contém funções e estruturas de dados que permitem a leitura de arquivos .class e salvamento de suas informações.</p>
+<h3><a class="anchor" id="autotoc_md15"></a>
+FrameStack</h3>
+<p>Contém funções e estruturas de dados que permitem executar os métodos na ordem correta, gerenciando a pilha de frames.</p>
+<h3><a class="anchor" id="autotoc_md16"></a>
+Heap</h3>
+<p>Armazena os objetos e arrays instanciados da <a class="el" href="classJVM.html" title="Classe que define a estrutura da JVM.">JVM</a>, gerenciando o acesso e a alteração dos mesmos.</p>
+<h3><a class="anchor" id="autotoc_md17"></a>
+MethodArea</h3>
+<p>Armazena e permite interação com as classes e interfaces carregadas na <a class="el" href="classJVM.html" title="Classe que define a estrutura da JVM.">JVM</a>.</p>
+<h3><a class="anchor" id="autotoc_md18"></a>
+Exibidor</h3>
+<p>Contém as funções e estruturas de dados que permitem a exibição das informações contidas no .class.</p>
+<h3><a class="anchor" id="autotoc_md19"></a>
+Instructions</h3>
+<p>Contêm a implementação das instruções da <a class="el" href="classJVM.html" title="Classe que define a estrutura da JVM.">JVM</a>. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
