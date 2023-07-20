@@ -1,16 +1,22 @@
 <map id="Frame" name="Frame">
-<area shape="rect" id="node1" title=" " alt="" coords="825,32,888,59"/>
-<area shape="rect" id="node2" href="$structMethod__info.html" title="Struct para a definição do Method Info." alt="" coords="393,5,496,32"/>
-<area shape="rect" id="node3" href="$structAttribute__info.html" title="Struct para a definição do attribute info." alt="" coords="28,108,139,135"/>
-<area shape="rect" id="node5" href="$structcode__attribute.html" title="Struct para a definição do code attribute." alt="" coords="387,188,503,215"/>
-<area shape="rect" id="node4" href="$unionAttribute__info_1_1attribute__info__union.html" title=" " alt="" coords="769,255,944,297"/>
-<area shape="rect" id="node6" href="$structException__table.html" title="Struct para a definição da exception table." alt="" coords="20,188,147,215"/>
-<area shape="rect" id="node7" href="$structLineNumberTable__attribute.html" title="Struct para a definição da line number table attribute." alt="" coords="345,239,544,265"/>
-<area shape="rect" id="node8" href="$structline__number__table.html" title="Struct para a definição da line number table." alt="" coords="12,239,155,265"/>
-<area shape="rect" id="node9" href="$structInnerClasses__attribute.html" title="Struct para a definição das inner classes attribute." alt="" coords="361,289,529,316"/>
-<area shape="rect" id="node10" href="$structinner__classes.html" title="Struct para a definição das inner classes." alt="" coords="28,289,139,316"/>
-<area shape="rect" id="node11" href="$structexceptions__attribute.html" title="Struct para a definição dos exceptions attribute." alt="" coords="367,340,523,367"/>
-<area shape="rect" id="node12" href="$structLocalVariableTable__attribute.html" title="Struct para a definição da local variable table attribute." alt="" coords="373,391,516,433"/>
-<area shape="rect" id="node13" href="$structLocal__variable__table.html" title="Struct para a definição da local variable table." alt="" coords="5,399,161,425"/>
-<area shape="rect" id="node14" href="$classMethodAreaItem.html" title=" " alt="" coords="379,56,510,83"/>
+<area shape="rect" id="node1" title="Classe que define a estrutura de um frame." alt="" coords="1389,211,1452,237"/>
+<area shape="rect" id="node2" href="$structMethod__info.html" title="Struct para a definição do Method Info." alt="" coords="411,220,513,247"/>
+<area shape="rect" id="node15" href="$structClassFile.html" title="Struct para a definição da ClassFile." alt="" coords="834,125,914,152"/>
+<area shape="rect" id="node3" href="$structAttribute__info.html" title="Struct para a definição do attribute info." alt="" coords="35,220,145,247"/>
+<area shape="rect" id="node5" href="$structcode__attribute.html" title="Struct para a definição do code attribute." alt="" coords="404,343,520,369"/>
+<area shape="rect" id="node16" href="$structfield__info.html" title="Struct para a definição do Field Info." alt="" coords="421,169,503,196"/>
+<area shape="rect" id="node4" href="$unionAttribute__info_1_1attribute__info__union.html" title=" " alt="" coords="787,414,961,455"/>
+<area shape="rect" id="node6" href="$structException__table.html" title="Struct para a definição da exception table." alt="" coords="27,352,153,379"/>
+<area shape="rect" id="node7" href="$structLineNumberTable__attribute.html" title="Struct para a definição da line number table attribute." alt="" coords="363,393,561,420"/>
+<area shape="rect" id="node8" href="$structline__number__table.html" title="Struct para a definição da line number table." alt="" coords="19,403,161,429"/>
+<area shape="rect" id="node9" href="$structInnerClasses__attribute.html" title="Struct para a definição das inner classes attribute." alt="" coords="378,495,546,521"/>
+<area shape="rect" id="node10" href="$structinner__classes.html" title="Struct para a definição das inner classes." alt="" coords="35,495,145,521"/>
+<area shape="rect" id="node11" href="$structexceptions__attribute.html" title="Struct para a definição dos exceptions attribute." alt="" coords="384,444,540,471"/>
+<area shape="rect" id="node12" href="$structLocalVariableTable__attribute.html" title="Struct para a definição da local variable table attribute." alt="" coords="391,546,533,587"/>
+<area shape="rect" id="node13" href="$structLocal__variable__table.html" title="Struct para a definição da local variable table." alt="" coords="12,553,168,580"/>
+<area shape="rect" id="node14" href="$classMethodAreaItem.html" title="Classe que representa um item da área de métodos, contendo as informações de uma classe." alt="" coords="1096,125,1227,152"/>
+<area shape="rect" id="node17" href="$structcp__info.html" title="Struct para a definição do cp_info." alt="" coords="427,56,497,83"/>
+<area shape="rect" id="node18" href="$unioncp__info_1_1constant__type__union.html" title=" " alt="" coords="5,49,175,90"/>
+<area shape="rect" id="node19" href="$classMethodArea.html" title="Classe que representa a área de métodos, contendo as informações de todas as classes carregadas." alt="" coords="823,32,925,59"/>
+<area shape="rect" id="node20" href="$classFrameStack.html" title="Classe que manipula a pilha de frames." alt="" coords="413,5,511,32"/>
 </map>
