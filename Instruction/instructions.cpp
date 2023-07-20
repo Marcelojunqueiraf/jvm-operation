@@ -1257,6 +1257,7 @@ double calculate(double first, double second, Operation op) {
             break;
         case REM:
             result = fmod(first, second);
+            break;
         default:
             throw std::runtime_error("operacao nao implementada");
     }
@@ -2175,7 +2176,7 @@ void _goto (Frame * frame, JVM * jvm) {
   u1 first_brach_byte = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+1];
   u1 second_brach_byte = frame->method_info->attributes->attribute_info_union.code_attribute.code[frame->pc+2];
 
-  u4 branchoffset = (first_brach_byte << 8) | second_brach_byte;
+  int16_t branchoffset = (first_brach_byte << 8) | second_brach_byte;
 
   // DCOUT << "branchoffset " <<  branchoffset << endl;
   DCOUT << "jumping to pc " << start_pc + branchoffset << endl;
