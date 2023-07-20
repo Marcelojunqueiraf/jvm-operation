@@ -1,4 +1,14 @@
 var searchData=
 [
-  ['dataunion_0',['DataUnion',['../unionDataUnion.html',1,'']]]
+  ['baload_0',['baload',['../namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca6fd96699ff1513726c1d2b5d04f37169',1,'exibidor::baload'],['../instructions_8cpp.html#a98b4d31696f9c1a0a70578cb4ef8a33e',1,'baload(Frame *frame, JVM *jvm):&#160;instructions.cpp'],['../instructions_8hpp.html#a98b4d31696f9c1a0a70578cb4ef8a33e',1,'baload(Frame *frame, JVM *jvm):&#160;instructions.cpp']]],
+  ['bastore_1',['bastore',['../namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caea6c4b43104f7bdf02a4c06583eb9b2b',1,'exibidor::bastore'],['../instructions_8cpp.html#af3b6d7382b29e918ba41ed8ff9cb1d4e',1,'bastore(Frame *frame, JVM *jvm):&#160;instructions.cpp'],['../instructions_8hpp.html#af3b6d7382b29e918ba41ed8ff9cb1d4e',1,'bastore(Frame *frame, JVM *jvm):&#160;instructions.cpp']]],
+  ['bipush_2',['bipush',['../namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cabcca01788f963698a005346f11eb55ff',1,'exibidor::bipush'],['../instructions_8cpp.html#a59f4882ebf12e2de61d134d7a0759fe0',1,'bipush(Frame *frame, JVM *jvm):&#160;instructions.cpp'],['../instructions_8hpp.html#a59f4882ebf12e2de61d134d7a0759fe0',1,'bipush(Frame *frame, JVM *jvm):&#160;instructions.cpp']]],
+  ['bool_3',['BOOL',['../primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3ae663dbb8f8244e122acb5bd6b2c216e1',1,'primitiveTypes.hpp']]],
+  ['branch_4',['branch',['../instructions_8cpp.html#a53038eec4167acd77d73921c2c19c325',1,'instructions.cpp']]],
+  ['breakpoint_5',['breakpoint',['../instructions_8cpp.html#adc4b6d191da271cd4d2038cc79a24a1a',1,'breakpoint(Frame *frame, JVM *jvm):&#160;instructions.cpp'],['../instructions_8hpp.html#adc4b6d191da271cd4d2038cc79a24a1a',1,'breakpoint(Frame *frame, JVM *jvm):&#160;instructions.cpp']]],
+  ['byte_6',['BYTE',['../primitiveTypes_8hpp.html#a699e7dc0ee60dcef15daf41ee09510a3aa7f492d725033c06576ac4ba21007297',1,'primitiveTypes.hpp']]],
+  ['bytecode_5fgroup_7',['bytecode_group',['../exibidor_8cpp.html#a9c9c8ae5939327890d000c6a94d8c144',1,'bytecode_group(u1):&#160;exibidor.cpp'],['../exibidor_8hpp.html#a9c9c8ae5939327890d000c6a94d8c144',1,'bytecode_group(u1):&#160;exibidor.cpp']]],
+  ['bytecode_5fprint_8',['bytecode_print',['../exibidor_8cpp.html#aa2e4bfdcc89192783bf0af3e73adda55',1,'bytecode_print(u1 *, int *, int, cp_info *):&#160;exibidor.cpp'],['../exibidor_8hpp.html#aa2e4bfdcc89192783bf0af3e73adda55',1,'bytecode_print(u1 *, int *, int, cp_info *):&#160;exibidor.cpp']]],
+  ['bytecode_5fto_5fopcode_5fstring_9',['bytecode_to_opcode_string',['../exibidor_8cpp.html#a5d88e27a1fd3bf7f7f132d54a95193e3',1,'bytecode_to_opcode_string(value_to_opcode op):&#160;exibidor.cpp'],['../exibidor_8hpp.html#af05029de0024e08d751547db85585706',1,'bytecode_to_opcode_string(exibidor::value_to_opcode op):&#160;exibidor.cpp']]],
+  ['bytes_10',['bytes',['../unioncp__info_1_1constant__type__union.html#a74838c422144bc93099d0220cd14ef57',1,'cp_info::constant_type_union::bytes'],['../unioncp__info_1_1constant__type__union.html#a75fa646da096b7c8eeb5e55725117980',1,'cp_info::constant_type_union::bytes']]]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JVM - Softare básico: exibidor Namespace Reference</title>
+<title>JVM - Software básico: exibidor Namespace Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JVM - Softare básico
+   <div id="projectname">JVM - Software básico
    </div>
    <div id="projectbrief">JMV simplificada implementada em C++ para a disciplina de Software Básico</div>
   </td>
@@ -82,272 +82,505 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:abe9d15cd32b85bfd5081c0f1f9941ffe"><td class="memItemLeft" align="right" valign="top"><a id="abe9d15cd32b85bfd5081c0f1f9941ffe" name="abe9d15cd32b85bfd5081c0f1f9941ffe"></a>
-typedef enum exibidor::value_to_opcode&#160;</td><td class="memItemRight" valign="bottom"><b>value_to_opcode</b></td></tr>
+<tr class="memitem:abe9d15cd32b85bfd5081c0f1f9941ffe"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40c">exibidor::value_to_opcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexibidor.html#abe9d15cd32b85bfd5081c0f1f9941ffe">value_to_opcode</a></td></tr>
 <tr class="separator:abe9d15cd32b85bfd5081c0f1f9941ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a2be55c961c4271fa49a324a6b956f40c"><td class="memItemLeft" align="right" valign="top"><a id="a2be55c961c4271fa49a324a6b956f40c" name="a2be55c961c4271fa49a324a6b956f40c"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>value_to_opcode</b> { <br />
-&#160;&#160;<b>nop</b> = 0x00
-, <b>aconst_null</b> = 0x01
-, <b>iconst_m1</b> = 0x02
-, <b>iconst_0</b> = 0x03
+<tr class="memitem:a2be55c961c4271fa49a324a6b956f40c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40c">value_to_opcode</a> { <br />
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca39d2d3ea93e1684f4087ff04f81519c0">nop</a> = 0x00
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca3e47124ca84c04aa729e795ab8c5d593">aconst_null</a> = 0x01
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cacf59c14e55c778cf89377cc280f27a29">iconst_m1</a> = 0x02
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cadb7d44eb48779c787150ec3275aa544f">iconst_0</a> = 0x03
 , <br />
-&#160;&#160;<b>iconst_1</b> = 0x04
-, <b>iconst_2</b> = 0x05
-, <b>iconst_3</b> = 0x06
-, <b>iconst_4</b> = 0x07
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca7ca0cd00f64061f15ce11a4b43e42c3e">iconst_1</a> = 0x04
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca8637f69bc804a914b02880e6d6a8f15c">iconst_2</a> = 0x05
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca1d9a3349b46a3f182286419505e7d3e3">iconst_3</a> = 0x06
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cabca5111e4fd545c11bab6acfe96e2f07">iconst_4</a> = 0x07
 , <br />
-&#160;&#160;<b>iconst_5</b> = 0x08
-, <b>lconst_0</b> = 0x09
-, <b>lconst_1</b> = 0x0a
-, <b>fconst_0</b> = 0x0b
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca4bbcce3768633550bd16724d20d804da">iconst_5</a> = 0x08
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca5fd17622cf30997a1e7a29725ba8add3">lconst_0</a> = 0x09
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caf8dbc762b4b1cc8184dddf49e589ab96">lconst_1</a> = 0x0a
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caaffb2261fc1342cf2cdc51ad099a07e7">fconst_0</a> = 0x0b
 , <br />
-&#160;&#160;<b>fconst_1</b> = 0x0c
-, <b>fconst_2</b> = 0x0d
-, <b>dconst_0</b> = 0x0e
-, <b>dconst_1</b> = 0x0f
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca0dab7401dc1768fde291fa6ad225c012">fconst_1</a> = 0x0c
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca04c8446d6062c26fbcf22c013c114fdf">fconst_2</a> = 0x0d
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca1441c8d743773b3cd00b1beeabf7f849">dconst_0</a> = 0x0e
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cab37f5e31482532388e6ba9de7203da76">dconst_1</a> = 0x0f
 , <br />
-&#160;&#160;<b>bipush</b> = 0x10
-, <b>sipush</b> = 0x11
-, <b>ldc</b> = 0x12
-, <b>ldc_w</b> = 0x13
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cabcca01788f963698a005346f11eb55ff">bipush</a> = 0x10
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca444ce827f94dfc7817a1758128260f39">sipush</a> = 0x11
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cac86be1d42ae47fa33d8d116f8e884207">ldc</a> = 0x12
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca9e3a10b00a240212b252745dbb834620">ldc_w</a> = 0x13
 , <br />
-&#160;&#160;<b>ldc2_w</b> = 0x14
-, <b>iload</b> = 0x15
-, <b>lload</b> = 0x16
-, <b>fload</b> = 0x17
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca8311f8c879a876a7721ce537d83ff3f8">ldc2_w</a> = 0x14
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cae23cc9c7b459a197502825ca36f1719b">iload</a> = 0x15
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca484b806f53dceda1ec3d57a68b7d594e">lload</a> = 0x16
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cab182f6326b5a93d90f3ad5b30491945b">fload</a> = 0x17
 , <br />
-&#160;&#160;<b>dload</b> = 0x18
-, <b>aload</b> = 0x19
-, <b>iload_0</b> = 0x1a
-, <b>iload_1</b> = 0x1b
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cac5302ca0058fcaddf660065577174808">dload</a> = 0x18
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca5938d5f69b6ce162226bdc0505f2f52a">aload</a> = 0x19
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca590928c455c6c81365042ec2fe642315">iload_0</a> = 0x1a
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caeabf8bed7d636c075248fc4b15639c43">iload_1</a> = 0x1b
 , <br />
-&#160;&#160;<b>iload_2</b> = 0x1c
-, <b>iload_3</b> = 0x1d
-, <b>lload_0</b> = 0x1e
-, <b>lload_1</b> = 0x1f
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cab04500d25dd6693498404b61f7243eca">iload_2</a> = 0x1c
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca6080e575319b6439e5374cb84d219010">iload_3</a> = 0x1d
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca215355b49836d7a8ae2f7acaaaf0ac2a">lload_0</a> = 0x1e
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca7e65ebfe03e8e12e156231e8893eb657">lload_1</a> = 0x1f
 , <br />
-&#160;&#160;<b>lload_2</b> = 0x20
-, <b>lload_3</b> = 0x21
-, <b>fload_0</b> = 0x22
-, <b>fload_1</b> = 0x23
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca887a3b4d01c7f937072ca51b8f98838d">lload_2</a> = 0x20
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cae45266d9d71630cbf55fce4d533c25b6">lload_3</a> = 0x21
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cad7e690f7be669a7dfcdb351082d369cf">fload_0</a> = 0x22
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca7a92e12b04af75ecc6d09e58a2c4afee">fload_1</a> = 0x23
 , <br />
-&#160;&#160;<b>fload_2</b> = 0x24
-, <b>fload_3</b> = 0x25
-, <b>dload_0</b> = 0x26
-, <b>dload_1</b> = 0x27
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca89ce9c476bd39f010124409241dc219a">fload_2</a> = 0x24
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca881c7fd9198098e2456ed2ae7ad0126d">fload_3</a> = 0x25
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca05a71c04cc0a23d6148280b6e42b26c0">dload_0</a> = 0x26
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca8dd29ecb08dfe624aedf3bff34346616">dload_1</a> = 0x27
 , <br />
-&#160;&#160;<b>dload_2</b> = 0x28
-, <b>dload_3</b> = 0x29
-, <b>aload_0</b> = 0x2a
-, <b>aload_1</b> = 0x2b
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca203df2761962632f6fcdb25688edd1ce">dload_2</a> = 0x28
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caea26aaceae6bac0f58e4782c70c627fb">dload_3</a> = 0x29
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cad1aa4c262bf689f93aa793bec38651b6">aload_0</a> = 0x2a
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca1666b0c736f1316a5e7f50672d88a1bf">aload_1</a> = 0x2b
 , <br />
-&#160;&#160;<b>aload_2</b> = 0x2c
-, <b>aload_3</b> = 0x2d
-, <b>iaload</b> = 0x2e
-, <b>laload</b> = 0x2f
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca017ae44626688c2ab05c80ae1d77fa3f">aload_2</a> = 0x2c
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca72944c3a1618c0d1f1d9dc44f2cd1b97">aload_3</a> = 0x2d
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca6d912539a31637abddab335287a72f61">iaload</a> = 0x2e
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cabe2e853c77fcc394c416ac1bad0c8cf0">laload</a> = 0x2f
 , <br />
-&#160;&#160;<b>faload</b> = 0x30
-, <b>daload</b> = 0x31
-, <b>aaload</b> = 0x32
-, <b>baload</b> = 0x33
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca9b9404c016a15a25695b583fa71af08c">faload</a> = 0x30
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca3b1df04eb84d8a2ef24dc7758d7b6fdc">daload</a> = 0x31
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca72fbe04fd993e1056c9720a5bf38812a">aaload</a> = 0x32
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca6fd96699ff1513726c1d2b5d04f37169">baload</a> = 0x33
 , <br />
-&#160;&#160;<b>caload</b> = 0x34
-, <b>saload</b> = 0x35
-, <b>istore</b> = 0x36
-, <b>lstore</b> = 0x37
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cae53b9e370508246ccc8515dc74a0fc39">caload</a> = 0x34
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caef12354a3d938f35d66678c304a87961">saload</a> = 0x35
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca7a3a994559081044b0fab4d23910889b">istore</a> = 0x36
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caf936b5461e29e2dd3532c4557434a80d">lstore</a> = 0x37
 , <br />
-&#160;&#160;<b>fstore</b> = 0x38
-, <b>dstore</b> = 0x39
-, <b>astore</b> = 0x3a
-, <b>istore_0</b> = 0x3b
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca9447e9c997ed8981a3d6aaf36a036f61">fstore</a> = 0x38
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caf6d74771e50e937945d7cc6818655149">dstore</a> = 0x39
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca8ef445099a50743f68618be6ba6b0153">astore</a> = 0x3a
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca54df48b0355efc9f982f5f5a00fd5087">istore_0</a> = 0x3b
 , <br />
-&#160;&#160;<b>istore_1</b> = 0x3c
-, <b>istore_2</b> = 0x3d
-, <b>istore_3</b> = 0x3e
-, <b>lstore_0</b> = 0x3f
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca35b3eb7a692224cdd85b004135c6a18d">istore_1</a> = 0x3c
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca6e0ba373a96f6d0d8ca7daa2ef6d4f5f">istore_2</a> = 0x3d
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca5c96c64973b1c0a69297c6f9a5f35a78">istore_3</a> = 0x3e
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca188077b209ebbe7c4ca39782c6ac7b54">lstore_0</a> = 0x3f
 , <br />
-&#160;&#160;<b>lstore_1</b> = 0x40
-, <b>lstore_2</b> = 0x41
-, <b>lstore_3</b> = 0x42
-, <b>fstore_0</b> = 0x43
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caac72ae0d5edb88daac99c683620a20ab">lstore_1</a> = 0x40
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca461422daf7fc640b23df5d2d9bf4e8b9">lstore_2</a> = 0x41
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca982e2f957cccf7a7f47c2e31f27a82a7">lstore_3</a> = 0x42
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca4367b280e4de30bcf763a6f695aa1a73">fstore_0</a> = 0x43
 , <br />
-&#160;&#160;<b>fstore_1</b> = 0x44
-, <b>fstore_2</b> = 0x45
-, <b>fstore_3</b> = 0x46
-, <b>dstore_0</b> = 0x47
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca0e3606df82c178495aab491a5b784c9d">fstore_1</a> = 0x44
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caa93fb11c4b1e7246841eb4a01e5f7eaf">fstore_2</a> = 0x45
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cae55e4497fb9dbe4855ade40b3b978072">fstore_3</a> = 0x46
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caefa3529665238a1be6d432920b930759">dstore_0</a> = 0x47
 , <br />
-&#160;&#160;<b>dstore_1</b> = 0x48
-, <b>dstore_2</b> = 0x49
-, <b>dstore_3</b> = 0x4a
-, <b>astore_0</b> = 0x4b
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca4b0abaf90430083cafae032af20bcc81">dstore_1</a> = 0x48
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cabebc5514e70b149b637e69dcb53103a1">dstore_2</a> = 0x49
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca1295bba5715de938637e548a3f70bcd6">dstore_3</a> = 0x4a
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca75371f59828d0f0d47c3a9d8d2e15ab8">astore_0</a> = 0x4b
 , <br />
-&#160;&#160;<b>astore_1</b> = 0x4c
-, <b>astore_2</b> = 0x4d
-, <b>astore_3</b> = 0x4e
-, <b>iastore</b> = 0x4f
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca2cbb0518af96466a0145a864a38c935c">astore_1</a> = 0x4c
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca90895354ef4a27d1e6499923e2df78b0">astore_2</a> = 0x4d
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca661458ecf08c2d4d5c232db9c07cd6f6">astore_3</a> = 0x4e
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca57c3dfa0d00ee72c7ae591cbbc5c29e5">iastore</a> = 0x4f
 , <br />
-&#160;&#160;<b>lastore</b> = 0x50
-, <b>fastore</b> = 0x51
-, <b>dastore</b> = 0x52
-, <b>aastore</b> = 0x53
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cab46d3c575a6edf09c47f74942ca3bd04">lastore</a> = 0x50
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca6e50d3f716859390bf20014d4756b052">fastore</a> = 0x51
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cadee22486b8a5376b45fe727ba08afc51">dastore</a> = 0x52
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cac4c0411a88dbcacb1ee633c84d83d0a5">aastore</a> = 0x53
 , <br />
-&#160;&#160;<b>bastore</b> = 0x54
-, <b>castore</b> = 0x55
-, <b>sastore</b> = 0x56
-, <b>pop</b> = 0x57
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caea6c4b43104f7bdf02a4c06583eb9b2b">bastore</a> = 0x54
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca8134d81e6db9df7d5a746ea0851e60b7">castore</a> = 0x55
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caef5e3f94627aaf5260f163ca85be89cd">sastore</a> = 0x56
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca1bc61ef715e85bdea036c39b16a48687">pop</a> = 0x57
 , <br />
-&#160;&#160;<b>pop2</b> = 0x58
-, <b>dup</b> = 0x59
-, <b>dup_x1</b> = 0x5a
-, <b>dup_x2</b> = 0x5b
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cafa27fb8bb904b51a51bfd4500edc0a75">pop2</a> = 0x58
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca095e34b0b56dc521adbc18695c5050d5">dup</a> = 0x59
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca7a08f01e04f721de30b6accc22809d56">dup_x1</a> = 0x5a
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca27978e6c60f25ac69678e20bcf996874">dup_x2</a> = 0x5b
 , <br />
-&#160;&#160;<b>dup2</b> = 0x5c
-, <b>dup2_x1</b> = 0x5d
-, <b>dup2_x2</b> = 0x5e
-, <b>swap_</b> = 0x5f
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca55909836a2337224b2039d996517487d">dup2</a> = 0x5c
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca71779b4388a06fc66e9e2ceb4c5420d1">dup2_x1</a> = 0x5d
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca172eb6fdb99c9cd0a5f8384357da345f">dup2_x2</a> = 0x5e
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cabf49e2e99e16186f2c9848aa9499cb3b">swap_</a> = 0x5f
 , <br />
-&#160;&#160;<b>iadd</b> = 0x60
-, <b>ladd</b> = 0x61
-, <b>fadd</b> = 0x62
-, <b>dadd</b> = 0x63
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cac36be198dd71fdf5acf801ecf4ebc0d3">iadd</a> = 0x60
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cab455a4fe6acb06473a5c85b6e786031d">ladd</a> = 0x61
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca09e2d6d036b732cf894dd855df1a8642">fadd</a> = 0x62
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca7f0163895856352dd631e110ae5bab2f">dadd</a> = 0x63
 , <br />
-&#160;&#160;<b>isub</b> = 0x64
-, <b>lsub</b> = 0x65
-, <b>fsub</b> = 0x66
-, <b>dsub</b> = 0x67
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cac0a51eda5aeaa397d441856a0cea1e61">isub</a> = 0x64
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca2180796994a87d520f10a3bad7889f78">lsub</a> = 0x65
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cabc2d3600a218fec07d09298e45a26d0e">fsub</a> = 0x66
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca75e31f8fd25dab194b7e9256d45d4326">dsub</a> = 0x67
 , <br />
-&#160;&#160;<b>imul</b> = 0x68
-, <b>lmul</b> = 0x69
-, <b>fmul</b> = 0x6a
-, <b>dmul</b> = 0x6b
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca83483d02cdbb6b28b72c62092f8cfcd4">imul</a> = 0x68
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca59a4d3ba09f507b8eeff773aad1a251e">lmul</a> = 0x69
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cae4228e0684482696a84386a0edce84b4">fmul</a> = 0x6a
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cacbdfd7435b460336223168a536c30fed">dmul</a> = 0x6b
 , <br />
-&#160;&#160;<b>idiv</b> = 0x6c
-, <b>inst_ldiv</b> = 0x6d
-, <b>fdiv</b> = 0x6e
-, <b>ddiv</b> = 0x6f
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca94a94a143712108ea3fd39e2ea7b975a">idiv</a> = 0x6c
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cabefe23681f3dd4758eb590c8b5c08853">inst_ldiv</a> = 0x6d
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caab4e06061ae3e4b0684c09b3dfcec9bc">fdiv</a> = 0x6e
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca0f905add96c8510c25a64c0d9317c81a">ddiv</a> = 0x6f
 , <br />
-&#160;&#160;<b>irem</b> = 0x70
-, <b>lrem</b> = 0x71
-, <b>frem</b> = 0x72
-, <b>inst_drem</b> = 0x73
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caca5476c3d27dfbbc46aa30c59e71b0e2">irem</a> = 0x70
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca96e40e4e5d54d10797336d24a59d9442">lrem</a> = 0x71
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca1f500c65ff436953e5ca778f258b7f9d">frem</a> = 0x72
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca4a73b52ffb40cb1d0125b20ef8732552">inst_drem</a> = 0x73
 , <br />
-&#160;&#160;<b>ineg</b> = 0x74
-, <b>lneg</b> = 0x75
-, <b>fneg</b> = 0x76
-, <b>dneg</b> = 0x77
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca1044cf3d28ddff7fee20e856f6110a45">ineg</a> = 0x74
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caa02bf7f28950cc522fd297f9c2a6b78c">lneg</a> = 0x75
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cae1ba687e270b7ec7cf8db4c1e985d167">fneg</a> = 0x76
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca2bdce9c67eb5706045f57d6c28b97c29">dneg</a> = 0x77
 , <br />
-&#160;&#160;<b>ishl</b> = 0x78
-, <b>lshl</b> = 0x79
-, <b>ishr</b> = 0x7a
-, <b>lshr</b> = 0x7b
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca3cd11fa0ea4a539982eb8154b36a2968">ishl</a> = 0x78
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca7d362e190394bae732ec022b7163afc9">lshl</a> = 0x79
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caafc0c3e98b15280556cf90e03697be79">ishr</a> = 0x7a
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cadac05ae6b730f503b0784e7be4eba000">lshr</a> = 0x7b
 , <br />
-&#160;&#160;<b>iushr</b> = 0x7c
-, <b>lushr</b> = 0x7d
-, <b>iand</b> = 0x7e
-, <b>land</b> = 0x7f
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca5143d19f424018ee63b5169dc37ab0e1">iushr</a> = 0x7c
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cac21168b55fe19bbed6f0744eb21f6df6">lushr</a> = 0x7d
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca427795aecfc3dd9f3d7fc9145a5e22bb">iand</a> = 0x7e
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca0412baa6265acf6ceedb49bd5d0d4a03">land</a> = 0x7f
 , <br />
-&#160;&#160;<b>ior</b> = 0x80
-, <b>lor</b> = 0x81
-, <b>ixor</b> = 0x82
-, <b>lxor</b> = 0x83
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca8e7438a2e0728c18df207a90944c1009">ior</a> = 0x80
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cab829a92c16f6f398bb595bc72b11fc6d">lor</a> = 0x81
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca2be1f8734b04ee1f72e9ef01f060ce1e">ixor</a> = 0x82
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca9df7f15f3c4ff2230f0cc9aae100c2f8">lxor</a> = 0x83
 , <br />
-&#160;&#160;<b>iinc</b> = 0x84
-, <b>i2l</b> = 0x85
-, <b>i2f</b> = 0x86
-, <b>i2d</b> = 0x87
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca8c727378df86595112234330e410ce47">iinc</a> = 0x84
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca6f5e4c01cce2f7c8b48410cee93d5859">i2l</a> = 0x85
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca25c46faa70635ca8742e70d78f908791">i2f</a> = 0x86
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca168d4b9418c9b829427f6db27167ac72">i2d</a> = 0x87
 , <br />
-&#160;&#160;<b>l2i</b> = 0x88
-, <b>l2f</b> = 0x89
-, <b>l2d</b> = 0x8a
-, <b>f2i</b> = 0x8b
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cafa835f5af0aa64223c2d725e658fc5d6">l2i</a> = 0x88
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca070ba1fea43093310b2445885082c5b1">l2f</a> = 0x89
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caa845c751e1f884ef30fc98ba340e9655">l2d</a> = 0x8a
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca5606ab57b73ebf6219d11c232c9e44f8">f2i</a> = 0x8b
 , <br />
-&#160;&#160;<b>f2l</b> = 0x8c
-, <b>f2d</b> = 0x8d
-, <b>d2i</b> = 0x8e
-, <b>d2l</b> = 0x8f
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caf93a423f8414adbe301ad1599d6a16e1">f2l</a> = 0x8c
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca7018509c630ae9b7c9f3d24fce63fe95">f2d</a> = 0x8d
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca744f911cba3074b23beb57adc2f1e777">d2i</a> = 0x8e
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca533b6e9d0bbb6c0f6ee4596cb19f5738">d2l</a> = 0x8f
 , <br />
-&#160;&#160;<b>d2f</b> = 0x90
-, <b>i2b</b> = 0x91
-, <b>i2c</b> = 0x92
-, <b>i2s</b> = 0x93
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca50bf09188d7fca4f33221c6082361bdd">d2f</a> = 0x90
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca1081fd3e8d1b6e0ce6f3f151057210aa">i2b</a> = 0x91
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cada50e1626d643375c8b20e066011df0c">i2c</a> = 0x92
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca66c55dc41a1f6c2f25d87a517ca35339">i2s</a> = 0x93
 , <br />
-&#160;&#160;<b>lcmp</b> = 0x94
-, <b>fcmpl</b> = 0x95
-, <b>fcmpg</b> = 0x96
-, <b>dcmpl</b> = 0x97
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca684a06b4a646912ae44f2833212f4c61">lcmp</a> = 0x94
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca186083f3df5db408760c5de09b4ccdc1">fcmpl</a> = 0x95
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca0e4d5e0223ccc60e924712a6dc198b31">fcmpg</a> = 0x96
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca47435de6740a66341a3fc0e92cf9ed64">dcmpl</a> = 0x97
 , <br />
-&#160;&#160;<b>dcmpg</b> = 0x98
-, <b>ifeq</b> = 0x99
-, <b>ifne</b> = 0x9a
-, <b>iflt</b> = 0x9b
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caba5d06a921766c04993dd193cd69a1c5">dcmpg</a> = 0x98
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca80136b0117aa2c151c46c287e9a57fa7">ifeq</a> = 0x99
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cabbbaea029bd8296f0673b2c43c17e448">ifne</a> = 0x9a
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caa43454df72aa5e2be36fe803207e4d14">iflt</a> = 0x9b
 , <br />
-&#160;&#160;<b>ifge</b> = 0x9c
-, <b>ifgt</b> = 0x9d
-, <b>ifle</b> = 0x9e
-, <b>if_icmpeq</b> = 0x9f
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca772feafab671bb32b3555b3ea5fe3030">ifge</a> = 0x9c
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cadd8ede7ec5ff9923b9417e853450823c">ifgt</a> = 0x9d
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca5c76fbe76279f39411a2424574754df0">ifle</a> = 0x9e
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca200c04ece7f5e08438f2bcc70aa2db4b">if_icmpeq</a> = 0x9f
 , <br />
-&#160;&#160;<b>if_icmpne</b> = 0xa0
-, <b>if_icmplt</b> = 0xa1
-, <b>if_icmpge</b> = 0xa2
-, <b>if_icmpgt</b> = 0xa3
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caf16f3b0ec940c0363e24c8d4b97d86f0">if_icmpne</a> = 0xa0
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cad57dad62d8db916626c6dfe585ba5f4f">if_icmplt</a> = 0xa1
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca60cddd79bf37a0f23c833f83552e16fb">if_icmpge</a> = 0xa2
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca1c98d1a665c0d9586ec25dd146b7f03a">if_icmpgt</a> = 0xa3
 , <br />
-&#160;&#160;<b>if_icmple</b> = 0xa4
-, <b>if_acmpeq</b> = 0xa5
-, <b>if_acmpne</b> = 0xa6
-, <b>inst_goto</b> = 0xa7
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca2c5bb240823cce025444eb589babf7e7">if_icmple</a> = 0xa4
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caf2dd0e810d46e52789f5692ee734f27e">if_acmpeq</a> = 0xa5
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca841811146eb884b2dfa0f9bd9ec4e280">if_acmpne</a> = 0xa6
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca3df41d2ccaa804405a88d284a1110a17">inst_goto</a> = 0xa7
 , <br />
-&#160;&#160;<b>jsr</b> = 0xa8
-, <b>ret</b> = 0xa9
-, <b>tableswitch</b> = 0xaa
-, <b>lookupswitch</b> = 0xab
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caabb2c859ce0791858233c0a98783b51e">jsr</a> = 0xa8
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cae8a90cdd83409992db5a39d49f2712b5">ret</a> = 0xa9
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caf1e3d77e2b35d27a196db39280b892cc">tableswitch</a> = 0xaa
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca7e773a486eb9212bcd91a5e6c9a8eb92">lookupswitch</a> = 0xab
 , <br />
-&#160;&#160;<b>ireturn</b> = 0xac
-, <b>lreturn</b> = 0xad
-, <b>freturn</b> = 0xae
-, <b>dreturn</b> = 0xaf
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca27451a63306ad3eb54e9913e100c234a">ireturn</a> = 0xac
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca038b3c7ad1208b9f836e1a790ba28d32">lreturn</a> = 0xad
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cadcd3690e7eaadc7aa19583f63779bc63">freturn</a> = 0xae
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cada53af10a1de4f5aed9074668ff457a2">dreturn</a> = 0xaf
 , <br />
-&#160;&#160;<b>areturn</b> = 0xb0
-, <b>inst_return</b> = 0xb1
-, <b>getstatic</b> = 0xb2
-, <b>putstatic</b> = 0xb3
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca71f140b41c0ec46d4815aac56ce69ad9">areturn</a> = 0xb0
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cab2f6b6e8cdfd0e10223e2de9ea2746f8">inst_return</a> = 0xb1
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caff176cea22a6fbcbc2dd20a9a4217554">getstatic</a> = 0xb2
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caeb0bf632d2f918f667eb57824a4f32e7">putstatic</a> = 0xb3
 , <br />
-&#160;&#160;<b>getfield</b> = 0xb4
-, <b>putfield</b> = 0xb5
-, <b>invokevirtual</b> = 0xb6
-, <b>invokespecial</b> = 0xb7
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca12fe5888aa02164c35cb60fe98b07206">getfield</a> = 0xb4
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cad226e01f42d236980e002a408cb6aa21">putfield</a> = 0xb5
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caed25e08491d0012db2de5acd388f5e28">invokevirtual</a> = 0xb6
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca63c05ca0d867c6bb35c8969ce0ced9d1">invokespecial</a> = 0xb7
 , <br />
-&#160;&#160;<b>invokestatic</b> = 0xb8
-, <b>invokeinterface</b> = 0xb9
-, <b>invokedynamic</b> = 0xba
-, <b>new_</b> = 0xbb
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca8cf442642c25d0290e83356feda95ff4">invokestatic</a> = 0xb8
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca3ff095058e3ff2bec0f33257ebe0d2f3">invokeinterface</a> = 0xb9
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cade75483df34a2fb84ce7f61dadc8bf2b">invokedynamic</a> = 0xba
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca51132f4d3cbddbc3cd75ceeb65810d93">new_</a> = 0xbb
 , <br />
-&#160;&#160;<b>newarray</b> = 0xbc
-, <b>anewarray</b> = 0xbd
-, <b>arraylength</b> = 0xbe
-, <b>athrow</b> = 0xbf
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca70af179373fb23277a04679df639c0f5">newarray</a> = 0xbc
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca5bbd93f4af0f0c9dd03dfd9a499cb0de">anewarray</a> = 0xbd
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca2ddd4a546bd69a7955043a4a31624381">arraylength</a> = 0xbe
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca0de01a1cbddb52077b7ee34d8ee59ac4">athrow</a> = 0xbf
 , <br />
-&#160;&#160;<b>checkcast</b> = 0xc0
-, <b>instanceof</b> = 0xc1
-, <b>monitorenter</b> = 0xc2
-, <b>monitorexit</b> = 0xc3
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cade5cddd45f9fb9071ecc63abc1560688">checkcast</a> = 0xc0
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caf474ba56ce0e4921b3b5b7bb7de53fbc">instanceof</a> = 0xc1
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca0008e1190b60fd6008060fcc403f7536">monitorenter</a> = 0xc2
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cafd9ebc794b06d0ed76bbd3eaa3db0c36">monitorexit</a> = 0xc3
 , <br />
-&#160;&#160;<b>wide</b> = 0xc4
-, <b>multianewarray</b> = 0xc5
-, <b>ifnull</b> = 0xc6
-, <b>ifnonnull</b> = 0xc7
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cab4ac47dbd28b7c65ed1ed064849d5e93">wide</a> = 0xc4
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40caf05cfa10f6d19ab9a53a4cb14d8a8d1b">multianewarray</a> = 0xc5
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cab3d2ee24178c387126aa2e714792fb92">ifnull</a> = 0xc6
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca5c221db6a202727aca55337c8cae2334">ifnonnull</a> = 0xc7
 , <br />
-&#160;&#160;<b>goto_w</b> = 0xc8
-, <b>jsr_w</b> = 0xc9
+&#160;&#160;<a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40ca1dc11227b85613d1dae1084129c449ee">goto_w</a> = 0xc8
+, <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40cadef1639750228869fcb37626a3a9384b">jsr_w</a> = 0xc9
 <br />
  }</td></tr>
 <tr class="separator:a2be55c961c4271fa49a324a6b956f40c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Enum que une o valor do opcode ao opcode. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a id="abe9d15cd32b85bfd5081c0f1f9941ffe" name="abe9d15cd32b85bfd5081c0f1f9941ffe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe9d15cd32b85bfd5081c0f1f9941ffe">&#9670;&#160;</a></span>value_to_opcode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40c">exibidor::value_to_opcode</a> <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40c">exibidor::value_to_opcode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a2be55c961c4271fa49a324a6b956f40c" name="a2be55c961c4271fa49a324a6b956f40c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2be55c961c4271fa49a324a6b956f40c">&#9670;&#160;</a></span>value_to_opcode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceexibidor.html#a2be55c961c4271fa49a324a6b956f40c">exibidor::value_to_opcode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca39d2d3ea93e1684f4087ff04f81519c0" name="a2be55c961c4271fa49a324a6b956f40ca39d2d3ea93e1684f4087ff04f81519c0"></a>nop&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca3e47124ca84c04aa729e795ab8c5d593" name="a2be55c961c4271fa49a324a6b956f40ca3e47124ca84c04aa729e795ab8c5d593"></a>aconst_null&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cacf59c14e55c778cf89377cc280f27a29" name="a2be55c961c4271fa49a324a6b956f40cacf59c14e55c778cf89377cc280f27a29"></a>iconst_m1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cadb7d44eb48779c787150ec3275aa544f" name="a2be55c961c4271fa49a324a6b956f40cadb7d44eb48779c787150ec3275aa544f"></a>iconst_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca7ca0cd00f64061f15ce11a4b43e42c3e" name="a2be55c961c4271fa49a324a6b956f40ca7ca0cd00f64061f15ce11a4b43e42c3e"></a>iconst_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca8637f69bc804a914b02880e6d6a8f15c" name="a2be55c961c4271fa49a324a6b956f40ca8637f69bc804a914b02880e6d6a8f15c"></a>iconst_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca1d9a3349b46a3f182286419505e7d3e3" name="a2be55c961c4271fa49a324a6b956f40ca1d9a3349b46a3f182286419505e7d3e3"></a>iconst_3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cabca5111e4fd545c11bab6acfe96e2f07" name="a2be55c961c4271fa49a324a6b956f40cabca5111e4fd545c11bab6acfe96e2f07"></a>iconst_4&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca4bbcce3768633550bd16724d20d804da" name="a2be55c961c4271fa49a324a6b956f40ca4bbcce3768633550bd16724d20d804da"></a>iconst_5&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca5fd17622cf30997a1e7a29725ba8add3" name="a2be55c961c4271fa49a324a6b956f40ca5fd17622cf30997a1e7a29725ba8add3"></a>lconst_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caf8dbc762b4b1cc8184dddf49e589ab96" name="a2be55c961c4271fa49a324a6b956f40caf8dbc762b4b1cc8184dddf49e589ab96"></a>lconst_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caaffb2261fc1342cf2cdc51ad099a07e7" name="a2be55c961c4271fa49a324a6b956f40caaffb2261fc1342cf2cdc51ad099a07e7"></a>fconst_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca0dab7401dc1768fde291fa6ad225c012" name="a2be55c961c4271fa49a324a6b956f40ca0dab7401dc1768fde291fa6ad225c012"></a>fconst_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca04c8446d6062c26fbcf22c013c114fdf" name="a2be55c961c4271fa49a324a6b956f40ca04c8446d6062c26fbcf22c013c114fdf"></a>fconst_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca1441c8d743773b3cd00b1beeabf7f849" name="a2be55c961c4271fa49a324a6b956f40ca1441c8d743773b3cd00b1beeabf7f849"></a>dconst_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cab37f5e31482532388e6ba9de7203da76" name="a2be55c961c4271fa49a324a6b956f40cab37f5e31482532388e6ba9de7203da76"></a>dconst_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cabcca01788f963698a005346f11eb55ff" name="a2be55c961c4271fa49a324a6b956f40cabcca01788f963698a005346f11eb55ff"></a>bipush&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca444ce827f94dfc7817a1758128260f39" name="a2be55c961c4271fa49a324a6b956f40ca444ce827f94dfc7817a1758128260f39"></a>sipush&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cac86be1d42ae47fa33d8d116f8e884207" name="a2be55c961c4271fa49a324a6b956f40cac86be1d42ae47fa33d8d116f8e884207"></a>ldc&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca9e3a10b00a240212b252745dbb834620" name="a2be55c961c4271fa49a324a6b956f40ca9e3a10b00a240212b252745dbb834620"></a>ldc_w&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca8311f8c879a876a7721ce537d83ff3f8" name="a2be55c961c4271fa49a324a6b956f40ca8311f8c879a876a7721ce537d83ff3f8"></a>ldc2_w&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cae23cc9c7b459a197502825ca36f1719b" name="a2be55c961c4271fa49a324a6b956f40cae23cc9c7b459a197502825ca36f1719b"></a>iload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca484b806f53dceda1ec3d57a68b7d594e" name="a2be55c961c4271fa49a324a6b956f40ca484b806f53dceda1ec3d57a68b7d594e"></a>lload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cab182f6326b5a93d90f3ad5b30491945b" name="a2be55c961c4271fa49a324a6b956f40cab182f6326b5a93d90f3ad5b30491945b"></a>fload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cac5302ca0058fcaddf660065577174808" name="a2be55c961c4271fa49a324a6b956f40cac5302ca0058fcaddf660065577174808"></a>dload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca5938d5f69b6ce162226bdc0505f2f52a" name="a2be55c961c4271fa49a324a6b956f40ca5938d5f69b6ce162226bdc0505f2f52a"></a>aload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca590928c455c6c81365042ec2fe642315" name="a2be55c961c4271fa49a324a6b956f40ca590928c455c6c81365042ec2fe642315"></a>iload_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caeabf8bed7d636c075248fc4b15639c43" name="a2be55c961c4271fa49a324a6b956f40caeabf8bed7d636c075248fc4b15639c43"></a>iload_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cab04500d25dd6693498404b61f7243eca" name="a2be55c961c4271fa49a324a6b956f40cab04500d25dd6693498404b61f7243eca"></a>iload_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca6080e575319b6439e5374cb84d219010" name="a2be55c961c4271fa49a324a6b956f40ca6080e575319b6439e5374cb84d219010"></a>iload_3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca215355b49836d7a8ae2f7acaaaf0ac2a" name="a2be55c961c4271fa49a324a6b956f40ca215355b49836d7a8ae2f7acaaaf0ac2a"></a>lload_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca7e65ebfe03e8e12e156231e8893eb657" name="a2be55c961c4271fa49a324a6b956f40ca7e65ebfe03e8e12e156231e8893eb657"></a>lload_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca887a3b4d01c7f937072ca51b8f98838d" name="a2be55c961c4271fa49a324a6b956f40ca887a3b4d01c7f937072ca51b8f98838d"></a>lload_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cae45266d9d71630cbf55fce4d533c25b6" name="a2be55c961c4271fa49a324a6b956f40cae45266d9d71630cbf55fce4d533c25b6"></a>lload_3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cad7e690f7be669a7dfcdb351082d369cf" name="a2be55c961c4271fa49a324a6b956f40cad7e690f7be669a7dfcdb351082d369cf"></a>fload_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca7a92e12b04af75ecc6d09e58a2c4afee" name="a2be55c961c4271fa49a324a6b956f40ca7a92e12b04af75ecc6d09e58a2c4afee"></a>fload_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca89ce9c476bd39f010124409241dc219a" name="a2be55c961c4271fa49a324a6b956f40ca89ce9c476bd39f010124409241dc219a"></a>fload_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca881c7fd9198098e2456ed2ae7ad0126d" name="a2be55c961c4271fa49a324a6b956f40ca881c7fd9198098e2456ed2ae7ad0126d"></a>fload_3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca05a71c04cc0a23d6148280b6e42b26c0" name="a2be55c961c4271fa49a324a6b956f40ca05a71c04cc0a23d6148280b6e42b26c0"></a>dload_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca8dd29ecb08dfe624aedf3bff34346616" name="a2be55c961c4271fa49a324a6b956f40ca8dd29ecb08dfe624aedf3bff34346616"></a>dload_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca203df2761962632f6fcdb25688edd1ce" name="a2be55c961c4271fa49a324a6b956f40ca203df2761962632f6fcdb25688edd1ce"></a>dload_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caea26aaceae6bac0f58e4782c70c627fb" name="a2be55c961c4271fa49a324a6b956f40caea26aaceae6bac0f58e4782c70c627fb"></a>dload_3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cad1aa4c262bf689f93aa793bec38651b6" name="a2be55c961c4271fa49a324a6b956f40cad1aa4c262bf689f93aa793bec38651b6"></a>aload_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca1666b0c736f1316a5e7f50672d88a1bf" name="a2be55c961c4271fa49a324a6b956f40ca1666b0c736f1316a5e7f50672d88a1bf"></a>aload_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca017ae44626688c2ab05c80ae1d77fa3f" name="a2be55c961c4271fa49a324a6b956f40ca017ae44626688c2ab05c80ae1d77fa3f"></a>aload_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca72944c3a1618c0d1f1d9dc44f2cd1b97" name="a2be55c961c4271fa49a324a6b956f40ca72944c3a1618c0d1f1d9dc44f2cd1b97"></a>aload_3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca6d912539a31637abddab335287a72f61" name="a2be55c961c4271fa49a324a6b956f40ca6d912539a31637abddab335287a72f61"></a>iaload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cabe2e853c77fcc394c416ac1bad0c8cf0" name="a2be55c961c4271fa49a324a6b956f40cabe2e853c77fcc394c416ac1bad0c8cf0"></a>laload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca9b9404c016a15a25695b583fa71af08c" name="a2be55c961c4271fa49a324a6b956f40ca9b9404c016a15a25695b583fa71af08c"></a>faload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca3b1df04eb84d8a2ef24dc7758d7b6fdc" name="a2be55c961c4271fa49a324a6b956f40ca3b1df04eb84d8a2ef24dc7758d7b6fdc"></a>daload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca72fbe04fd993e1056c9720a5bf38812a" name="a2be55c961c4271fa49a324a6b956f40ca72fbe04fd993e1056c9720a5bf38812a"></a>aaload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca6fd96699ff1513726c1d2b5d04f37169" name="a2be55c961c4271fa49a324a6b956f40ca6fd96699ff1513726c1d2b5d04f37169"></a>baload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cae53b9e370508246ccc8515dc74a0fc39" name="a2be55c961c4271fa49a324a6b956f40cae53b9e370508246ccc8515dc74a0fc39"></a>caload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caef12354a3d938f35d66678c304a87961" name="a2be55c961c4271fa49a324a6b956f40caef12354a3d938f35d66678c304a87961"></a>saload&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca7a3a994559081044b0fab4d23910889b" name="a2be55c961c4271fa49a324a6b956f40ca7a3a994559081044b0fab4d23910889b"></a>istore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caf936b5461e29e2dd3532c4557434a80d" name="a2be55c961c4271fa49a324a6b956f40caf936b5461e29e2dd3532c4557434a80d"></a>lstore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca9447e9c997ed8981a3d6aaf36a036f61" name="a2be55c961c4271fa49a324a6b956f40ca9447e9c997ed8981a3d6aaf36a036f61"></a>fstore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caf6d74771e50e937945d7cc6818655149" name="a2be55c961c4271fa49a324a6b956f40caf6d74771e50e937945d7cc6818655149"></a>dstore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca8ef445099a50743f68618be6ba6b0153" name="a2be55c961c4271fa49a324a6b956f40ca8ef445099a50743f68618be6ba6b0153"></a>astore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca54df48b0355efc9f982f5f5a00fd5087" name="a2be55c961c4271fa49a324a6b956f40ca54df48b0355efc9f982f5f5a00fd5087"></a>istore_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca35b3eb7a692224cdd85b004135c6a18d" name="a2be55c961c4271fa49a324a6b956f40ca35b3eb7a692224cdd85b004135c6a18d"></a>istore_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca6e0ba373a96f6d0d8ca7daa2ef6d4f5f" name="a2be55c961c4271fa49a324a6b956f40ca6e0ba373a96f6d0d8ca7daa2ef6d4f5f"></a>istore_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca5c96c64973b1c0a69297c6f9a5f35a78" name="a2be55c961c4271fa49a324a6b956f40ca5c96c64973b1c0a69297c6f9a5f35a78"></a>istore_3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca188077b209ebbe7c4ca39782c6ac7b54" name="a2be55c961c4271fa49a324a6b956f40ca188077b209ebbe7c4ca39782c6ac7b54"></a>lstore_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caac72ae0d5edb88daac99c683620a20ab" name="a2be55c961c4271fa49a324a6b956f40caac72ae0d5edb88daac99c683620a20ab"></a>lstore_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca461422daf7fc640b23df5d2d9bf4e8b9" name="a2be55c961c4271fa49a324a6b956f40ca461422daf7fc640b23df5d2d9bf4e8b9"></a>lstore_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca982e2f957cccf7a7f47c2e31f27a82a7" name="a2be55c961c4271fa49a324a6b956f40ca982e2f957cccf7a7f47c2e31f27a82a7"></a>lstore_3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca4367b280e4de30bcf763a6f695aa1a73" name="a2be55c961c4271fa49a324a6b956f40ca4367b280e4de30bcf763a6f695aa1a73"></a>fstore_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca0e3606df82c178495aab491a5b784c9d" name="a2be55c961c4271fa49a324a6b956f40ca0e3606df82c178495aab491a5b784c9d"></a>fstore_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caa93fb11c4b1e7246841eb4a01e5f7eaf" name="a2be55c961c4271fa49a324a6b956f40caa93fb11c4b1e7246841eb4a01e5f7eaf"></a>fstore_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cae55e4497fb9dbe4855ade40b3b978072" name="a2be55c961c4271fa49a324a6b956f40cae55e4497fb9dbe4855ade40b3b978072"></a>fstore_3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caefa3529665238a1be6d432920b930759" name="a2be55c961c4271fa49a324a6b956f40caefa3529665238a1be6d432920b930759"></a>dstore_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca4b0abaf90430083cafae032af20bcc81" name="a2be55c961c4271fa49a324a6b956f40ca4b0abaf90430083cafae032af20bcc81"></a>dstore_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cabebc5514e70b149b637e69dcb53103a1" name="a2be55c961c4271fa49a324a6b956f40cabebc5514e70b149b637e69dcb53103a1"></a>dstore_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca1295bba5715de938637e548a3f70bcd6" name="a2be55c961c4271fa49a324a6b956f40ca1295bba5715de938637e548a3f70bcd6"></a>dstore_3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca75371f59828d0f0d47c3a9d8d2e15ab8" name="a2be55c961c4271fa49a324a6b956f40ca75371f59828d0f0d47c3a9d8d2e15ab8"></a>astore_0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca2cbb0518af96466a0145a864a38c935c" name="a2be55c961c4271fa49a324a6b956f40ca2cbb0518af96466a0145a864a38c935c"></a>astore_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca90895354ef4a27d1e6499923e2df78b0" name="a2be55c961c4271fa49a324a6b956f40ca90895354ef4a27d1e6499923e2df78b0"></a>astore_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca661458ecf08c2d4d5c232db9c07cd6f6" name="a2be55c961c4271fa49a324a6b956f40ca661458ecf08c2d4d5c232db9c07cd6f6"></a>astore_3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca57c3dfa0d00ee72c7ae591cbbc5c29e5" name="a2be55c961c4271fa49a324a6b956f40ca57c3dfa0d00ee72c7ae591cbbc5c29e5"></a>iastore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cab46d3c575a6edf09c47f74942ca3bd04" name="a2be55c961c4271fa49a324a6b956f40cab46d3c575a6edf09c47f74942ca3bd04"></a>lastore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca6e50d3f716859390bf20014d4756b052" name="a2be55c961c4271fa49a324a6b956f40ca6e50d3f716859390bf20014d4756b052"></a>fastore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cadee22486b8a5376b45fe727ba08afc51" name="a2be55c961c4271fa49a324a6b956f40cadee22486b8a5376b45fe727ba08afc51"></a>dastore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cac4c0411a88dbcacb1ee633c84d83d0a5" name="a2be55c961c4271fa49a324a6b956f40cac4c0411a88dbcacb1ee633c84d83d0a5"></a>aastore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caea6c4b43104f7bdf02a4c06583eb9b2b" name="a2be55c961c4271fa49a324a6b956f40caea6c4b43104f7bdf02a4c06583eb9b2b"></a>bastore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca8134d81e6db9df7d5a746ea0851e60b7" name="a2be55c961c4271fa49a324a6b956f40ca8134d81e6db9df7d5a746ea0851e60b7"></a>castore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caef5e3f94627aaf5260f163ca85be89cd" name="a2be55c961c4271fa49a324a6b956f40caef5e3f94627aaf5260f163ca85be89cd"></a>sastore&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca1bc61ef715e85bdea036c39b16a48687" name="a2be55c961c4271fa49a324a6b956f40ca1bc61ef715e85bdea036c39b16a48687"></a>pop&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cafa27fb8bb904b51a51bfd4500edc0a75" name="a2be55c961c4271fa49a324a6b956f40cafa27fb8bb904b51a51bfd4500edc0a75"></a>pop2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca095e34b0b56dc521adbc18695c5050d5" name="a2be55c961c4271fa49a324a6b956f40ca095e34b0b56dc521adbc18695c5050d5"></a>dup&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca7a08f01e04f721de30b6accc22809d56" name="a2be55c961c4271fa49a324a6b956f40ca7a08f01e04f721de30b6accc22809d56"></a>dup_x1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca27978e6c60f25ac69678e20bcf996874" name="a2be55c961c4271fa49a324a6b956f40ca27978e6c60f25ac69678e20bcf996874"></a>dup_x2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca55909836a2337224b2039d996517487d" name="a2be55c961c4271fa49a324a6b956f40ca55909836a2337224b2039d996517487d"></a>dup2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca71779b4388a06fc66e9e2ceb4c5420d1" name="a2be55c961c4271fa49a324a6b956f40ca71779b4388a06fc66e9e2ceb4c5420d1"></a>dup2_x1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca172eb6fdb99c9cd0a5f8384357da345f" name="a2be55c961c4271fa49a324a6b956f40ca172eb6fdb99c9cd0a5f8384357da345f"></a>dup2_x2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cabf49e2e99e16186f2c9848aa9499cb3b" name="a2be55c961c4271fa49a324a6b956f40cabf49e2e99e16186f2c9848aa9499cb3b"></a>swap_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cac36be198dd71fdf5acf801ecf4ebc0d3" name="a2be55c961c4271fa49a324a6b956f40cac36be198dd71fdf5acf801ecf4ebc0d3"></a>iadd&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cab455a4fe6acb06473a5c85b6e786031d" name="a2be55c961c4271fa49a324a6b956f40cab455a4fe6acb06473a5c85b6e786031d"></a>ladd&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca09e2d6d036b732cf894dd855df1a8642" name="a2be55c961c4271fa49a324a6b956f40ca09e2d6d036b732cf894dd855df1a8642"></a>fadd&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca7f0163895856352dd631e110ae5bab2f" name="a2be55c961c4271fa49a324a6b956f40ca7f0163895856352dd631e110ae5bab2f"></a>dadd&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cac0a51eda5aeaa397d441856a0cea1e61" name="a2be55c961c4271fa49a324a6b956f40cac0a51eda5aeaa397d441856a0cea1e61"></a>isub&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca2180796994a87d520f10a3bad7889f78" name="a2be55c961c4271fa49a324a6b956f40ca2180796994a87d520f10a3bad7889f78"></a>lsub&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cabc2d3600a218fec07d09298e45a26d0e" name="a2be55c961c4271fa49a324a6b956f40cabc2d3600a218fec07d09298e45a26d0e"></a>fsub&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca75e31f8fd25dab194b7e9256d45d4326" name="a2be55c961c4271fa49a324a6b956f40ca75e31f8fd25dab194b7e9256d45d4326"></a>dsub&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca83483d02cdbb6b28b72c62092f8cfcd4" name="a2be55c961c4271fa49a324a6b956f40ca83483d02cdbb6b28b72c62092f8cfcd4"></a>imul&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca59a4d3ba09f507b8eeff773aad1a251e" name="a2be55c961c4271fa49a324a6b956f40ca59a4d3ba09f507b8eeff773aad1a251e"></a>lmul&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cae4228e0684482696a84386a0edce84b4" name="a2be55c961c4271fa49a324a6b956f40cae4228e0684482696a84386a0edce84b4"></a>fmul&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cacbdfd7435b460336223168a536c30fed" name="a2be55c961c4271fa49a324a6b956f40cacbdfd7435b460336223168a536c30fed"></a>dmul&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca94a94a143712108ea3fd39e2ea7b975a" name="a2be55c961c4271fa49a324a6b956f40ca94a94a143712108ea3fd39e2ea7b975a"></a>idiv&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cabefe23681f3dd4758eb590c8b5c08853" name="a2be55c961c4271fa49a324a6b956f40cabefe23681f3dd4758eb590c8b5c08853"></a>inst_ldiv&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caab4e06061ae3e4b0684c09b3dfcec9bc" name="a2be55c961c4271fa49a324a6b956f40caab4e06061ae3e4b0684c09b3dfcec9bc"></a>fdiv&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca0f905add96c8510c25a64c0d9317c81a" name="a2be55c961c4271fa49a324a6b956f40ca0f905add96c8510c25a64c0d9317c81a"></a>ddiv&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caca5476c3d27dfbbc46aa30c59e71b0e2" name="a2be55c961c4271fa49a324a6b956f40caca5476c3d27dfbbc46aa30c59e71b0e2"></a>irem&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca96e40e4e5d54d10797336d24a59d9442" name="a2be55c961c4271fa49a324a6b956f40ca96e40e4e5d54d10797336d24a59d9442"></a>lrem&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca1f500c65ff436953e5ca778f258b7f9d" name="a2be55c961c4271fa49a324a6b956f40ca1f500c65ff436953e5ca778f258b7f9d"></a>frem&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca4a73b52ffb40cb1d0125b20ef8732552" name="a2be55c961c4271fa49a324a6b956f40ca4a73b52ffb40cb1d0125b20ef8732552"></a>inst_drem&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca1044cf3d28ddff7fee20e856f6110a45" name="a2be55c961c4271fa49a324a6b956f40ca1044cf3d28ddff7fee20e856f6110a45"></a>ineg&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caa02bf7f28950cc522fd297f9c2a6b78c" name="a2be55c961c4271fa49a324a6b956f40caa02bf7f28950cc522fd297f9c2a6b78c"></a>lneg&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cae1ba687e270b7ec7cf8db4c1e985d167" name="a2be55c961c4271fa49a324a6b956f40cae1ba687e270b7ec7cf8db4c1e985d167"></a>fneg&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca2bdce9c67eb5706045f57d6c28b97c29" name="a2be55c961c4271fa49a324a6b956f40ca2bdce9c67eb5706045f57d6c28b97c29"></a>dneg&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca3cd11fa0ea4a539982eb8154b36a2968" name="a2be55c961c4271fa49a324a6b956f40ca3cd11fa0ea4a539982eb8154b36a2968"></a>ishl&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca7d362e190394bae732ec022b7163afc9" name="a2be55c961c4271fa49a324a6b956f40ca7d362e190394bae732ec022b7163afc9"></a>lshl&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caafc0c3e98b15280556cf90e03697be79" name="a2be55c961c4271fa49a324a6b956f40caafc0c3e98b15280556cf90e03697be79"></a>ishr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cadac05ae6b730f503b0784e7be4eba000" name="a2be55c961c4271fa49a324a6b956f40cadac05ae6b730f503b0784e7be4eba000"></a>lshr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca5143d19f424018ee63b5169dc37ab0e1" name="a2be55c961c4271fa49a324a6b956f40ca5143d19f424018ee63b5169dc37ab0e1"></a>iushr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cac21168b55fe19bbed6f0744eb21f6df6" name="a2be55c961c4271fa49a324a6b956f40cac21168b55fe19bbed6f0744eb21f6df6"></a>lushr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca427795aecfc3dd9f3d7fc9145a5e22bb" name="a2be55c961c4271fa49a324a6b956f40ca427795aecfc3dd9f3d7fc9145a5e22bb"></a>iand&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca0412baa6265acf6ceedb49bd5d0d4a03" name="a2be55c961c4271fa49a324a6b956f40ca0412baa6265acf6ceedb49bd5d0d4a03"></a>land&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca8e7438a2e0728c18df207a90944c1009" name="a2be55c961c4271fa49a324a6b956f40ca8e7438a2e0728c18df207a90944c1009"></a>ior&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cab829a92c16f6f398bb595bc72b11fc6d" name="a2be55c961c4271fa49a324a6b956f40cab829a92c16f6f398bb595bc72b11fc6d"></a>lor&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca2be1f8734b04ee1f72e9ef01f060ce1e" name="a2be55c961c4271fa49a324a6b956f40ca2be1f8734b04ee1f72e9ef01f060ce1e"></a>ixor&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca9df7f15f3c4ff2230f0cc9aae100c2f8" name="a2be55c961c4271fa49a324a6b956f40ca9df7f15f3c4ff2230f0cc9aae100c2f8"></a>lxor&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca8c727378df86595112234330e410ce47" name="a2be55c961c4271fa49a324a6b956f40ca8c727378df86595112234330e410ce47"></a>iinc&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca6f5e4c01cce2f7c8b48410cee93d5859" name="a2be55c961c4271fa49a324a6b956f40ca6f5e4c01cce2f7c8b48410cee93d5859"></a>i2l&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca25c46faa70635ca8742e70d78f908791" name="a2be55c961c4271fa49a324a6b956f40ca25c46faa70635ca8742e70d78f908791"></a>i2f&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca168d4b9418c9b829427f6db27167ac72" name="a2be55c961c4271fa49a324a6b956f40ca168d4b9418c9b829427f6db27167ac72"></a>i2d&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cafa835f5af0aa64223c2d725e658fc5d6" name="a2be55c961c4271fa49a324a6b956f40cafa835f5af0aa64223c2d725e658fc5d6"></a>l2i&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca070ba1fea43093310b2445885082c5b1" name="a2be55c961c4271fa49a324a6b956f40ca070ba1fea43093310b2445885082c5b1"></a>l2f&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caa845c751e1f884ef30fc98ba340e9655" name="a2be55c961c4271fa49a324a6b956f40caa845c751e1f884ef30fc98ba340e9655"></a>l2d&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca5606ab57b73ebf6219d11c232c9e44f8" name="a2be55c961c4271fa49a324a6b956f40ca5606ab57b73ebf6219d11c232c9e44f8"></a>f2i&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caf93a423f8414adbe301ad1599d6a16e1" name="a2be55c961c4271fa49a324a6b956f40caf93a423f8414adbe301ad1599d6a16e1"></a>f2l&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca7018509c630ae9b7c9f3d24fce63fe95" name="a2be55c961c4271fa49a324a6b956f40ca7018509c630ae9b7c9f3d24fce63fe95"></a>f2d&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca744f911cba3074b23beb57adc2f1e777" name="a2be55c961c4271fa49a324a6b956f40ca744f911cba3074b23beb57adc2f1e777"></a>d2i&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca533b6e9d0bbb6c0f6ee4596cb19f5738" name="a2be55c961c4271fa49a324a6b956f40ca533b6e9d0bbb6c0f6ee4596cb19f5738"></a>d2l&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca50bf09188d7fca4f33221c6082361bdd" name="a2be55c961c4271fa49a324a6b956f40ca50bf09188d7fca4f33221c6082361bdd"></a>d2f&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca1081fd3e8d1b6e0ce6f3f151057210aa" name="a2be55c961c4271fa49a324a6b956f40ca1081fd3e8d1b6e0ce6f3f151057210aa"></a>i2b&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cada50e1626d643375c8b20e066011df0c" name="a2be55c961c4271fa49a324a6b956f40cada50e1626d643375c8b20e066011df0c"></a>i2c&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca66c55dc41a1f6c2f25d87a517ca35339" name="a2be55c961c4271fa49a324a6b956f40ca66c55dc41a1f6c2f25d87a517ca35339"></a>i2s&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca684a06b4a646912ae44f2833212f4c61" name="a2be55c961c4271fa49a324a6b956f40ca684a06b4a646912ae44f2833212f4c61"></a>lcmp&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca186083f3df5db408760c5de09b4ccdc1" name="a2be55c961c4271fa49a324a6b956f40ca186083f3df5db408760c5de09b4ccdc1"></a>fcmpl&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca0e4d5e0223ccc60e924712a6dc198b31" name="a2be55c961c4271fa49a324a6b956f40ca0e4d5e0223ccc60e924712a6dc198b31"></a>fcmpg&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca47435de6740a66341a3fc0e92cf9ed64" name="a2be55c961c4271fa49a324a6b956f40ca47435de6740a66341a3fc0e92cf9ed64"></a>dcmpl&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caba5d06a921766c04993dd193cd69a1c5" name="a2be55c961c4271fa49a324a6b956f40caba5d06a921766c04993dd193cd69a1c5"></a>dcmpg&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca80136b0117aa2c151c46c287e9a57fa7" name="a2be55c961c4271fa49a324a6b956f40ca80136b0117aa2c151c46c287e9a57fa7"></a>ifeq&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cabbbaea029bd8296f0673b2c43c17e448" name="a2be55c961c4271fa49a324a6b956f40cabbbaea029bd8296f0673b2c43c17e448"></a>ifne&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caa43454df72aa5e2be36fe803207e4d14" name="a2be55c961c4271fa49a324a6b956f40caa43454df72aa5e2be36fe803207e4d14"></a>iflt&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca772feafab671bb32b3555b3ea5fe3030" name="a2be55c961c4271fa49a324a6b956f40ca772feafab671bb32b3555b3ea5fe3030"></a>ifge&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cadd8ede7ec5ff9923b9417e853450823c" name="a2be55c961c4271fa49a324a6b956f40cadd8ede7ec5ff9923b9417e853450823c"></a>ifgt&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca5c76fbe76279f39411a2424574754df0" name="a2be55c961c4271fa49a324a6b956f40ca5c76fbe76279f39411a2424574754df0"></a>ifle&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca200c04ece7f5e08438f2bcc70aa2db4b" name="a2be55c961c4271fa49a324a6b956f40ca200c04ece7f5e08438f2bcc70aa2db4b"></a>if_icmpeq&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caf16f3b0ec940c0363e24c8d4b97d86f0" name="a2be55c961c4271fa49a324a6b956f40caf16f3b0ec940c0363e24c8d4b97d86f0"></a>if_icmpne&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cad57dad62d8db916626c6dfe585ba5f4f" name="a2be55c961c4271fa49a324a6b956f40cad57dad62d8db916626c6dfe585ba5f4f"></a>if_icmplt&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca60cddd79bf37a0f23c833f83552e16fb" name="a2be55c961c4271fa49a324a6b956f40ca60cddd79bf37a0f23c833f83552e16fb"></a>if_icmpge&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca1c98d1a665c0d9586ec25dd146b7f03a" name="a2be55c961c4271fa49a324a6b956f40ca1c98d1a665c0d9586ec25dd146b7f03a"></a>if_icmpgt&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca2c5bb240823cce025444eb589babf7e7" name="a2be55c961c4271fa49a324a6b956f40ca2c5bb240823cce025444eb589babf7e7"></a>if_icmple&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caf2dd0e810d46e52789f5692ee734f27e" name="a2be55c961c4271fa49a324a6b956f40caf2dd0e810d46e52789f5692ee734f27e"></a>if_acmpeq&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca841811146eb884b2dfa0f9bd9ec4e280" name="a2be55c961c4271fa49a324a6b956f40ca841811146eb884b2dfa0f9bd9ec4e280"></a>if_acmpne&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca3df41d2ccaa804405a88d284a1110a17" name="a2be55c961c4271fa49a324a6b956f40ca3df41d2ccaa804405a88d284a1110a17"></a>inst_goto&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caabb2c859ce0791858233c0a98783b51e" name="a2be55c961c4271fa49a324a6b956f40caabb2c859ce0791858233c0a98783b51e"></a>jsr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cae8a90cdd83409992db5a39d49f2712b5" name="a2be55c961c4271fa49a324a6b956f40cae8a90cdd83409992db5a39d49f2712b5"></a>ret&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caf1e3d77e2b35d27a196db39280b892cc" name="a2be55c961c4271fa49a324a6b956f40caf1e3d77e2b35d27a196db39280b892cc"></a>tableswitch&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca7e773a486eb9212bcd91a5e6c9a8eb92" name="a2be55c961c4271fa49a324a6b956f40ca7e773a486eb9212bcd91a5e6c9a8eb92"></a>lookupswitch&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca27451a63306ad3eb54e9913e100c234a" name="a2be55c961c4271fa49a324a6b956f40ca27451a63306ad3eb54e9913e100c234a"></a>ireturn&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca038b3c7ad1208b9f836e1a790ba28d32" name="a2be55c961c4271fa49a324a6b956f40ca038b3c7ad1208b9f836e1a790ba28d32"></a>lreturn&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cadcd3690e7eaadc7aa19583f63779bc63" name="a2be55c961c4271fa49a324a6b956f40cadcd3690e7eaadc7aa19583f63779bc63"></a>freturn&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cada53af10a1de4f5aed9074668ff457a2" name="a2be55c961c4271fa49a324a6b956f40cada53af10a1de4f5aed9074668ff457a2"></a>dreturn&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca71f140b41c0ec46d4815aac56ce69ad9" name="a2be55c961c4271fa49a324a6b956f40ca71f140b41c0ec46d4815aac56ce69ad9"></a>areturn&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cab2f6b6e8cdfd0e10223e2de9ea2746f8" name="a2be55c961c4271fa49a324a6b956f40cab2f6b6e8cdfd0e10223e2de9ea2746f8"></a>inst_return&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caff176cea22a6fbcbc2dd20a9a4217554" name="a2be55c961c4271fa49a324a6b956f40caff176cea22a6fbcbc2dd20a9a4217554"></a>getstatic&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caeb0bf632d2f918f667eb57824a4f32e7" name="a2be55c961c4271fa49a324a6b956f40caeb0bf632d2f918f667eb57824a4f32e7"></a>putstatic&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca12fe5888aa02164c35cb60fe98b07206" name="a2be55c961c4271fa49a324a6b956f40ca12fe5888aa02164c35cb60fe98b07206"></a>getfield&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cad226e01f42d236980e002a408cb6aa21" name="a2be55c961c4271fa49a324a6b956f40cad226e01f42d236980e002a408cb6aa21"></a>putfield&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caed25e08491d0012db2de5acd388f5e28" name="a2be55c961c4271fa49a324a6b956f40caed25e08491d0012db2de5acd388f5e28"></a>invokevirtual&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca63c05ca0d867c6bb35c8969ce0ced9d1" name="a2be55c961c4271fa49a324a6b956f40ca63c05ca0d867c6bb35c8969ce0ced9d1"></a>invokespecial&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca8cf442642c25d0290e83356feda95ff4" name="a2be55c961c4271fa49a324a6b956f40ca8cf442642c25d0290e83356feda95ff4"></a>invokestatic&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca3ff095058e3ff2bec0f33257ebe0d2f3" name="a2be55c961c4271fa49a324a6b956f40ca3ff095058e3ff2bec0f33257ebe0d2f3"></a>invokeinterface&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cade75483df34a2fb84ce7f61dadc8bf2b" name="a2be55c961c4271fa49a324a6b956f40cade75483df34a2fb84ce7f61dadc8bf2b"></a>invokedynamic&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca51132f4d3cbddbc3cd75ceeb65810d93" name="a2be55c961c4271fa49a324a6b956f40ca51132f4d3cbddbc3cd75ceeb65810d93"></a>new_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca70af179373fb23277a04679df639c0f5" name="a2be55c961c4271fa49a324a6b956f40ca70af179373fb23277a04679df639c0f5"></a>newarray&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca5bbd93f4af0f0c9dd03dfd9a499cb0de" name="a2be55c961c4271fa49a324a6b956f40ca5bbd93f4af0f0c9dd03dfd9a499cb0de"></a>anewarray&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca2ddd4a546bd69a7955043a4a31624381" name="a2be55c961c4271fa49a324a6b956f40ca2ddd4a546bd69a7955043a4a31624381"></a>arraylength&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca0de01a1cbddb52077b7ee34d8ee59ac4" name="a2be55c961c4271fa49a324a6b956f40ca0de01a1cbddb52077b7ee34d8ee59ac4"></a>athrow&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cade5cddd45f9fb9071ecc63abc1560688" name="a2be55c961c4271fa49a324a6b956f40cade5cddd45f9fb9071ecc63abc1560688"></a>checkcast&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caf474ba56ce0e4921b3b5b7bb7de53fbc" name="a2be55c961c4271fa49a324a6b956f40caf474ba56ce0e4921b3b5b7bb7de53fbc"></a>instanceof&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca0008e1190b60fd6008060fcc403f7536" name="a2be55c961c4271fa49a324a6b956f40ca0008e1190b60fd6008060fcc403f7536"></a>monitorenter&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cafd9ebc794b06d0ed76bbd3eaa3db0c36" name="a2be55c961c4271fa49a324a6b956f40cafd9ebc794b06d0ed76bbd3eaa3db0c36"></a>monitorexit&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cab4ac47dbd28b7c65ed1ed064849d5e93" name="a2be55c961c4271fa49a324a6b956f40cab4ac47dbd28b7c65ed1ed064849d5e93"></a>wide&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40caf05cfa10f6d19ab9a53a4cb14d8a8d1b" name="a2be55c961c4271fa49a324a6b956f40caf05cfa10f6d19ab9a53a4cb14d8a8d1b"></a>multianewarray&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cab3d2ee24178c387126aa2e714792fb92" name="a2be55c961c4271fa49a324a6b956f40cab3d2ee24178c387126aa2e714792fb92"></a>ifnull&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca5c221db6a202727aca55337c8cae2334" name="a2be55c961c4271fa49a324a6b956f40ca5c221db6a202727aca55337c8cae2334"></a>ifnonnull&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40ca1dc11227b85613d1dae1084129c449ee" name="a2be55c961c4271fa49a324a6b956f40ca1dc11227b85613d1dae1084129c449ee"></a>goto_w&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2be55c961c4271fa49a324a6b956f40cadef1639750228869fcb37626a3a9384b" name="a2be55c961c4271fa49a324a6b956f40cadef1639750228869fcb37626a3a9384b"></a>jsr_w&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7

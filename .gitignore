@@ -1,4 +1,6 @@
 a.out
 exec
+jvm
+jvmSB
 *.exe
 settings.json

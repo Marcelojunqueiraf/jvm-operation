@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JVM - Softare básico: MethodArea Class Reference</title>
+<title>JVM - Software básico: MethodArea Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JVM - Softare básico
+   <div id="projectname">JVM - Software básico
    </div>
    <div id="projectbrief">JMV simplificada implementada em C++ para a disciplina de Software Básico</div>
   </td>
@@ -72,6 +72,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classMethodArea-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">MethodArea Class Reference</div></div>
 </div><!--header-->
@@ -81,14 +83,18 @@ $(function() {
  <a href="classMethodArea.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="methodArea_8hpp_source.html">methodArea.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for MethodArea:</div>
+<div class="dyncontent">
+<div class="center"><img src="classMethodArea__coll__graph.png" border="0" usemap="#aMethodArea_coll__map" alt="Collaboration graph"/></div>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6e9aac39975424e6c0ab3c29535aca75"><td class="memItemLeft" align="right" valign="top"><a id="a6e9aac39975424e6c0ab3c29535aca75" name="a6e9aac39975424e6c0ab3c29535aca75"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MethodArea</b> ()</td></tr>
-<tr class="memdesc:a6e9aac39975424e6c0ab3c29535aca75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instanciador de classe. <br /></td></tr>
+<tr class="memitem:a6e9aac39975424e6c0ab3c29535aca75"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMethodArea.html#a6e9aac39975424e6c0ab3c29535aca75">MethodArea</a> ()</td></tr>
+<tr class="memdesc:a6e9aac39975424e6c0ab3c29535aca75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instanciador de classe.  <br /></td></tr>
 <tr class="separator:a6e9aac39975424e6c0ab3c29535aca75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d8bd0f7400e0b234c2969936614bd0f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMethodArea.html#a7d8bd0f7400e0b234c2969936614bd0f">MethodArea</a> (<a class="el" href="classFrameStack.html">FrameStack</a> *frameStack)</td></tr>
+<tr class="memitem:a7d8bd0f7400e0b234c2969936614bd0f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMethodArea.html#a7d8bd0f7400e0b234c2969936614bd0f">MethodArea</a> (<a class="el" href="classFrameStack.html">FrameStack</a> *<a class="el" href="classMethodArea.html#a297e23bd287365387a6fd7e19b88cc63">frameStack</a>)</td></tr>
 <tr class="memdesc:a7d8bd0f7400e0b234c2969936614bd0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instanciador de classe.  <br /></td></tr>
 <tr class="separator:a7d8bd0f7400e0b234c2969936614bd0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33119ba75d74288fb8eee4adc2f34401"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMethodArea.html#a33119ba75d74288fb8eee4adc2f34401">pushStaticBlock</a> (<a class="el" href="classMethodAreaItem.html">MethodAreaItem</a> *methodAreaItem)</td></tr>
@@ -103,12 +109,49 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad50ea0cbaa98050c34af2c8748d21eef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMethodAreaItem.html">MethodAreaItem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMethodArea.html#ad50ea0cbaa98050c34af2c8748d21eef">getMethodAreaItemFromFile</a> (string path)</td></tr>
 <tr class="memdesc:ad50ea0cbaa98050c34af2c8748d21eef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtém o method area item da classe pelo caminho.  <br /></td></tr>
 <tr class="separator:ad50ea0cbaa98050c34af2c8748d21eef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a278cdb1cd23c2c2fb77cc6903d5d7945"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structClassFile.html">ClassFile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMethodArea.html#a278cdb1cd23c2c2fb77cc6903d5d7945">loadClass</a> (string className)</td></tr>
+<tr class="memdesc:a278cdb1cd23c2c2fb77cc6903d5d7945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lê a classe informada, é esperado que o nome da classe seja o nome do arquivo e esteja dentro da pasta <code>tests</code>  <br /></td></tr>
+<tr class="separator:a278cdb1cd23c2c2fb77cc6903d5d7945"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a653d09bb4d5702bfde494746a3403932"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMethodArea.html#a653d09bb4d5702bfde494746a3403932">insert</a> (<a class="el" href="classMethodAreaItem.html">MethodAreaItem</a> *methodAreaItem)</td></tr>
+<tr class="memdesc:a653d09bb4d5702bfde494746a3403932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insere um method area item no vetor de method area.  <br /></td></tr>
+<tr class="separator:a653d09bb4d5702bfde494746a3403932"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a297e23bd287365387a6fd7e19b88cc63"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classFrameStack.html">FrameStack</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMethodArea.html#a297e23bd287365387a6fd7e19b88cc63">frameStack</a></td></tr>
+<tr class="memdesc:a297e23bd287365387a6fd7e19b88cc63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pilha de frames.  <br /></td></tr>
+<tr class="separator:a297e23bd287365387a6fd7e19b88cc63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd5cb39ab3c4e963e8b8ee3033b5c132"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classMethodAreaItem.html">MethodAreaItem</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMethodArea.html#acd5cb39ab3c4e963e8b8ee3033b5c132">methodItems</a></td></tr>
+<tr class="memdesc:acd5cb39ab3c4e963e8b8ee3033b5c132"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vetor de ponteiros para os method area items.  <br /></td></tr>
+<tr class="separator:acd5cb39ab3c4e963e8b8ee3033b5c132"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Classe que representa a área de métodos, contendo as informações de todas as classes carregadas. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a6e9aac39975424e6c0ab3c29535aca75" name="a6e9aac39975424e6c0ab3c29535aca75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e9aac39975424e6c0ab3c29535aca75">&#9670;&#160;</a></span>MethodArea() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MethodArea::MethodArea </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Instanciador de classe. </p>
+
+</div>
+</div>
 <a id="a7d8bd0f7400e0b234c2969936614bd0f" name="a7d8bd0f7400e0b234c2969936614bd0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d8bd0f7400e0b234c2969936614bd0f">&#9670;&#160;</a></span>MethodArea()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d8bd0f7400e0b234c2969936614bd0f">&#9670;&#160;</a></span>MethodArea() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -194,6 +237,75 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a653d09bb4d5702bfde494746a3403932" name="a653d09bb4d5702bfde494746a3403932"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a653d09bb4d5702bfde494746a3403932">&#9670;&#160;</a></span>insert()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MethodArea::insert </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMethodAreaItem.html">MethodAreaItem</a> *&#160;</td>
+          <td class="paramname"><em>methodAreaItem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Insere um method area item no vetor de method area. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">methodAreaItem</td><td>Ponteiro para o method area item a ser inserido </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a278cdb1cd23c2c2fb77cc6903d5d7945" name="a278cdb1cd23c2c2fb77cc6903d5d7945"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a278cdb1cd23c2c2fb77cc6903d5d7945">&#9670;&#160;</a></span>loadClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structClassFile.html">ClassFile</a> * MethodArea::loadClass </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>className</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Lê a classe informada, é esperado que o nome da classe seja o nome do arquivo e esteja dentro da pasta <code>tests</code> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">className</td><td>Nome da classe a ser lida </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Ponteiro para o classfile lido </dd></dl>
+
+</div>
+</div>
 <a id="af3213f17043c51065f27fc52f81b55a9" name="af3213f17043c51065f27fc52f81b55a9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af3213f17043c51065f27fc52f81b55a9">&#9670;&#160;</a></span>loadClassFromPath()</h2>
 
@@ -253,9 +365,58 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a297e23bd287365387a6fd7e19b88cc63" name="a297e23bd287365387a6fd7e19b88cc63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a297e23bd287365387a6fd7e19b88cc63">&#9670;&#160;</a></span>frameStack</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classFrameStack.html">FrameStack</a>* MethodArea::frameStack</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pilha de frames. </p>
+
+</div>
+</div>
+<a id="acd5cb39ab3c4e963e8b8ee3033b5c132" name="acd5cb39ab3c4e963e8b8ee3033b5c132"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd5cb39ab3c4e963e8b8ee3033b5c132">&#9670;&#160;</a></span>methodItems</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;<a class="el" href="classMethodAreaItem.html">MethodAreaItem</a> *&gt; MethodArea::methodItems</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Vetor de ponteiros para os method area items. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>MethodArea/<a class="el" href="methodArea_8hpp_source.html">methodArea.hpp</a></li>
-<li>MethodArea/methodArea.cpp</li>
+<li>MethodArea/<a class="el" href="methodArea_8cpp.html">methodArea.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JVM - Softare básico: Member List</title>
+<title>JVM - Software básico: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JVM - Softare básico
+   <div id="projectname">JVM - Software básico
    </div>
    <div id="projectbrief">JMV simplificada implementada em C++ para a disciplina de Software Básico</div>
   </td>
@@ -76,13 +76,19 @@ $(function() {
 
 <p>This is the complete list of members for <a class="el" href="classJVM.html">JVM</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classJVM.html#a4db48eb4f16dc45e82c5a74944d1ab50">getArraySize</a>(u4 arrayItemIndex)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classJVM.html#a381a799e9b86036e9cd0fefe3e7710d2">getArrayValue</a>(u4 arrayItemIndex, u4 index)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classJVM.html#a8befc174a69f37c118a2dc5ed6b6a6d4">getField</a>(u4 heapItemIndex, string fieldName)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classJVM.html#aa9024ab21f548f6fd119aee3b623c6dc">getStaticField</a>(string classname, string fieldName)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classJVM.html#af9aed5cb4c45372c06de52d19ba3a2c4">executeFrame</a>(Frame *frame)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classJVM.html#a623bbf9481ea9d1dad329b2d9b01f3c2">executeInstruction</a>(u1 *instruction, Frame *frame)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classJVM.html#ad2316af94e0638565a5e17284d4b9102">frameStack</a></td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classJVM.html#a4db48eb4f16dc45e82c5a74944d1ab50">getArraySize</a>(u4 arrayItemIndex)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classJVM.html#a381a799e9b86036e9cd0fefe3e7710d2">getArrayValue</a>(u4 arrayItemIndex, u4 index)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classJVM.html#a8befc174a69f37c118a2dc5ed6b6a6d4">getField</a>(u4 heapItemIndex, string fieldName)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classJVM.html#aa9024ab21f548f6fd119aee3b623c6dc">getStaticField</a>(string classname, string fieldName)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classJVM.html#a2d7497bd90e0d15cc3afbd5d93f905fc">heap</a></td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classJVM.html#ad0c4bf32aa41cb93e1710d03a8364d75">initialize</a>(string classPath)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classJVM.html#a9559f47b277bf0f99a353f463a27bc15">invoke</a>(Frame frame)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classJVM.html#a732f4d1f16b2ea39bc7197cf294ab763">JVM</a>()</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classJVM.html#a3a433b078fe54bd83d1bace837f5ca66">instructionsMap</a></td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classJVM.html#a9559f47b277bf0f99a353f463a27bc15">invoke</a>(Frame frame)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classJVM.html#a732f4d1f16b2ea39bc7197cf294ab763">JVM</a>()</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classJVM.html#aad8a7aabd7f167fb9be0d691de945210">methodArea</a></td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classJVM.html#a9ed350f05d07f0947d4be39c83233fdd">pushArray</a>(Array *arrayItem)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classJVM.html#ae4d6126311be7c7d01759b3fdf69ce78">pushObject</a>(Object *heapItem)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classJVM.html#a399fb0637647ab3a5c7e6c2465ae88e8">returnValue</a>(JvmValue value)</td><td class="entry"><a class="el" href="classJVM.html">JVM</a></td><td class="entry"></td></tr>

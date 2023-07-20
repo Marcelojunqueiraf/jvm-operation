@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JVM - Softare básico: JVM Class Reference</title>
+<title>JVM - Software básico: JVM Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JVM - Softare básico
+   <div id="projectname">JVM - Software básico
    </div>
    <div id="projectbrief">JMV simplificada implementada em C++ para a disciplina de Software Básico</div>
   </td>
@@ -72,6 +72,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classJVM-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">JVM Class Reference</div></div>
 </div><!--header-->
@@ -81,12 +83,16 @@ $(function() {
  <a href="classJVM.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="jvm_8hpp_source.html">jvm.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for JVM:</div>
+<div class="dyncontent">
+<div class="center"><img src="classJVM__coll__graph.png" border="0" usemap="#aJVM_coll__map" alt="Collaboration graph"/></div>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a732f4d1f16b2ea39bc7197cf294ab763"><td class="memItemLeft" align="right" valign="top"><a id="a732f4d1f16b2ea39bc7197cf294ab763" name="a732f4d1f16b2ea39bc7197cf294ab763"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>JVM</b> ()</td></tr>
-<tr class="memdesc:a732f4d1f16b2ea39bc7197cf294ab763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instanciador de classe. <br /></td></tr>
+<tr class="memitem:a732f4d1f16b2ea39bc7197cf294ab763"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a732f4d1f16b2ea39bc7197cf294ab763">JVM</a> ()</td></tr>
+<tr class="memdesc:a732f4d1f16b2ea39bc7197cf294ab763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instanciador de classe.  <br /></td></tr>
 <tr class="separator:a732f4d1f16b2ea39bc7197cf294ab763"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0c4bf32aa41cb93e1710d03a8364d75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#ad0c4bf32aa41cb93e1710d03a8364d75">initialize</a> (string classPath)</td></tr>
 <tr class="memdesc:ad0c4bf32aa41cb93e1710d03a8364d75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que inicia a execução da <a class="el" href="classJVM.html" title="Classe que define a estrutura da JVM.">JVM</a> a partir do .class informado.  <br /></td></tr>
@@ -94,51 +100,172 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7ca688f40b9df137286586b063dbede9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a7ca688f40b9df137286586b063dbede9">showClass</a> (string classPath)</td></tr>
 <tr class="memdesc:a7ca688f40b9df137286586b063dbede9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que chama o exibidor para o .class informado.  <br /></td></tr>
 <tr class="separator:a7ca688f40b9df137286586b063dbede9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff627399a37529942838a41a064682d9"><td class="memItemLeft" align="right" valign="top"><a id="aff627399a37529942838a41a064682d9" name="aff627399a37529942838a41a064682d9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>run</b> ()</td></tr>
-<tr class="memdesc:aff627399a37529942838a41a064682d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que realiza a execução dos frames da <a class="el" href="classJVM.html" title="Classe que define a estrutura da JVM.">JVM</a>. <br /></td></tr>
+<tr class="memitem:aff627399a37529942838a41a064682d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#aff627399a37529942838a41a064682d9">run</a> ()</td></tr>
+<tr class="memdesc:aff627399a37529942838a41a064682d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que realiza a execução dos frames da <a class="el" href="classJVM.html" title="Classe que define a estrutura da JVM.">JVM</a>.  <br /></td></tr>
 <tr class="separator:aff627399a37529942838a41a064682d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9559f47b277bf0f99a353f463a27bc15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a9559f47b277bf0f99a353f463a27bc15">invoke</a> (<a class="el" href="structFrame.html">Frame</a> frame)</td></tr>
 <tr class="memdesc:a9559f47b277bf0f99a353f463a27bc15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que coloca um novo frame na pilha de frames.  <br /></td></tr>
 <tr class="separator:a9559f47b277bf0f99a353f463a27bc15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac78f832a30712206f3c11bb86d9e98d0"><td class="memItemLeft" align="right" valign="top"><a id="ac78f832a30712206f3c11bb86d9e98d0" name="ac78f832a30712206f3c11bb86d9e98d0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>returnVoid</b> ()</td></tr>
-<tr class="memdesc:ac78f832a30712206f3c11bb86d9e98d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que encerra um frame sem retorno de valor. <br /></td></tr>
+<tr class="memitem:ac78f832a30712206f3c11bb86d9e98d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#ac78f832a30712206f3c11bb86d9e98d0">returnVoid</a> ()</td></tr>
+<tr class="memdesc:ac78f832a30712206f3c11bb86d9e98d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que encerra um frame sem retorno de valor.  <br /></td></tr>
 <tr class="separator:ac78f832a30712206f3c11bb86d9e98d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a399fb0637647ab3a5c7e6c2465ae88e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a399fb0637647ab3a5c7e6c2465ae88e8">returnValue</a> (<a class="el" href="classJvmValue.html">JvmValue</a> value)</td></tr>
 <tr class="memdesc:a399fb0637647ab3a5c7e6c2465ae88e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que encerra um frame com retorno de valor.  <br /></td></tr>
 <tr class="separator:a399fb0637647ab3a5c7e6c2465ae88e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4d6126311be7c7d01759b3fdf69ce78"><td class="memItemLeft" align="right" valign="top">u4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#ae4d6126311be7c7d01759b3fdf69ce78">pushObject</a> (<a class="el" href="classObject.html">Object</a> *heapItem)</td></tr>
+<tr class="memitem:ae4d6126311be7c7d01759b3fdf69ce78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#ae4d6126311be7c7d01759b3fdf69ce78">pushObject</a> (<a class="el" href="classObject.html">Object</a> *heapItem)</td></tr>
 <tr class="memdesc:ae4d6126311be7c7d01759b3fdf69ce78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que coloca um novo objeto no vetor de objetos.  <br /></td></tr>
 <tr class="separator:ae4d6126311be7c7d01759b3fdf69ce78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ed350f05d07f0947d4be39c83233fdd"><td class="memItemLeft" align="right" valign="top">u4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a9ed350f05d07f0947d4be39c83233fdd">pushArray</a> (<a class="el" href="classArray.html">Array</a> *arrayItem)</td></tr>
+<tr class="memitem:a9ed350f05d07f0947d4be39c83233fdd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a9ed350f05d07f0947d4be39c83233fdd">pushArray</a> (<a class="el" href="classArray.html">Array</a> *arrayItem)</td></tr>
 <tr class="memdesc:a9ed350f05d07f0947d4be39c83233fdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que coloca um novo array no vetor de arrays.  <br /></td></tr>
 <tr class="separator:a9ed350f05d07f0947d4be39c83233fdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8befc174a69f37c118a2dc5ed6b6a6d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classJvmValue.html">JvmValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a8befc174a69f37c118a2dc5ed6b6a6d4">getField</a> (u4 heapItemIndex, string fieldName)</td></tr>
+<tr class="memitem:a8befc174a69f37c118a2dc5ed6b6a6d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classJvmValue.html">JvmValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a8befc174a69f37c118a2dc5ed6b6a6d4">getField</a> (<a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> heapItemIndex, string fieldName)</td></tr>
 <tr class="memdesc:a8befc174a69f37c118a2dc5ed6b6a6d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que retorna um field dinâmico a partir de seu nome e índice no vetor de objetos.  <br /></td></tr>
 <tr class="separator:a8befc174a69f37c118a2dc5ed6b6a6d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9024ab21f548f6fd119aee3b623c6dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classJvmValue.html">JvmValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#aa9024ab21f548f6fd119aee3b623c6dc">getStaticField</a> (string classname, string fieldName)</td></tr>
 <tr class="memdesc:aa9024ab21f548f6fd119aee3b623c6dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que retorna um field estático a partir de seu nome e de sua classe na área de métodos.  <br /></td></tr>
 <tr class="separator:aa9024ab21f548f6fd119aee3b623c6dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a381a799e9b86036e9cd0fefe3e7710d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classJvmValue.html">JvmValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a381a799e9b86036e9cd0fefe3e7710d2">getArrayValue</a> (u4 arrayItemIndex, u4 index)</td></tr>
+<tr class="memitem:a381a799e9b86036e9cd0fefe3e7710d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classJvmValue.html">JvmValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a381a799e9b86036e9cd0fefe3e7710d2">getArrayValue</a> (<a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> arrayItemIndex, <a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> index)</td></tr>
 <tr class="memdesc:a381a799e9b86036e9cd0fefe3e7710d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que retorna um elemento do array informado.  <br /></td></tr>
 <tr class="separator:a381a799e9b86036e9cd0fefe3e7710d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98caba257db59c64e9da378b3016eb3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a98caba257db59c64e9da378b3016eb3c">setArrayValue</a> (u4 arrayItemIndex, u4 index, <a class="el" href="classJvmValue.html">JvmValue</a> value)</td></tr>
+<tr class="memitem:a98caba257db59c64e9da378b3016eb3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a98caba257db59c64e9da378b3016eb3c">setArrayValue</a> (<a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> arrayItemIndex, <a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> index, <a class="el" href="classJvmValue.html">JvmValue</a> value)</td></tr>
 <tr class="memdesc:a98caba257db59c64e9da378b3016eb3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que define o valor de um elemento do array informado.  <br /></td></tr>
 <tr class="separator:a98caba257db59c64e9da378b3016eb3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4db48eb4f16dc45e82c5a74944d1ab50"><td class="memItemLeft" align="right" valign="top">u4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a4db48eb4f16dc45e82c5a74944d1ab50">getArraySize</a> (u4 arrayItemIndex)</td></tr>
+<tr class="memitem:a4db48eb4f16dc45e82c5a74944d1ab50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a4db48eb4f16dc45e82c5a74944d1ab50">getArraySize</a> (<a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> arrayItemIndex)</td></tr>
 <tr class="memdesc:a4db48eb4f16dc45e82c5a74944d1ab50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que retorna o tamanho de um array.  <br /></td></tr>
 <tr class="separator:a4db48eb4f16dc45e82c5a74944d1ab50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6231f64335dc543305ef271b7a6422d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a6231f64335dc543305ef271b7a6422d5">setField</a> (u4 heapItemIndex, string fieldName, <a class="el" href="classJvmValue.html">JvmValue</a> value)</td></tr>
+<tr class="memitem:a6231f64335dc543305ef271b7a6422d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a6231f64335dc543305ef271b7a6422d5">setField</a> (<a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> heapItemIndex, string fieldName, <a class="el" href="classJvmValue.html">JvmValue</a> value)</td></tr>
 <tr class="memdesc:a6231f64335dc543305ef271b7a6422d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que define o valor de um field dinâmico a partir de seu nome e índice no vetor de objetos.  <br /></td></tr>
 <tr class="separator:a6231f64335dc543305ef271b7a6422d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f8c9cf86904d5b1684ebb63b24066cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a2f8c9cf86904d5b1684ebb63b24066cc">setStaticField</a> (string classname, string fieldName, <a class="el" href="classJvmValue.html">JvmValue</a> value)</td></tr>
 <tr class="memdesc:a2f8c9cf86904d5b1684ebb63b24066cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que define o valor de um field estático a partir de seu nome e de sua classe na área de métodos.  <br /></td></tr>
 <tr class="separator:a2f8c9cf86904d5b1684ebb63b24066cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:af9aed5cb4c45372c06de52d19ba3a2c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#af9aed5cb4c45372c06de52d19ba3a2c4">executeFrame</a> (<a class="el" href="structFrame.html">Frame</a> *frame)</td></tr>
+<tr class="memdesc:af9aed5cb4c45372c06de52d19ba3a2c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que executa o frame passado.  <br /></td></tr>
+<tr class="separator:af9aed5cb4c45372c06de52d19ba3a2c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a623bbf9481ea9d1dad329b2d9b01f3c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a623bbf9481ea9d1dad329b2d9b01f3c2">executeInstruction</a> (<a class="el" href="intTypes_8hpp.html#ad9f4cdb6757615aae2fad89dab3c5470">u1</a> *instruction, <a class="el" href="structFrame.html">Frame</a> *frame)</td></tr>
+<tr class="memdesc:a623bbf9481ea9d1dad329b2d9b01f3c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que executa a instrução contida no frame passado.  <br /></td></tr>
+<tr class="separator:a623bbf9481ea9d1dad329b2d9b01f3c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ad2316af94e0638565a5e17284d4b9102"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classFrameStack.html">FrameStack</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#ad2316af94e0638565a5e17284d4b9102">frameStack</a></td></tr>
+<tr class="memdesc:ad2316af94e0638565a5e17284d4b9102"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pilha de frames.  <br /></td></tr>
+<tr class="separator:ad2316af94e0638565a5e17284d4b9102"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d7497bd90e0d15cc3afbd5d93f905fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classHeap.html">Heap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a2d7497bd90e0d15cc3afbd5d93f905fc">heap</a></td></tr>
+<tr class="memdesc:a2d7497bd90e0d15cc3afbd5d93f905fc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classHeap.html" title="Classe que define a estrutura do heap.">Heap</a>.  <br /></td></tr>
+<tr class="separator:a2d7497bd90e0d15cc3afbd5d93f905fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad8a7aabd7f167fb9be0d691de945210"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMethodArea.html">MethodArea</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#aad8a7aabd7f167fb9be0d691de945210">methodArea</a></td></tr>
+<tr class="memdesc:aad8a7aabd7f167fb9be0d691de945210"><td class="mdescLeft">&#160;</td><td class="mdescRight">Área de métodos.  <br /></td></tr>
+<tr class="separator:aad8a7aabd7f167fb9be0d691de945210"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a433b078fe54bd83d1bace837f5ca66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jvm_8hpp.html#a1348d2c615c2933682eabb8baa2b4167">InstructionsMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM.html#a3a433b078fe54bd83d1bace837f5ca66">instructionsMap</a></td></tr>
+<tr class="memdesc:a3a433b078fe54bd83d1bace837f5ca66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vetor de ponteiros para as funções de cada instrução.  <br /></td></tr>
+<tr class="separator:a3a433b078fe54bd83d1bace837f5ca66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Classe que define a estrutura da <a class="el" href="classJVM.html" title="Classe que define a estrutura da JVM.">JVM</a>. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a732f4d1f16b2ea39bc7197cf294ab763" name="a732f4d1f16b2ea39bc7197cf294ab763"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a732f4d1f16b2ea39bc7197cf294ab763">&#9670;&#160;</a></span>JVM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">JVM::JVM </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Instanciador de classe. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="af9aed5cb4c45372c06de52d19ba3a2c4" name="af9aed5cb4c45372c06de52d19ba3a2c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9aed5cb4c45372c06de52d19ba3a2c4">&#9670;&#160;</a></span>executeFrame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void JVM::executeFrame </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFrame.html">Frame</a> *&#160;</td>
+          <td class="paramname"><em>frame</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Função que executa o frame passado. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">frame</td><td>Ponteiro para o frame que será executado </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a623bbf9481ea9d1dad329b2d9b01f3c2" name="a623bbf9481ea9d1dad329b2d9b01f3c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a623bbf9481ea9d1dad329b2d9b01f3c2">&#9670;&#160;</a></span>executeInstruction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void JVM::executeInstruction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ad9f4cdb6757615aae2fad89dab3c5470">u1</a> *&#160;</td>
+          <td class="paramname"><em>instruction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFrame.html">Frame</a> *&#160;</td>
+          <td class="paramname"><em>frame</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Função que executa a instrução contida no frame passado. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">instruction</td><td>Ponteiro para o opcode da instrução </td></tr>
+    <tr><td class="paramname">frame</td><td>Ponteiro para o frame que contem a instrução </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a4db48eb4f16dc45e82c5a74944d1ab50" name="a4db48eb4f16dc45e82c5a74944d1ab50"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4db48eb4f16dc45e82c5a74944d1ab50">&#9670;&#160;</a></span>getArraySize()</h2>
 
@@ -146,9 +273,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>returnVoid</b> ()</td
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">u4 JVM::getArraySize </td>
+          <td class="memname"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> JVM::getArraySize </td>
           <td>(</td>
-          <td class="paramtype">u4&#160;</td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td>
           <td class="paramname"><em>arrayItemIndex</em></td><td>)</td>
           <td></td>
         </tr>
@@ -175,13 +302,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>returnVoid</b> ()</td
         <tr>
           <td class="memname"><a class="el" href="classJvmValue.html">JvmValue</a> JVM::getArrayValue </td>
           <td>(</td>
-          <td class="paramtype">u4&#160;</td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td>
           <td class="paramname"><em>arrayItemIndex</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">u4&#160;</td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td>
           <td class="paramname"><em>index</em>&#160;</td>
         </tr>
         <tr>
@@ -213,7 +340,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>returnVoid</b> ()</td
         <tr>
           <td class="memname"><a class="el" href="classJvmValue.html">JvmValue</a> JVM::getField </td>
           <td>(</td>
-          <td class="paramtype">u4&#160;</td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td>
           <td class="paramname"><em>heapItemIndex</em>, </td>
         </tr>
         <tr>
@@ -339,7 +466,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>returnVoid</b> ()</td
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">u4 JVM::pushArray </td>
+          <td class="memname"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> JVM::pushArray </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classArray.html">Array</a> *&#160;</td>
           <td class="paramname"><em>arrayItem</em></td><td>)</td>
@@ -367,7 +494,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>returnVoid</b> ()</td
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">u4 JVM::pushObject </td>
+          <td class="memname"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> JVM::pushObject </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classObject.html">Object</a> *&#160;</td>
           <td class="paramname"><em>heapItem</em></td><td>)</td>
@@ -413,6 +540,44 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>returnVoid</b> ()</td
 
 </div>
 </div>
+<a id="ac78f832a30712206f3c11bb86d9e98d0" name="ac78f832a30712206f3c11bb86d9e98d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac78f832a30712206f3c11bb86d9e98d0">&#9670;&#160;</a></span>returnVoid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void JVM::returnVoid </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Função que encerra um frame sem retorno de valor. </p>
+
+</div>
+</div>
+<a id="aff627399a37529942838a41a064682d9" name="aff627399a37529942838a41a064682d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff627399a37529942838a41a064682d9">&#9670;&#160;</a></span>run()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void JVM::run </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Função que realiza a execução dos frames da <a class="el" href="classJVM.html" title="Classe que define a estrutura da JVM.">JVM</a>. </p>
+
+</div>
+</div>
 <a id="a98caba257db59c64e9da378b3016eb3c" name="a98caba257db59c64e9da378b3016eb3c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a98caba257db59c64e9da378b3016eb3c">&#9670;&#160;</a></span>setArrayValue()</h2>
 
@@ -422,13 +587,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>returnVoid</b> ()</td
         <tr>
           <td class="memname">void JVM::setArrayValue </td>
           <td>(</td>
-          <td class="paramtype">u4&#160;</td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td>
           <td class="paramname"><em>arrayItemIndex</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">u4&#160;</td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -466,7 +631,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>returnVoid</b> ()</td
         <tr>
           <td class="memname">void JVM::setField </td>
           <td>(</td>
-          <td class="paramtype">u4&#160;</td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td>
           <td class="paramname"><em>heapItemIndex</em>, </td>
         </tr>
         <tr>
@@ -571,9 +736,106 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>returnVoid</b> ()</td
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ad2316af94e0638565a5e17284d4b9102" name="ad2316af94e0638565a5e17284d4b9102"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2316af94e0638565a5e17284d4b9102">&#9670;&#160;</a></span>frameStack</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classFrameStack.html">FrameStack</a> JVM::frameStack</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pilha de frames. </p>
+
+</div>
+</div>
+<a id="a2d7497bd90e0d15cc3afbd5d93f905fc" name="a2d7497bd90e0d15cc3afbd5d93f905fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d7497bd90e0d15cc3afbd5d93f905fc">&#9670;&#160;</a></span>heap</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classHeap.html">Heap</a> JVM::heap</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classHeap.html" title="Classe que define a estrutura do heap.">Heap</a>. </p>
+
+</div>
+</div>
+<a id="a3a433b078fe54bd83d1bace837f5ca66" name="a3a433b078fe54bd83d1bace837f5ca66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a433b078fe54bd83d1bace837f5ca66">&#9670;&#160;</a></span>instructionsMap</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="jvm_8hpp.html#a1348d2c615c2933682eabb8baa2b4167">InstructionsMap</a> JVM::instructionsMap</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Vetor de ponteiros para as funções de cada instrução. </p>
+
+</div>
+</div>
+<a id="aad8a7aabd7f167fb9be0d691de945210" name="aad8a7aabd7f167fb9be0d691de945210"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad8a7aabd7f167fb9be0d691de945210">&#9670;&#160;</a></span>methodArea</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMethodArea.html">MethodArea</a> JVM::methodArea</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Área de métodos. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>JVM/<a class="el" href="jvm_8hpp_source.html">jvm.hpp</a></li>
-<li>JVM/jvm.cpp</li>
+<li>JVM/<a class="el" href="jvm_8cpp.html">jvm.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

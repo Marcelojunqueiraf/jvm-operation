@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JVM - Softare básico: Heap Class Reference</title>
+<title>JVM - Software básico: Heap Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JVM - Softare básico
+   <div id="projectname">JVM - Software básico
    </div>
    <div id="projectbrief">JMV simplificada implementada em C++ para a disciplina de Software Básico</div>
   </td>
@@ -72,6 +72,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classHeap-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Heap Class Reference</div></div>
 </div><!--header-->
@@ -84,26 +85,54 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6595efd3562a6334d2f5471c2b3b7cb4"><td class="memItemLeft" align="right" valign="top"><a id="a6595efd3562a6334d2f5471c2b3b7cb4" name="a6595efd3562a6334d2f5471c2b3b7cb4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Heap</b> ()</td></tr>
-<tr class="memdesc:a6595efd3562a6334d2f5471c2b3b7cb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instanciador de classe. <br /></td></tr>
+<tr class="memitem:a6595efd3562a6334d2f5471c2b3b7cb4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHeap.html#a6595efd3562a6334d2f5471c2b3b7cb4">Heap</a> ()</td></tr>
+<tr class="memdesc:a6595efd3562a6334d2f5471c2b3b7cb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instanciador de classe.  <br /></td></tr>
 <tr class="separator:a6595efd3562a6334d2f5471c2b3b7cb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbfe80458e6dadea99b0b5112bd04db0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classObject.html">Object</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHeap.html#abbfe80458e6dadea99b0b5112bd04db0">getHeapItem</a> (u4 index)</td></tr>
+<tr class="memitem:abbfe80458e6dadea99b0b5112bd04db0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classObject.html">Object</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHeap.html#abbfe80458e6dadea99b0b5112bd04db0">getHeapItem</a> (<a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> index)</td></tr>
 <tr class="memdesc:abbfe80458e6dadea99b0b5112bd04db0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que retorna um ponteiro para o objeto armazenado no índice informado.  <br /></td></tr>
 <tr class="separator:abbfe80458e6dadea99b0b5112bd04db0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72d62a9b812e1d1c30168c2d331010a3"><td class="memItemLeft" align="right" valign="top">u4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHeap.html#a72d62a9b812e1d1c30168c2d331010a3">pushHeapItem</a> (<a class="el" href="classObject.html">Object</a> *heapItem)</td></tr>
+<tr class="memitem:a72d62a9b812e1d1c30168c2d331010a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHeap.html#a72d62a9b812e1d1c30168c2d331010a3">pushHeapItem</a> (<a class="el" href="classObject.html">Object</a> *heapItem)</td></tr>
 <tr class="memdesc:a72d62a9b812e1d1c30168c2d331010a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que coloca um objeto instanciado no vetor de objetos e retorna seu tamanho.  <br /></td></tr>
 <tr class="separator:a72d62a9b812e1d1c30168c2d331010a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefdd7f8a0bacab00f76aafe1abdeefc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classArray.html">Array</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHeap.html#aefdd7f8a0bacab00f76aafe1abdeefc9">getArrayItem</a> (u4 index)</td></tr>
+<tr class="memitem:aefdd7f8a0bacab00f76aafe1abdeefc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classArray.html">Array</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHeap.html#aefdd7f8a0bacab00f76aafe1abdeefc9">getArrayItem</a> (<a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> index)</td></tr>
 <tr class="memdesc:aefdd7f8a0bacab00f76aafe1abdeefc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que retorna um ponteiro para o array armazenado no índice informado.  <br /></td></tr>
 <tr class="separator:aefdd7f8a0bacab00f76aafe1abdeefc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88c603094fdf8559e3260b9c4db480c6"><td class="memItemLeft" align="right" valign="top">u4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHeap.html#a88c603094fdf8559e3260b9c4db480c6">pushArrayItem</a> (<a class="el" href="classArray.html">Array</a> *arrayItem)</td></tr>
+<tr class="memitem:a88c603094fdf8559e3260b9c4db480c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHeap.html#a88c603094fdf8559e3260b9c4db480c6">pushArrayItem</a> (<a class="el" href="classArray.html">Array</a> *arrayItem)</td></tr>
 <tr class="memdesc:a88c603094fdf8559e3260b9c4db480c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que coloca um array criado no vetor de arrays e retorna seu tamanho.  <br /></td></tr>
 <tr class="separator:a88c603094fdf8559e3260b9c4db480c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a080865b56c56c126f56f8040fe27c5cb"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classObject.html">Object</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHeap.html#a080865b56c56c126f56f8040fe27c5cb">heapItems</a></td></tr>
+<tr class="memdesc:a080865b56c56c126f56f8040fe27c5cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vetor que armazena os objetos instanciados.  <br /></td></tr>
+<tr class="separator:a080865b56c56c126f56f8040fe27c5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e4853b32555ddc2a54d94ac21498e93"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classArray.html">Array</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHeap.html#a8e4853b32555ddc2a54d94ac21498e93">arrayItems</a></td></tr>
+<tr class="memdesc:a8e4853b32555ddc2a54d94ac21498e93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vetor que armazena os arrays criados.  <br /></td></tr>
+<tr class="separator:a8e4853b32555ddc2a54d94ac21498e93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Classe que define a estrutura do heap. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a6595efd3562a6334d2f5471c2b3b7cb4" name="a6595efd3562a6334d2f5471c2b3b7cb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6595efd3562a6334d2f5471c2b3b7cb4">&#9670;&#160;</a></span>Heap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Heap::Heap </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Instanciador de classe. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="aefdd7f8a0bacab00f76aafe1abdeefc9" name="aefdd7f8a0bacab00f76aafe1abdeefc9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aefdd7f8a0bacab00f76aafe1abdeefc9">&#9670;&#160;</a></span>getArrayItem()</h2>
 
@@ -113,7 +142,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classArray.html">Array</a> * Heap::getArrayItem </td>
           <td>(</td>
-          <td class="paramtype">u4&#160;</td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td></td>
         </tr>
@@ -140,7 +169,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classObject.html">Object</a> * Heap::getHeapItem </td>
           <td>(</td>
-          <td class="paramtype">u4&#160;</td>
+          <td class="paramtype"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td></td>
         </tr>
@@ -165,7 +194,7 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">u4 Heap::pushArrayItem </td>
+          <td class="memname"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> Heap::pushArrayItem </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classArray.html">Array</a> *&#160;</td>
           <td class="paramname"><em>arrayItem</em></td><td>)</td>
@@ -193,7 +222,7 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">u4 Heap::pushHeapItem </td>
+          <td class="memname"><a class="el" href="intTypes_8hpp.html#ae5be1f726785414dd1b77d60df074c9d">u4</a> Heap::pushHeapItem </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classObject.html">Object</a> *&#160;</td>
           <td class="paramname"><em>heapItem</em></td><td>)</td>
@@ -213,9 +242,58 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a8e4853b32555ddc2a54d94ac21498e93" name="a8e4853b32555ddc2a54d94ac21498e93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e4853b32555ddc2a54d94ac21498e93">&#9670;&#160;</a></span>arrayItems</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;<a class="el" href="classArray.html">Array</a> *&gt; Heap::arrayItems</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Vetor que armazena os arrays criados. </p>
+
+</div>
+</div>
+<a id="a080865b56c56c126f56f8040fe27c5cb" name="a080865b56c56c126f56f8040fe27c5cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a080865b56c56c126f56f8040fe27c5cb">&#9670;&#160;</a></span>heapItems</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;<a class="el" href="classObject.html">Object</a> *&gt; Heap::heapItems</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Vetor que armazena os objetos instanciados. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Heap/<a class="el" href="heap_8hpp_source.html">heap.hpp</a></li>
-<li>Heap/heap.cpp</li>
+<li>Heap/<a class="el" href="heap_8cpp.html">heap.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -5,7 +5,7 @@
  * @author Gabriel Borges
  * @author Maycon Vinnicyus
  * @author Edson Sales
- * @brief Arquivo com as funções utilizados no leitor
+ * @brief Arquivo com as funções utilizadas no leitor
 */
 
 #pragma once

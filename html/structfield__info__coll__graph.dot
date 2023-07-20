@@ -9,7 +9,7 @@ digraph "field_info"
   Node2 -> Node1 [id="edge1_Node000001_Node000002",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" attributes",fontcolor="grey" ];
   Node2 [id="Node000002",label="Attribute_info",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structAttribute__info.html",tooltip="Struct para a definição do attribute info."];
   Node3 -> Node2 [id="edge2_Node000002_Node000003",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" attribute_info_union",fontcolor="grey" ];
-  Node3 [id="Node000003",label="Attribute_info::attribute\l_info_union",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$unionAttribute__info_1_1attribute__info__union.html",tooltip=" "];
+  Node3 [id="Node000003",label="Attribute_info::attribute\l_info_union",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$unionAttribute__info_1_1attribute__info__union.html",tooltip=" "];
   Node4 -> Node3 [id="edge3_Node000003_Node000004",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" code_attribute",fontcolor="grey" ];
   Node4 [id="Node000004",label="code_attribute",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structcode__attribute.html",tooltip="Struct para a definição do code attribute."];
   Node5 -> Node4 [id="edge4_Node000004_Node000005",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" exception_table",fontcolor="grey" ];

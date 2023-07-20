@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['returnvalue_0',['returnValue',['../classJVM.html#a399fb0637647ab3a5c7e6c2465ae88e8',1,'JVM']]],
-  ['returnvoid_1',['returnVoid',['../classJVM.html#ac78f832a30712206f3c11bb86d9e98d0',1,'JVM']]],
-  ['run_2',['run',['../classJVM.html#aff627399a37529942838a41a064682d9',1,'JVM']]]
+  ['javaprintln_0',['javaPrintln',['../instructions_8cpp.html#a0c5ad17ca12d90778c98f7c41861a909',1,'instructions.cpp']]],
+  ['jsr_1',['jsr',['../instructions_8cpp.html#a3021ff9d3392d8a6c74d580c853703aa',1,'jsr(Frame *frame, JVM *jvm):&#160;instructions.cpp'],['../instructions_8hpp.html#a3021ff9d3392d8a6c74d580c853703aa',1,'jsr(Frame *frame, JVM *jvm):&#160;instructions.cpp']]],
+  ['jsr_5fw_2',['jsr_w',['../instructions_8cpp.html#a4cd7663d612cfe0bd011d39e8a82fa9e',1,'jsr_w(Frame *frame, JVM *jvm):&#160;instructions.cpp'],['../instructions_8hpp.html#a4cd7663d612cfe0bd011d39e8a82fa9e',1,'jsr_w(Frame *frame, JVM *jvm):&#160;instructions.cpp']]],
+  ['jvm_3',['JVM',['../classJVM.html#a732f4d1f16b2ea39bc7197cf294ab763',1,'JVM']]],
+  ['jvmvalue_4',['JvmValue',['../classJvmValue.html#a7a5ff85ee1ee9a2eeb71befdd33cdd61',1,'JvmValue::JvmValue()'],['../classJvmValue.html#a1b4aac95bc5274466e1694d78cdb53da',1,'JvmValue::JvmValue(JVMType type, DataUnion data)'],['../classJvmValue.html#acfeeea71c2aca2fff36728a208baf6b7',1,'JvmValue::JvmValue(JVMType type, std::string s)']]]
 ];

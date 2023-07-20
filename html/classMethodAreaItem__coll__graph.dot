@@ -1,0 +1,48 @@
+digraph "MethodAreaItem"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node1 [id="Node000001",label="MethodAreaItem",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Classe que representa um item da área de métodos, contendo as informações de uma classe."];
+  Node2 -> Node1 [id="edge1_Node000001_Node000002",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" classfile",fontcolor="grey" ];
+  Node2 [id="Node000002",label="ClassFile",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structClassFile.html",tooltip="Struct para a definição da ClassFile."];
+  Node3 -> Node2 [id="edge2_Node000002_Node000003",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" constant_pool",fontcolor="grey" ];
+  Node3 [id="Node000003",label="cp_info",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structcp__info.html",tooltip="Struct para a definição do cp_info."];
+  Node4 -> Node3 [id="edge3_Node000003_Node000004",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" constant_type_union",fontcolor="grey" ];
+  Node4 [id="Node000004",label="cp_info::constant_type\l_union",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$unioncp__info_1_1constant__type__union.html",tooltip=" "];
+  Node5 -> Node2 [id="edge4_Node000002_Node000005",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" fields",fontcolor="grey" ];
+  Node5 [id="Node000005",label="field_info",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structfield__info.html",tooltip="Struct para a definição do Field Info."];
+  Node6 -> Node5 [id="edge5_Node000005_Node000006",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" attributes",fontcolor="grey" ];
+  Node6 [id="Node000006",label="Attribute_info",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structAttribute__info.html",tooltip="Struct para a definição do attribute info."];
+  Node7 -> Node6 [id="edge6_Node000006_Node000007",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" attribute_info_union",fontcolor="grey" ];
+  Node7 [id="Node000007",label="Attribute_info::attribute\l_info_union",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$unionAttribute__info_1_1attribute__info__union.html",tooltip=" "];
+  Node8 -> Node7 [id="edge7_Node000007_Node000008",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" code_attribute",fontcolor="grey" ];
+  Node8 [id="Node000008",label="code_attribute",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structcode__attribute.html",tooltip="Struct para a definição do code attribute."];
+  Node9 -> Node8 [id="edge8_Node000008_Node000009",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" exception_table",fontcolor="grey" ];
+  Node9 [id="Node000009",label="Exception_table",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structException__table.html",tooltip="Struct para a definição da exception table."];
+  Node6 -> Node8 [id="edge9_Node000008_Node000006",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" attributes",fontcolor="grey" ];
+  Node10 -> Node7 [id="edge10_Node000007_Node000010",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" exceptions_attribute",fontcolor="grey" ];
+  Node10 [id="Node000010",label="exceptions_attribute",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structexceptions__attribute.html",tooltip="Struct para a definição dos exceptions attribute."];
+  Node11 -> Node7 [id="edge11_Node000007_Node000011",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" innerClasses_attribute",fontcolor="grey" ];
+  Node11 [id="Node000011",label="InnerClasses_attribute",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structInnerClasses__attribute.html",tooltip="Struct para a definição das inner classes attribute."];
+  Node12 -> Node11 [id="edge12_Node000011_Node000012",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" inner_classes",fontcolor="grey" ];
+  Node12 [id="Node000012",label="inner_classes",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structinner__classes.html",tooltip="Struct para a definição das inner classes."];
+  Node13 -> Node7 [id="edge13_Node000007_Node000013",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" lineNumberTable_attribute",fontcolor="grey" ];
+  Node13 [id="Node000013",label="LineNumberTable_attribute",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structLineNumberTable__attribute.html",tooltip="Struct para a definição da line number table attribute."];
+  Node14 -> Node13 [id="edge14_Node000013_Node000014",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" line_number_table",fontcolor="grey" ];
+  Node14 [id="Node000014",label="line_number_table",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structline__number__table.html",tooltip="Struct para a definição da line number table."];
+  Node15 -> Node7 [id="edge15_Node000007_Node000015",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" localVariableTable\l_attribute",fontcolor="grey" ];
+  Node15 [id="Node000015",label="LocalVariableTable\l_attribute",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structLocalVariableTable__attribute.html",tooltip="Struct para a definição da local variable table attribute."];
+  Node16 -> Node15 [id="edge16_Node000015_Node000016",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" local_variable_table",fontcolor="grey" ];
+  Node16 [id="Node000016",label="Local_variable_table",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structLocal__variable__table.html",tooltip="Struct para a definição da local variable table."];
+  Node17 -> Node2 [id="edge17_Node000002_Node000017",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" methods",fontcolor="grey" ];
+  Node17 [id="Node000017",label="Method_info",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$structMethod__info.html",tooltip="Struct para a definição do Method Info."];
+  Node6 -> Node17 [id="edge18_Node000017_Node000006",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" attributes",fontcolor="grey" ];
+  Node6 -> Node2 [id="edge19_Node000002_Node000006",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" attributes",fontcolor="grey" ];
+  Node18 -> Node1 [id="edge20_Node000001_Node000018",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" methodArea",fontcolor="grey" ];
+  Node18 [id="Node000018",label="MethodArea",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classMethodArea.html",tooltip="Classe que representa a área de métodos, contendo as informações de todas as classes carregadas."];
+  Node19 -> Node18 [id="edge21_Node000018_Node000019",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" frameStack",fontcolor="grey" ];
+  Node19 [id="Node000019",label="FrameStack",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classFrameStack.html",tooltip="Classe que manipula a pilha de frames."];
+}

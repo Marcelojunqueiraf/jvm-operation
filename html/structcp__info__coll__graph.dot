@@ -6,5 +6,5 @@ digraph "cp_info"
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   Node1 [id="Node000001",label="cp_info",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Struct para a definição do cp_info."];
   Node2 -> Node1 [id="edge1_Node000001_Node000002",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" constant_type_union",fontcolor="grey" ];
-  Node2 [id="Node000002",label="cp_info::constant_type\l_union",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$unioncp__info_1_1constant__type__union.html",tooltip=" "];
+  Node2 [id="Node000002",label="cp_info::constant_type\l_union",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$unioncp__info_1_1constant__type__union.html",tooltip=" "];
 }
