@@ -14,7 +14,9 @@ Documentação em /html/index.html
 
 # Como configurar o projeto
 
-Rodar o comando `make` para compilar o projeto
+- Rodar o comando `make` para compilar o projeto
+- Todos os .class necessário para a execução devem estar na pasta `/tests`
+- O arquivo Object.class deve estar na pasta `/tests`
 
 # Como rodar o projeto
 
