@@ -1209,6 +1209,7 @@ T calculate(T first, T second, Operation op) {
             break;
         case REM:
             result = first % second;
+            break;
         default:
             throw std::runtime_error("operacao nao implementada");
     }
