@@ -2691,7 +2691,9 @@ void wide (Frame * frame, JVM * jvm) {
 }
 
 int32_t recursiveArrayCreation(Frame * frame, JVM * jvm, vector<int32_t> counts, int32_t top, JVMType type){
-  if(counts.size() > 0){
+  DCOUT << "top " << top << endl;
+  DCOUT << "counts[top] " << counts[top] << endl;
+  if (top > 0){
     Array * array = new Array(REFERENCE, counts[top]);
     
     for(int32_t i = 0; i < counts[top]; i++){
