@@ -4,3 +4,4 @@ jvm
 jvmSB
 *.exe
 settings.json
+/tests
