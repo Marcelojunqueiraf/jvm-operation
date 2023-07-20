@@ -24,13 +24,13 @@ Documentação em /html/index.html
 
 `./jvmSB arquivo.class -leitor`
 
-## Modo execução
+## Modo execução (sem flags)
 
-`./jvmSB arquivo.class` (sem flags)
+`./jvmSB arquivo.class`
 
 ## Modo execução com debug
 
-## `./jvmSB arquivo.class -debug`
+`./jvmSB arquivo.class -debug`
 
 # Organização do projeto
 
