@@ -14,7 +14,9 @@ Documentação em /html/index.html
 
 # Como configurar o projeto
 
-Rodar o comando `make` para compilar o projeto
+- Rodar o comando `make` para compilar o projeto
+- Todos os .class necessário para a execução devem estar na pasta `/tests`
+- O arquivo Object.class deve estar na pasta `/tests`
 
 # Como rodar o projeto
 
@@ -22,13 +24,13 @@ Rodar o comando `make` para compilar o projeto
 
 `./jvmSB arquivo.class -leitor`
 
-## Modo execução
+## Modo execução (sem flags)
 
-`./jvmSB arquivo.class` (sem flags)
+`./jvmSB arquivo.class`
 
 ## Modo execução com debug
 
-## `./jvmSB arquivo.class -debug`
+`./jvmSB arquivo.class -debug`
 
 # Organização do projeto
 
